@@ -1,0 +1,27 @@
+name: Web
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  pages:
+    runs-on: ubuntu-latest
+    env:
+      PUBLIC_AUTH_API_URL: https://api.auth.aicacia.com
+      PUBLIC_TENENT_ID: cbf7bbef-5132-4b2c-8622-06e28359c291
+      USE_BASE_PATH: true
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 20
+
+      - run: npm install -g pnpm@8
+      - run: pnpm install --no-frozen-lockfile
+      - run: NODE_ENV=production pnpm run build
+
+      - uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: build
