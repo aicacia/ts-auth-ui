@@ -15,11 +15,11 @@
 	let anchor: HTMLDivElement;
 </script>
 
-<div class="flex flex-col min-w-fit static" bind:this={anchor}>
+<div class="static flex min-w-fit flex-col" bind:this={anchor}>
 	<button
 		type="button"
 		aria-label={name}
-		class="flex-grow btn icon primary min-w-fit"
+		class="btn icon primary min-w-fit flex-grow"
 		on:pointerdown|stopPropagation|preventDefault={toggle}
 	>
 		<slot name="button" />

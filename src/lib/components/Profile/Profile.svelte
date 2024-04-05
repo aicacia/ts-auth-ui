@@ -1,14 +1,14 @@
 <svelte:options immutable />
 
 <script lang="ts">
-	import type { Application, User } from '$lib/openapi/auth';
+	import type { PaginationApplication, User } from '$lib/openapi/auth';
 	import Emails from './Emails.svelte';
 	import ResetPassword from './ResetPassword.svelte';
 	import Username from './Username.svelte';
 	import Applications from './Applications.svelte';
 
 	export let user: User;
-	export let applications: Application[] = [];
+	export let applications: PaginationApplication;
 </script>
 
 <div class="flex flex-col justify-end md:justify-start px-4">
@@ -25,7 +25,7 @@
 		class="flex flex-col flex-shrink w-full max-w-lg mx-auto mb-4 bg-white dark:bg-gray-800 shadow p-4"
 	>
 		<div class="mb-2">
-			<Username {user} username={user.username} />
+			<Username username={user.username} />
 		</div>
 	</div>
 </div>

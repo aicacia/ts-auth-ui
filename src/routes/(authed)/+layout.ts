@@ -8,7 +8,7 @@ export const prerender = false;
 export const ssr = false;
 
 export const load: LayoutLoad = async (event) => {
-  await event.parent();
+	await event.parent();
 
 	const currentUser = await getCurrentUser();
 

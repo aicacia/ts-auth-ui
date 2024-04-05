@@ -1,6 +1,9 @@
 import {
 	Configuration,
 	UserApi,
+	UserEmailApi,
+	UserPhoneNumberApi,
+	UserApplicationApi,
 	TokenApi,
 	WellKnownApi,
 	type ConfigurationParameters,
@@ -38,6 +41,9 @@ const defaultAuthConfiguration: ConfigurationParameters = {
 export const authConfiguration = new Configuration(defaultAuthConfiguration);
 
 export const userApi = new UserApi(authConfiguration);
+export const userEmailApi = new UserEmailApi(authConfiguration);
+export const userPhoneNumberApi = new UserPhoneNumberApi(authConfiguration);
+export const userApplicationApi = new UserApplicationApi(authConfiguration);
 export const tokenApi = new TokenApi(authConfiguration);
 export const registerApi = new RegisterApi(authConfiguration);
 export const currentUserApi = new CurrentUserApi(authConfiguration);

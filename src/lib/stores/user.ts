@@ -8,11 +8,12 @@ import {
 	registerApi,
 	setAuthToken,
 	tokenApi,
-	userApi
+	userApi,
+	userEmailApi
 } from '$lib/openapi';
 import { type Token, type UserWithPermissions } from '$lib/openapi/auth';
 import EventEmitter from 'eventemitter3';
-import { goto } from '$app/navigation';
+import { goto, invalidateAll } from '$app/navigation';
 import { base } from '$app/paths';
 
 const tokenWritable = localstorageWritable<Token | null>('token', null);
@@ -79,10 +80,11 @@ async function signInWithToken(token: Token) {
 export async function changeUsername(username: string) {
 	await userApi.usersIdPatch(get(user)!.id, { username });
 	userWritable.update((user) => (user ? { ...user, username } : null));
+	await invalidateAll();
 }
 
 export async function setPrimaryEmail(emailId: number) {
-	await userApi.setPrimaryEmail(emailId);
+	await userEmailApi.usersUserIdEmailsIdSetPrimaryPatch(get(user)?.id as number, emailId);
 	userWritable.update((user) => {
 		if (user) {
 			const emailIndex = user.emails.findIndex((e) => e.id === emailId);
@@ -99,10 +101,11 @@ export async function setPrimaryEmail(emailId: number) {
 		}
 		return user;
 	});
+	await invalidateAll();
 }
 
 export async function deleteEmail(emailId: number) {
-	await userApi.deleteEmail(emailId);
+	await userEmailApi.usersUserIdEmailsIdDelete(get(user)?.id as number, emailId);
 	userWritable.update((user) => {
 		if (user) {
 			const emailIndex = user.emails.findIndex((e) => e.id === emailId);
@@ -114,10 +117,17 @@ export async function deleteEmail(emailId: number) {
 		}
 		return user;
 	});
+	await invalidateAll();
+}
+
+export async function sendConfirmationToEmail(emailId: number) {
+	await userEmailApi.usersUserIdEmailsIdSendConfirmationPatch(get(user)?.id as number, emailId);
 }
 
 export async function confirmEmail(emailId: number, confirmationToken: string) {
-	await authApi.confirmEmail(confirmationToken);
+	await userEmailApi.usersUserIdEmailsIdConfirmPatch(get(user)?.id as number, emailId, {
+		token: confirmationToken
+	});
 	userWritable.update((user) => {
 		if (user) {
 			if (user.email?.id === emailId) {
@@ -132,10 +142,11 @@ export async function confirmEmail(emailId: number, confirmationToken: string) {
 		}
 		return user;
 	});
+	await invalidateAll();
 }
 
 export async function createEmail(email: string) {
-	const newEmail = await userApi.createEmail({ email });
+	const newEmail = await userEmailApi.usersUserIdEmailsPost(get(user)?.id as number, { email });
 	userWritable.update((user) => {
 		if (user) {
 			const newEmails = user.emails.slice();
@@ -144,6 +155,7 @@ export async function createEmail(email: string) {
 		}
 		return user;
 	});
+	await invalidateAll();
 }
 
 export function signOut() {

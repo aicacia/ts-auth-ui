@@ -5,9 +5,10 @@
 
 	type ProfileForm = {
 		username: string;
+		initialUsername: string;
 	};
 
-	const createSuite = (user: User) =>
+	const createSuite = () =>
 		create((data: Partial<ProfileForm> = {}, fields: string[]) => {
 			if (!fields.length) {
 				return;
@@ -18,7 +19,7 @@
 				enforce(data.username).isNotBlank();
 			});
 			test('username', 'no_change', () => {
-				enforce(data.username).notEquals(user.username);
+				enforce(data.username).notEquals(data.initialUsername);
 			});
 		});
 </script>
@@ -31,14 +32,12 @@
 	import InputResults from '$lib/components/InputResults.svelte';
 	import { createNotification } from '$lib/stores/notifications';
 	import { changeUsername } from '$lib/stores/user';
-	import type { User } from '$lib/openapi/auth';
 
-	export let user: User;
 	export let username = '';
 
 	let initialUsername = username;
 
-	const suite = createSuite(user);
+	const suite = createSuite();
 
 	let result = suite.get();
 	$: disabled = loading;
@@ -52,7 +51,7 @@
 
 	const fields = new Set<string>();
 	const validate = debounce(() => {
-		suite({ username }, Array.from(fields)).done((r) => {
+		suite({ username, initialUsername }, Array.from(fields)).done((r) => {
 			result = r;
 		});
 		fields.clear();
@@ -69,14 +68,13 @@
 	}
 
 	let loading = false;
-	async function onSubmit(e: SubmitEvent) {
+	async function onSubmit() {
 		try {
 			loading = true;
 			validateAll();
 			if (result.isValid()) {
 				await changeUsername(username);
 				initialUsername = username;
-				user.username = username;
 				suite.reset();
 				result = suite.get();
 				createNotification('username_changed', 'success');

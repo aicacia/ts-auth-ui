@@ -8,11 +8,15 @@
 	import Send from 'lucide-svelte/icons/send';
 	import Mail from 'lucide-svelte/icons/mail';
 	import Trash from 'lucide-svelte/icons/trash';
-	import { userApi } from '$lib/openapi';
 	import { handleError } from '$lib/errors';
 	import { createNotification } from '$lib/stores/notifications';
 	import Modal from '$lib/components/Modal.svelte';
-	import { setPrimaryEmail, deleteEmail, confirmEmail } from '$lib/stores/user';
+	import {
+		sendConfirmationToEmail,
+		setPrimaryEmail,
+		deleteEmail,
+		confirmEmail
+	} from '$lib/stores/user';
 
 	export let email: Email;
 	export let primary = false;
@@ -40,7 +44,7 @@
 	let emailConfirmation: string;
 	async function onSendConfirmation() {
 		try {
-			await userApi.sendConfirmationEmail(email.id);
+			await sendConfirmationToEmail(email.id);
 			open = false;
 			sentEmailConfirmation = true;
 			createNotification('sent_email_confirmation', 'info');
@@ -108,7 +112,7 @@
 	{/if}
 </div>
 
-<Modal bind:open={sentEmailConfirmation}>
+<Modal bind:open={sentEmailConfirmation} backgroundClose={false}>
 	<h4 slot="title">Check your Email</h4>
 	<form on:submit|preventDefault={onConfirmEmail}>
 		<div class="flex flex-col">

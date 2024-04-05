@@ -44,9 +44,13 @@ export interface UsersUserIdPhoneNumbersIdSendConfirmationPatchRequest {
     id: number;
 }
 
-export interface UsersUserIdPhoneNumbersPostRequest {
+export interface UsersUserIdPhoneNumbersIdSetPrimaryPatchRequest {
     userId: number;
     id: number;
+}
+
+export interface UsersUserIdPhoneNumbersPostRequest {
+    userId: number;
     createPhoneNumber: CreatePhoneNumber;
 }
 
@@ -108,9 +112,24 @@ export interface UserPhoneNumberApiInterface {
 
     /**
      * 
+     * @summary Set a comfirmed phone to primary
+     * @param {number} userId user id
+     * @param {number} id email id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UserPhoneNumberApiInterface
+     */
+    usersUserIdPhoneNumbersIdSetPrimaryPatchRaw(requestParameters: UsersUserIdPhoneNumbersIdSetPrimaryPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>>;
+
+    /**
+     * Set a comfirmed phone to primary
+     */
+    usersUserIdPhoneNumbersIdSetPrimaryPatch(userId: number, id: number, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void>;
+
+    /**
+     * 
      * @summary Create user phone number
      * @param {number} userId user id
-     * @param {number} id phone_number id
      * @param {CreatePhoneNumber} createPhoneNumber update phone_number
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -121,7 +140,7 @@ export interface UserPhoneNumberApiInterface {
     /**
      * Create user phone number
      */
-    usersUserIdPhoneNumbersPost(userId: number, id: number, createPhoneNumber: CreatePhoneNumber, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PhoneNumber>;
+    usersUserIdPhoneNumbersPost(userId: number, createPhoneNumber: CreatePhoneNumber, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PhoneNumber>;
 
 }
 
@@ -250,15 +269,48 @@ export class UserPhoneNumberApi extends runtime.BaseAPI implements UserPhoneNumb
     }
 
     /**
+     * Set a comfirmed phone to primary
+     */
+    async usersUserIdPhoneNumbersIdSetPrimaryPatchRaw(requestParameters: UsersUserIdPhoneNumbersIdSetPrimaryPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.userId === null || requestParameters.userId === undefined) {
+            throw new runtime.RequiredError('userId','Required parameter requestParameters.userId was null or undefined when calling usersUserIdPhoneNumbersIdSetPrimaryPatch.');
+        }
+
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling usersUserIdPhoneNumbersIdSetPrimaryPatch.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
+        }
+
+        const response = await this.request({
+            path: `/users/{userId}/phone-numbers/{id}/set-primary`.replace(`{${"userId"}}`, encodeURIComponent(String(requestParameters.userId))).replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'PATCH',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Set a comfirmed phone to primary
+     */
+    async usersUserIdPhoneNumbersIdSetPrimaryPatch(userId: number, id: number, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.usersUserIdPhoneNumbersIdSetPrimaryPatchRaw({ userId: userId, id: id }, initOverrides);
+    }
+
+    /**
      * Create user phone number
      */
     async usersUserIdPhoneNumbersPostRaw(requestParameters: UsersUserIdPhoneNumbersPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PhoneNumber>> {
         if (requestParameters.userId === null || requestParameters.userId === undefined) {
             throw new runtime.RequiredError('userId','Required parameter requestParameters.userId was null or undefined when calling usersUserIdPhoneNumbersPost.');
-        }
-
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling usersUserIdPhoneNumbersPost.');
         }
 
         if (requestParameters.createPhoneNumber === null || requestParameters.createPhoneNumber === undefined) {
@@ -276,7 +328,7 @@ export class UserPhoneNumberApi extends runtime.BaseAPI implements UserPhoneNumb
         }
 
         const response = await this.request({
-            path: `/users/{userId}/phone-numbers`.replace(`{${"userId"}}`, encodeURIComponent(String(requestParameters.userId))).replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/users/{userId}/phone-numbers`.replace(`{${"userId"}}`, encodeURIComponent(String(requestParameters.userId))),
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
@@ -289,8 +341,8 @@ export class UserPhoneNumberApi extends runtime.BaseAPI implements UserPhoneNumb
     /**
      * Create user phone number
      */
-    async usersUserIdPhoneNumbersPost(userId: number, id: number, createPhoneNumber: CreatePhoneNumber, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PhoneNumber> {
-        const response = await this.usersUserIdPhoneNumbersPostRaw({ userId: userId, id: id, createPhoneNumber: createPhoneNumber }, initOverrides);
+    async usersUserIdPhoneNumbersPost(userId: number, createPhoneNumber: CreatePhoneNumber, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PhoneNumber> {
+        const response = await this.usersUserIdPhoneNumbersPostRaw({ userId: userId, createPhoneNumber: createPhoneNumber }, initOverrides);
         return await response.value();
     }
 

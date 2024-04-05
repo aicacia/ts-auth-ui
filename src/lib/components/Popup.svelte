@@ -12,7 +12,7 @@
 
 <script lang="ts">
 	import { clickoutside } from '@svelte-put/clickoutside';
-	import { tick } from 'svelte';
+	import { onMount, tick } from 'svelte';
 
 	export let anchor: Element;
 	export let anchorPosition: Position = 'bottom-right';
@@ -83,13 +83,23 @@
 		}
 	}
 
-	function onClickOutside() {
-		open = false;
+	onMount(() => {
+		window.addEventListener('resize', resize);
+		return () => {
+			window.removeEventListener('resize', resize);
+		};
+	});
+
+	function onClickOutside(e: Event) {
+		e.stopPropagation();
+		if (open) {
+			open = false;
+		}
 	}
 </script>
 
 <div
-	class="absolute shadow-md border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 focus:outline-none z-[1001] overflow-hidden max-w-full max-h-full transition-transform duration-75"
+	class="absolute z-[1001] max-h-full max-w-full border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 shadow-md transition-transform duration-75 focus:outline-none"
 	bind:this={child}
 	bind:offsetWidth
 	use:clickoutside={{ event: 'pointerdown', enabled: closeOnClickOutside }}

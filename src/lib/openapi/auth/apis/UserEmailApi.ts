@@ -44,9 +44,13 @@ export interface UsersUserIdEmailsIdSendConfirmationPatchRequest {
     id: number;
 }
 
-export interface UsersUserIdEmailsPostRequest {
+export interface UsersUserIdEmailsIdSetPrimaryPatchRequest {
     userId: number;
     id: number;
+}
+
+export interface UsersUserIdEmailsPostRequest {
+    userId: number;
     createEmail: CreateEmail;
 }
 
@@ -108,9 +112,24 @@ export interface UserEmailApiInterface {
 
     /**
      * 
-     * @summary Create user email
+     * @summary Set a comfirmed email to primary
      * @param {number} userId user id
      * @param {number} id email id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UserEmailApiInterface
+     */
+    usersUserIdEmailsIdSetPrimaryPatchRaw(requestParameters: UsersUserIdEmailsIdSetPrimaryPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>>;
+
+    /**
+     * Set a comfirmed email to primary
+     */
+    usersUserIdEmailsIdSetPrimaryPatch(userId: number, id: number, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void>;
+
+    /**
+     * 
+     * @summary Create user email
+     * @param {number} userId user id
      * @param {CreateEmail} createEmail update email
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -121,7 +140,7 @@ export interface UserEmailApiInterface {
     /**
      * Create user email
      */
-    usersUserIdEmailsPost(userId: number, id: number, createEmail: CreateEmail, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Email>;
+    usersUserIdEmailsPost(userId: number, createEmail: CreateEmail, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Email>;
 
 }
 
@@ -250,15 +269,48 @@ export class UserEmailApi extends runtime.BaseAPI implements UserEmailApiInterfa
     }
 
     /**
+     * Set a comfirmed email to primary
+     */
+    async usersUserIdEmailsIdSetPrimaryPatchRaw(requestParameters: UsersUserIdEmailsIdSetPrimaryPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.userId === null || requestParameters.userId === undefined) {
+            throw new runtime.RequiredError('userId','Required parameter requestParameters.userId was null or undefined when calling usersUserIdEmailsIdSetPrimaryPatch.');
+        }
+
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling usersUserIdEmailsIdSetPrimaryPatch.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
+        }
+
+        const response = await this.request({
+            path: `/users/{userId}/emails/{id}/set-primary`.replace(`{${"userId"}}`, encodeURIComponent(String(requestParameters.userId))).replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'PATCH',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Set a comfirmed email to primary
+     */
+    async usersUserIdEmailsIdSetPrimaryPatch(userId: number, id: number, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.usersUserIdEmailsIdSetPrimaryPatchRaw({ userId: userId, id: id }, initOverrides);
+    }
+
+    /**
      * Create user email
      */
     async usersUserIdEmailsPostRaw(requestParameters: UsersUserIdEmailsPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Email>> {
         if (requestParameters.userId === null || requestParameters.userId === undefined) {
             throw new runtime.RequiredError('userId','Required parameter requestParameters.userId was null or undefined when calling usersUserIdEmailsPost.');
-        }
-
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling usersUserIdEmailsPost.');
         }
 
         if (requestParameters.createEmail === null || requestParameters.createEmail === undefined) {
@@ -276,7 +328,7 @@ export class UserEmailApi extends runtime.BaseAPI implements UserEmailApiInterfa
         }
 
         const response = await this.request({
-            path: `/users/{userId}/emails`.replace(`{${"userId"}}`, encodeURIComponent(String(requestParameters.userId))).replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/users/{userId}/emails`.replace(`{${"userId"}}`, encodeURIComponent(String(requestParameters.userId))),
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
@@ -289,8 +341,8 @@ export class UserEmailApi extends runtime.BaseAPI implements UserEmailApiInterfa
     /**
      * Create user email
      */
-    async usersUserIdEmailsPost(userId: number, id: number, createEmail: CreateEmail, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Email> {
-        const response = await this.usersUserIdEmailsPostRaw({ userId: userId, id: id, createEmail: createEmail }, initOverrides);
+    async usersUserIdEmailsPost(userId: number, createEmail: CreateEmail, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Email> {
+        const response = await this.usersUserIdEmailsPostRaw({ userId: userId, createEmail: createEmail }, initOverrides);
         return await response.value();
     }
 
