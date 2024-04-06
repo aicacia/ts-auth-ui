@@ -9,15 +9,15 @@ import {
 	tokenApi,
 	userApi
 } from '$lib/openapi';
-import { type Token, type UserWithPermissions } from '$lib/openapi/auth';
+import { type Token, type User, type UserWithPermissions } from '$lib/openapi/auth';
 import EventEmitter from 'eventemitter3';
-import { goto, invalidateAll } from '$app/navigation';
+import { goto } from '$app/navigation';
 import { base } from '$app/paths';
 
 const tokenWritable = localstorageWritable<Token | null>('token', null);
 const userWritable = localstorageWritable<UserWithPermissions | null>('user', null);
 
-export const user = derived(userWritable, (user) => user);
+export const currentUser = derived(userWritable, (user) => user);
 export const signedIn = derived(userWritable, (user) => !!user);
 export const admin = derived(userWritable, (user) => user?.permissions.includes('admin') === true);
 
@@ -35,12 +35,18 @@ export function waitForUser() {
 	}
 }
 
+export function updateCurrentUser(user: User) {
+	if (get(currentUser)?.id === user.id) {
+		userWritable.update((currentUser) => (currentUser ? { ...currentUser, ...user } : null));
+	}
+}
+
 export function isSignedIn() {
 	return get(signedIn);
 }
 
-export function getUser() {
-	return get(user);
+export function getCurrentUser() {
+	return get(currentUser);
 }
 
 export async function signIn(usernameOrEmail: string, password: string) {
@@ -75,173 +81,6 @@ async function signInWithToken(token: Token) {
 	return user;
 }
 
-export async function changeUsername(username: string) {
-	await userApi.updateUser(get(user)!.id, { username });
-	userWritable.update((user) => (user ? { ...user, username } : null));
-	await invalidateAll();
-}
-
-export async function setPrimaryEmail(emailId: number) {
-	await userApi.setPrimaryEmail(get(user)?.id as number, emailId);
-	userWritable.update((user) => {
-		if (user) {
-			const emailIndex = user.emails.findIndex((e) => e.id === emailId);
-			if (emailIndex !== -1) {
-				const newEmails = user.emails.slice();
-				const newEmail = newEmails[emailIndex];
-				if (user.email) {
-					newEmails[emailIndex] = user.email;
-				} else {
-					newEmails.splice(emailIndex, 1);
-				}
-				return { ...user, email: newEmail, emails: newEmails };
-			}
-		}
-		return user;
-	});
-	await invalidateAll();
-}
-
-export async function deleteEmail(emailId: number) {
-	await userApi.deleteEmail(get(user)?.id as number, emailId);
-	userWritable.update((user) => {
-		if (user) {
-			const emailIndex = user.emails.findIndex((e) => e.id === emailId);
-			if (emailIndex !== -1) {
-				const newEmails = user.emails.slice();
-				newEmails.splice(emailIndex, 1);
-				return { ...user, emails: newEmails };
-			}
-		}
-		return user;
-	});
-	await invalidateAll();
-}
-
-export async function sendConfirmationToEmail(emailId: number) {
-	await userApi.sendConfirmationToEmail(get(user)?.id as number, emailId);
-}
-
-export async function confirmEmail(emailId: number, confirmationToken: string) {
-	await userApi.confirmEmail(get(user)?.id as number, emailId, {
-		token: confirmationToken
-	});
-	userWritable.update((user) => {
-		if (user) {
-			if (user.email?.id === emailId) {
-				return { ...user, email: { ...user.email, confirmed: true } };
-			}
-			const emailIndex = user.emails.findIndex((e) => e.id === emailId);
-			if (emailIndex !== -1) {
-				const newEmails = user.emails.slice();
-				newEmails[emailIndex] = { ...newEmails[emailIndex], confirmed: true };
-				return { ...user, emails: newEmails };
-			}
-		}
-		return user;
-	});
-	await invalidateAll();
-}
-
-export async function createEmail(email: string) {
-	const newEmail = await userApi.createEmail(get(user)?.id as number, { email });
-	userWritable.update((user) => {
-		if (user) {
-			const newEmails = user.emails.slice();
-			newEmails.push(newEmail);
-			return { ...user, emails: newEmails };
-		}
-		return user;
-	});
-	await invalidateAll();
-	return newEmail;
-}
-
-export async function setPrimaryPhoneNumber(phoneNumberId: number) {
-	await userApi.setPrimaryPhoneNumber(get(user)?.id as number, phoneNumberId);
-	userWritable.update((user) => {
-		if (user) {
-			const phoneNumberIndex = user.phone_numbers.findIndex((e) => e.id === phoneNumberId);
-			if (phoneNumberIndex !== -1) {
-				const newPhoneNumbers = user.phone_numbers.slice();
-				const newPhoneNumber = newPhoneNumbers[phoneNumberIndex];
-				if (user.phone_number) {
-					newPhoneNumbers[phoneNumberIndex] = user.phone_number;
-				} else {
-					newPhoneNumbers.splice(phoneNumberIndex, 1);
-				}
-				return { ...user, phone_number: newPhoneNumber, phone_numbers: newPhoneNumbers };
-			}
-		}
-		return user;
-	});
-	await invalidateAll();
-}
-
-export async function deletePhoneNumber(phoneNumberId: number) {
-	await userApi.deletePhoneNumber(get(user)?.id as number, phoneNumberId);
-	userWritable.update((user) => {
-		if (user) {
-			const phoneNumberIndex = user.phone_numbers.findIndex((e) => e.id === phoneNumberId);
-			if (phoneNumberIndex !== -1) {
-				const newPhoneNumbers = user.phone_numbers.slice();
-				newPhoneNumbers.splice(phoneNumberIndex, 1);
-				return { ...user, phone_numbers: newPhoneNumbers };
-			}
-		}
-		return user;
-	});
-	await invalidateAll();
-}
-
-export async function sendConfirmationToPhoneNumber(phoneNumberId: number) {
-	await userApi.sendConfirmationToPhoneNumber(get(user)?.id as number, phoneNumberId);
-}
-
-export async function confirmPhoneNumber(phoneNumberId: number, confirmationToken: string) {
-	await userApi.confirmPhoneNumber(get(user)?.id as number, phoneNumberId, {
-		token: confirmationToken
-	});
-	userWritable.update((user) => {
-		if (user) {
-			if (user.phone_number?.id === phoneNumberId) {
-				return { ...user, phone_number: { ...user.phone_number, confirmed: true } };
-			}
-			const phoneNumberIndex = user.phone_numbers.findIndex((e) => e.id === phoneNumberId);
-			if (phoneNumberIndex !== -1) {
-				const newPhoneNumbers = user.phone_numbers.slice();
-				newPhoneNumbers[phoneNumberIndex] = {
-					...newPhoneNumbers[phoneNumberIndex],
-					confirmed: true
-				};
-				return { ...user, phone_numbers: newPhoneNumbers };
-			}
-		}
-		return user;
-	});
-	await invalidateAll();
-}
-
-export async function createPhoneNumber(phoneNumber: string) {
-	const newPhoneNumber = await userApi.createPhoneNumber(get(user)?.id as number, {
-		phone_number: phoneNumber
-	});
-	userWritable.update((user) => {
-		if (user) {
-			const newPhoneNumbers = user.phone_numbers.slice();
-			newPhoneNumbers.push(newPhoneNumber);
-			return { ...user, phone_numbers: newPhoneNumbers };
-		}
-		return user;
-	});
-	await invalidateAll();
-	return newPhoneNumber;
-}
-
-export async function removeApplication(applicationId: number) {
-	await userApi.removeUserFromApplication(get(user)?.id as number, applicationId);
-}
-
 export function signOut() {
 	userWritable.set(null);
 	tokenWritable.set(null);
@@ -250,7 +89,7 @@ export function signOut() {
 }
 
 let initialCall = true;
-export async function getCurrentUser() {
+export async function tryGetCurrentUser() {
 	try {
 		let user = get(userWritable);
 		if (initialCall) {

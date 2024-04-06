@@ -1,9 +1,10 @@
 <svelte:options immutable />
 
 <script lang="ts">
-	import { handleError } from '$lib/errors';
+	import { invalidateAll } from '$app/navigation';
+	import { userApi } from '$lib/openapi';
 	import type { User, Email } from '$lib/openapi/auth';
-	import { createEmail } from '$lib/stores/user';
+	import { updateCurrentUser } from '$lib/stores/user';
 	import EmailComponent from './Email.svelte';
 	import NewEmail from './NewEmail.svelte';
 
@@ -11,11 +12,10 @@
 
 	let newEmail: Email | undefined;
 	async function onCreateEmail(email: string) {
-		try {
-			newEmail = await createEmail(email);
-		} catch (error) {
-			handleError(error);
-		}
+		newEmail = await userApi.createEmail(user.id as number, { email });
+		user = { ...user, emails: [...user.emails, newEmail] };
+		updateCurrentUser(user);
+		await invalidateAll();
 	}
 </script>
 
@@ -23,13 +23,13 @@
 <hr class="my-1" />
 <div class="flex flex-col">
 	{#if user.email}
-		<EmailComponent email={user.email} primary />
+		<EmailComponent bind:user bind:email={user.email} primary />
 		{#if user.emails.length}
 			<hr class="my-1" />
 		{/if}
 	{/if}
 	{#each user.emails as email, index (email.id)}
-		<EmailComponent {email} sentEmailConfirmation={newEmail?.id === email.id} />
+		<EmailComponent bind:user bind:email sentEmailConfirmation={newEmail?.id === email.id} />
 		{#if index < user.emails.length - 1}
 			<hr class="my-1" />
 		{/if}

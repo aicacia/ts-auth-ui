@@ -1,12 +1,27 @@
 <svelte:options immutable />
 
 <script lang="ts">
+	import Modal from '$lib/components/Modal.svelte';
+	import Profile from '$lib/components/Profile/Profile.svelte';
+	import type { User, PaginationApplication } from '$lib/openapi/auth';
+	import { userApi } from '$lib/openapi';
 	import type { PageData } from './$types';
 	import Pencil from 'lucide-svelte/icons/pencil';
 
 	export let data: PageData;
 
 	$: users = data.pagination.items;
+
+	let editOpen = false;
+	let editUser: User | undefined;
+	let applications: PaginationApplication = { has_more: false, items: [] };
+	function createOnEditUser(user: User) {
+		return async () => {
+			editOpen = true;
+			editUser = user;
+			applications = await userApi.userApplications(user.id);
+		};
+	}
 </script>
 
 <svelte:head>
@@ -35,7 +50,9 @@
 						<td>{user.created_at.toLocaleString()}</td>
 						<td>{user.updated_at.toLocaleString()}</td>
 						<td class="transition-opacity opacity-0 group-hover:opacity-100">
-							<button class="btn primary icon"><Pencil /></button>
+							<button class="btn primary icon" on:click|preventDefault={createOnEditUser(user)}
+								><Pencil /></button
+							>
 						</td>
 					</tr>
 				{/each}
@@ -43,3 +60,9 @@
 		</table>
 	</div>
 </div>
+
+<Modal bind:open={editOpen}>
+	{#if editUser}
+		<Profile user={editUser} {applications} />
+	{/if}
+</Modal>

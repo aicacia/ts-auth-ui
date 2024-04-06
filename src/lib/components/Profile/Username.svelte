@@ -31,11 +31,15 @@
 	import { debounce } from '@aicacia/debounce';
 	import InputResults from '$lib/components/InputResults.svelte';
 	import { createNotification } from '$lib/stores/notifications';
-	import { changeUsername } from '$lib/stores/user';
+	import type { User } from '$lib/openapi/auth';
+	import { userApi } from '$lib/openapi';
+	import { invalidateAll } from '$app/navigation';
+	import { updateCurrentUser } from '$lib/stores/user';
 
-	export let username = '';
+	export let user: User;
 
-	let initialUsername = username;
+	$: initialUsername = user.username;
+	$: username = initialUsername;
 
 	const suite = createSuite();
 
@@ -73,11 +77,12 @@
 			loading = true;
 			validateAll();
 			if (result.isValid()) {
-				await changeUsername(username);
-				initialUsername = username;
+				user = await userApi.updateUser(user.id, { username });
+				updateCurrentUser(user);
 				suite.reset();
 				result = suite.get();
 				createNotification('username_changed', 'success');
+				await invalidateAll();
 			}
 		} catch (error) {
 			await handleError(error);

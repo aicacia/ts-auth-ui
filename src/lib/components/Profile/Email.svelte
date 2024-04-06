@@ -2,7 +2,7 @@
 
 <script lang="ts">
 	import Dropdown from '$lib/components/Dropdown.svelte';
-	import type { Email } from '$lib/openapi/auth';
+	import type { Email, User } from '$lib/openapi/auth';
 	import EllipsisVertical from 'lucide-svelte/icons/ellipsis-vertical';
 	import CircleCheck from 'lucide-svelte/icons/circle-check';
 	import Send from 'lucide-svelte/icons/send';
@@ -11,31 +11,48 @@
 	import { handleError } from '$lib/errors';
 	import { createNotification } from '$lib/stores/notifications';
 	import Modal from '$lib/components/Modal.svelte';
-	import {
-		sendConfirmationToEmail,
-		setPrimaryEmail,
-		deleteEmail,
-		confirmEmail
-	} from '$lib/stores/user';
+	import { userApi } from '$lib/openapi';
+	import { invalidateAll } from '$app/navigation';
+	import { updateCurrentUser } from '$lib/stores/user';
 
+	export let user: User;
 	export let email: Email;
 	export let primary = false;
 	export let sentEmailConfirmation = false;
 
 	let open = false;
 
-	async function onSetPrimary() {
+	async function onSetPrimaryInternal() {
 		try {
-			await setPrimaryEmail(email.id);
+			await userApi.setPrimaryEmail(user.id, email.id);
+			const newEmails = user.emails.slice();
+			const index = newEmails.findIndex((e) => e.id === email.id);
+			if (index !== -1) {
+				newEmails.splice(index, 1);
+			}
+			if (user.email) {
+				newEmails.push(user.email);
+			}
+			user = { ...user, email, emails: newEmails };
+			updateCurrentUser(user);
 			open = false;
+			await invalidateAll();
 		} catch (error) {
 			await handleError(error);
 		}
 	}
 	async function onDeleteEmail() {
 		try {
-			await deleteEmail(email.id);
+			await userApi.deleteEmail(user.id, email.id);
+			const newEmails = user.emails.slice();
+			const index = newEmails.findIndex((e) => e.id === email.id);
+			if (index !== -1) {
+				newEmails.splice(index, 1);
+			}
+			user = { ...user, emails: newEmails };
+			updateCurrentUser(user);
 			deleteEmailOpen = false;
+			await invalidateAll();
 		} catch (error) {
 			await handleError(error);
 		}
@@ -44,7 +61,7 @@
 	let emailConfirmation: string;
 	async function onSendConfirmation() {
 		try {
-			await sendConfirmationToEmail(email.id);
+			await userApi.sendConfirmationToEmail(user.id, email.id);
 			open = false;
 			sentEmailConfirmation = true;
 			createNotification('sent_email_confirmation', 'info');
@@ -54,9 +71,19 @@
 	}
 	async function onConfirmEmail() {
 		try {
-			await confirmEmail(email.id, emailConfirmation.trim());
+			email = await userApi.confirmEmail(user.id, email.id, {
+				token: emailConfirmation
+			});
+			const newEmails = user.emails.slice();
+			const index = newEmails.findIndex((e) => e.id === email.id);
+			if (index !== -1) {
+				newEmails[index] = email;
+			}
+			user = { ...user, emails: newEmails };
+			updateCurrentUser(user);
 			sentEmailConfirmation = false;
 			createNotification('email_confirmed', 'success');
+			await invalidateAll();
 		} catch (error) {
 			await handleError(error);
 		}
@@ -94,7 +121,7 @@
 				{:else}
 					<li
 						class="flex flex-row justify-between p-2 cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-600"
-						on:click={onSetPrimary}
+						on:click={onSetPrimaryInternal}
 					>
 						<Send /><span class="ms-4">Set as Primary</span>
 					</li>

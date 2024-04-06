@@ -2,7 +2,7 @@
 
 <script lang="ts">
 	import Dropdown from '$lib/components/Dropdown.svelte';
-	import type { PhoneNumber } from '$lib/openapi/auth';
+	import type { PhoneNumber, User } from '$lib/openapi/auth';
 	import EllipsisVertical from 'lucide-svelte/icons/ellipsis-vertical';
 	import CircleCheck from 'lucide-svelte/icons/circle-check';
 	import Send from 'lucide-svelte/icons/send';
@@ -11,13 +11,11 @@
 	import { handleError } from '$lib/errors';
 	import { createNotification } from '$lib/stores/notifications';
 	import Modal from '$lib/components/Modal.svelte';
-	import {
-		sendConfirmationToPhoneNumber,
-		setPrimaryPhoneNumber,
-		deletePhoneNumber,
-		confirmPhoneNumber
-	} from '$lib/stores/user';
+	import { userApi } from '$lib/openapi';
+	import { invalidateAll } from '$app/navigation';
+	import { updateCurrentUser } from '$lib/stores/user';
 
+	export let user: User;
 	export let phoneNumber: PhoneNumber;
 	export let primary = false;
 	export let sentPhoneNumberConfirmation = false;
@@ -26,16 +24,35 @@
 
 	async function onSetPrimary() {
 		try {
-			await setPrimaryPhoneNumber(phoneNumber.id);
+			await userApi.setPrimaryPhoneNumber(user.id, phoneNumber.id);
+			const newPhoneNumbers = user.phone_numbers.slice();
+			const index = newPhoneNumbers.findIndex((e) => e.id === phoneNumber.id);
+			if (index !== -1) {
+				newPhoneNumbers.splice(index, 1);
+			}
+			if (user.phone_number) {
+				newPhoneNumbers.push(user.phone_number);
+			}
+			user = { ...user, phone_number: phoneNumber, phone_numbers: newPhoneNumbers };
+			updateCurrentUser(user);
 			open = false;
+			await invalidateAll();
 		} catch (error) {
 			await handleError(error);
 		}
 	}
 	async function onDeletePhoneNumber() {
 		try {
-			await deletePhoneNumber(phoneNumber.id);
+			await userApi.deletePhoneNumber(user.id, phoneNumber.id);
+			const newPhoneNumbers = user.phone_numbers.slice();
+			const index = newPhoneNumbers.findIndex((e) => e.id === phoneNumber.id);
+			if (index !== -1) {
+				newPhoneNumbers.splice(index, 1);
+			}
+			user = { ...user, phone_numbers: newPhoneNumbers };
+			updateCurrentUser(user);
 			deletePhoneNumberOpen = false;
+			await invalidateAll();
 		} catch (error) {
 			await handleError(error);
 		}
@@ -44,19 +61,29 @@
 	let phoneNumberConfirmation: string;
 	async function onSendConfirmation() {
 		try {
-			await sendConfirmationToPhoneNumber(phoneNumber.id);
+			await userApi.sendConfirmationToPhoneNumber(user.id, phoneNumber.id);
 			open = false;
 			sentPhoneNumberConfirmation = true;
-			createNotification('sent_phone_number_confirmation', 'info');
+			createNotification('sent_phoneNumber_confirmation', 'info');
 		} catch (error) {
 			await handleError(error);
 		}
 	}
 	async function onConfirmPhoneNumber() {
 		try {
-			await confirmPhoneNumber(phoneNumber.id, phoneNumberConfirmation.trim());
+			phoneNumber = await userApi.confirmPhoneNumber(user.id, phoneNumber.id, {
+				token: phoneNumberConfirmation
+			});
+			const newPhoneNumbers = user.phone_numbers.slice();
+			const index = newPhoneNumbers.findIndex((e) => e.id === phoneNumber.id);
+			if (index !== -1) {
+				newPhoneNumbers[index] = phoneNumber;
+			}
+			user = { ...user, phone_numbers: newPhoneNumbers };
+			updateCurrentUser(user);
 			sentPhoneNumberConfirmation = false;
-			createNotification('phone_number_confirmed', 'success');
+			createNotification('phoneNumber_confirmed', 'success');
+			await invalidateAll();
 		} catch (error) {
 			await handleError(error);
 		}

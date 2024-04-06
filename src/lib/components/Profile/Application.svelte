@@ -3,17 +3,20 @@
 <script lang="ts">
 	import Dropdown from '$lib/components/Dropdown.svelte';
 	import { handleError } from '$lib/errors';
-	import type { Application } from '$lib/openapi/auth';
-	import { removeApplication } from '$lib/stores/user';
+	import { userApi } from '$lib/openapi';
+	import type { Application, User } from '$lib/openapi/auth';
 	import EllipsisVertical from 'lucide-svelte/icons/ellipsis-vertical';
 	import Trash from 'lucide-svelte/icons/trash';
 
+	export let user: User;
 	export let application: Application;
+	export let onDelete: (application: Application) => void;
 
 	let open = false;
 	async function onRemove() {
 		try {
-			await removeApplication(application.id);
+			await userApi.removeUserFromApplication(user.id as number, application.id);
+			onDelete(application);
 		} catch (error) {
 			handleError(error);
 		}
