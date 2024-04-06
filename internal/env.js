@@ -1,0 +1,1 @@
+export const env={"PUBLIC_AUTH_API_URL":"https://api.auth.aicacia.com","PUBLIC_TENENT_ID":"cbf7bbef-5132-4b2c-8622-06e28359c291"}
