@@ -20,7 +20,7 @@ COPY postcss.config.cjs svelte.config.js tailwind.config.cjs vite.config.js ./
 RUN pnpm run build
 
 FROM --platform=linux/amd64 nginx:1.25-alpine3.18-slim
-LABEL org.opencontainers.image.source https://github.com/aicacia/ts-auth
+LABEL org.opencontainers.image.source https://github.com/aicacia/ts-auth-ui
 
 ARG MAINTENANCE_MODE=false
 ENV MAINTENANCE_MODE=${MAINTENANCE_MODE}

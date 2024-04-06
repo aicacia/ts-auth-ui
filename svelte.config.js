@@ -12,7 +12,7 @@ const config = {
 			precompress: false
 		}),
 		paths: {
-			base: process.env.USE_BASE_PATH ? '/ts-auth' : ''
+			base: process.env.USE_BASE_PATH ? '/ts-auth-ui' : ''
 		},
 		appDir: 'internal'
 	}
