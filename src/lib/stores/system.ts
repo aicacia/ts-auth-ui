@@ -1,4 +1,4 @@
-import { building } from '$app/environment';
+import { browser, building } from '$app/environment';
 import { handleError } from '$lib/errors';
 import { wellKnownApi } from '$lib/openapi';
 import type { OpenIDConfiguration } from '$lib/openapi/auth';
@@ -32,4 +32,6 @@ async function fetchOpenIDConfiguration() {
 	}
 }
 
-fetchOpenIDConfiguration();
+if (!building || browser) {
+	fetchOpenIDConfiguration();
+}
