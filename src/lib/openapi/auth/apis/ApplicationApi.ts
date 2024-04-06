@@ -16,41 +16,129 @@
 import * as runtime from '../runtime';
 import type {
   Application,
+  ApplicationPermission,
+  ApplicationTenent,
   CreateApplication,
+  CreateApplicationPermission,
+  CreateApplicationTenent,
+  Errors,
   PaginationApplication,
+  PaginationApplicationTenent,
   UpdateApplication,
+  UpdateApplicationPermission,
+  UpdateApplicationTenent,
 } from '../models/index';
 import {
     ApplicationFromJSON,
     ApplicationToJSON,
+    ApplicationPermissionFromJSON,
+    ApplicationPermissionToJSON,
+    ApplicationTenentFromJSON,
+    ApplicationTenentToJSON,
     CreateApplicationFromJSON,
     CreateApplicationToJSON,
+    CreateApplicationPermissionFromJSON,
+    CreateApplicationPermissionToJSON,
+    CreateApplicationTenentFromJSON,
+    CreateApplicationTenentToJSON,
+    ErrorsFromJSON,
+    ErrorsToJSON,
     PaginationApplicationFromJSON,
     PaginationApplicationToJSON,
+    PaginationApplicationTenentFromJSON,
+    PaginationApplicationTenentToJSON,
     UpdateApplicationFromJSON,
     UpdateApplicationToJSON,
+    UpdateApplicationPermissionFromJSON,
+    UpdateApplicationPermissionToJSON,
+    UpdateApplicationTenentFromJSON,
+    UpdateApplicationTenentToJSON,
 } from '../models/index';
 
-export interface ApplicationsGetRequest {
+export interface AddApplicationPermissionToUserRequest {
+    applicationId: number;
+    id: number;
+    userId: number;
+}
+
+export interface ApplicationByIdRequest {
+    id: number;
+}
+
+export interface ApplicationPermissionByIdRequest {
+    applicationId: number;
+    id: string;
+}
+
+export interface ApplicationPermissionsRequest {
+    applicationId: number;
+}
+
+export interface ApplicationTenentByIdRequest {
+    applicationId: number;
+    id: number;
+}
+
+export interface ApplicationTenentsRequest {
+    applicationId: number;
     limit?: number;
     offset?: number;
 }
 
-export interface ApplicationsIdDeleteRequest {
+export interface ApplicationsRequest {
+    limit?: number;
+    offset?: number;
+}
+
+export interface CreateApplicationRequest {
+    application: CreateApplication;
+}
+
+export interface CreateApplicationPermissionRequest {
+    applicationId: number;
+    application: CreateApplicationPermission;
+}
+
+export interface CreateApplicationTenentRequest {
+    applicationId: number;
+    application: CreateApplicationTenent;
+}
+
+export interface DeleteApplicationRequest {
     id: number;
 }
 
-export interface ApplicationsIdGetRequest {
+export interface DeleteApplicationPermissionRequest {
+    applicationId: number;
+    id: string;
+}
+
+export interface DeleteApplicationTenentRequest {
+    applicationId: number;
     id: number;
 }
 
-export interface ApplicationsIdPatchRequest {
+export interface RemoveApplicationPermissionFromUserRequest {
+    applicationId: number;
+    id: number;
+    userId: number;
+}
+
+export interface UpdateApplicationRequest {
     id: number;
     application: UpdateApplication;
 }
 
-export interface ApplicationsPostRequest {
-    application: CreateApplication;
+export interface UpdateApplicationPermissionRequest {
+    applicationId: number;
+    id: number;
+    application: UpdateApplicationPermission;
+}
+
+export interface UpdateApplicationTenentRequest {
+    applicationId: number;
+    id: number;
+    application: UpdateApplicationTenent;
 }
 
 /**
@@ -62,34 +150,20 @@ export interface ApplicationsPostRequest {
 export interface ApplicationApiInterface {
     /**
      * 
-     * @summary Get applications
-     * @param {number} [limit] limit
-     * @param {number} [offset] offset
+     * @summary Add permission to user
+     * @param {number} applicationId application id
+     * @param {number} id application permission id
+     * @param {number} userId user id
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ApplicationApiInterface
      */
-    applicationsGetRaw(requestParameters: ApplicationsGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PaginationApplication>>;
+    addApplicationPermissionToUserRaw(requestParameters: AddApplicationPermissionToUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>>;
 
     /**
-     * Get applications
+     * Add permission to user
      */
-    applicationsGet(limit?: number, offset?: number, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PaginationApplication>;
-
-    /**
-     * 
-     * @summary Delete application
-     * @param {number} id application id
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof ApplicationApiInterface
-     */
-    applicationsIdDeleteRaw(requestParameters: ApplicationsIdDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>>;
-
-    /**
-     * Delete application
-     */
-    applicationsIdDelete(id: number, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void>;
+    addApplicationPermissionToUser(applicationId: number, id: number, userId: number, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void>;
 
     /**
      * 
@@ -99,12 +173,203 @@ export interface ApplicationApiInterface {
      * @throws {RequiredError}
      * @memberof ApplicationApiInterface
      */
-    applicationsIdGetRaw(requestParameters: ApplicationsIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Application>>;
+    applicationByIdRaw(requestParameters: ApplicationByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Application>>;
 
     /**
      * Get application by id
      */
-    applicationsIdGet(id: number, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Application>;
+    applicationById(id: number, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Application>;
+
+    /**
+     * 
+     * @summary Get application permission by id
+     * @param {number} applicationId application id
+     * @param {string} id application permission id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ApplicationApiInterface
+     */
+    applicationPermissionByIdRaw(requestParameters: ApplicationPermissionByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ApplicationPermission>>;
+
+    /**
+     * Get application permission by id
+     */
+    applicationPermissionById(applicationId: number, id: string, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ApplicationPermission>;
+
+    /**
+     * 
+     * @summary Get application permissions
+     * @param {number} applicationId application id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ApplicationApiInterface
+     */
+    applicationPermissionsRaw(requestParameters: ApplicationPermissionsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<ApplicationPermission>>>;
+
+    /**
+     * Get application permissions
+     */
+    applicationPermissions(applicationId: number, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<ApplicationPermission>>;
+
+    /**
+     * 
+     * @summary Get application tenent by id
+     * @param {number} applicationId application id
+     * @param {number} id application tenent id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ApplicationApiInterface
+     */
+    applicationTenentByIdRaw(requestParameters: ApplicationTenentByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ApplicationTenent>>;
+
+    /**
+     * Get application tenent by id
+     */
+    applicationTenentById(applicationId: number, id: number, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ApplicationTenent>;
+
+    /**
+     * 
+     * @summary Get application tenents
+     * @param {number} applicationId application id
+     * @param {number} [limit] limit
+     * @param {number} [offset] offset
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ApplicationApiInterface
+     */
+    applicationTenentsRaw(requestParameters: ApplicationTenentsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PaginationApplicationTenent>>;
+
+    /**
+     * Get application tenents
+     */
+    applicationTenents(applicationId: number, limit?: number, offset?: number, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PaginationApplicationTenent>;
+
+    /**
+     * 
+     * @summary Get applications
+     * @param {number} [limit] limit
+     * @param {number} [offset] offset
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ApplicationApiInterface
+     */
+    applicationsRaw(requestParameters: ApplicationsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PaginationApplication>>;
+
+    /**
+     * Get applications
+     */
+    applications(limit?: number, offset?: number, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PaginationApplication>;
+
+    /**
+     * 
+     * @summary Create application
+     * @param {CreateApplication} application create application
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ApplicationApiInterface
+     */
+    createApplicationRaw(requestParameters: CreateApplicationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Application>>;
+
+    /**
+     * Create application
+     */
+    createApplication(application: CreateApplication, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Application>;
+
+    /**
+     * 
+     * @summary Create application permission
+     * @param {number} applicationId application id
+     * @param {CreateApplicationPermission} application create application
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ApplicationApiInterface
+     */
+    createApplicationPermissionRaw(requestParameters: CreateApplicationPermissionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ApplicationPermission>>;
+
+    /**
+     * Create application permission
+     */
+    createApplicationPermission(applicationId: number, application: CreateApplicationPermission, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ApplicationPermission>;
+
+    /**
+     * 
+     * @summary Create application tenent
+     * @param {number} applicationId application id
+     * @param {CreateApplicationTenent} application create application
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ApplicationApiInterface
+     */
+    createApplicationTenentRaw(requestParameters: CreateApplicationTenentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ApplicationTenent>>;
+
+    /**
+     * Create application tenent
+     */
+    createApplicationTenent(applicationId: number, application: CreateApplicationTenent, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ApplicationTenent>;
+
+    /**
+     * 
+     * @summary Delete application
+     * @param {number} id application id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ApplicationApiInterface
+     */
+    deleteApplicationRaw(requestParameters: DeleteApplicationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>>;
+
+    /**
+     * Delete application
+     */
+    deleteApplication(id: number, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void>;
+
+    /**
+     * 
+     * @summary Delete application permission
+     * @param {number} applicationId application id
+     * @param {string} id application permission id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ApplicationApiInterface
+     */
+    deleteApplicationPermissionRaw(requestParameters: DeleteApplicationPermissionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>>;
+
+    /**
+     * Delete application permission
+     */
+    deleteApplicationPermission(applicationId: number, id: string, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void>;
+
+    /**
+     * 
+     * @summary Delete application tenent
+     * @param {number} applicationId application id
+     * @param {number} id application tenent id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ApplicationApiInterface
+     */
+    deleteApplicationTenentRaw(requestParameters: DeleteApplicationTenentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>>;
+
+    /**
+     * Delete application tenent
+     */
+    deleteApplicationTenent(applicationId: number, id: number, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void>;
+
+    /**
+     * 
+     * @summary Remove permission from user
+     * @param {number} applicationId application id
+     * @param {number} id application permission id
+     * @param {number} userId user id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ApplicationApiInterface
+     */
+    removeApplicationPermissionFromUserRaw(requestParameters: RemoveApplicationPermissionFromUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>>;
+
+    /**
+     * Remove permission from user
+     */
+    removeApplicationPermissionFromUser(applicationId: number, id: number, userId: number, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void>;
 
     /**
      * 
@@ -115,27 +380,46 @@ export interface ApplicationApiInterface {
      * @throws {RequiredError}
      * @memberof ApplicationApiInterface
      */
-    applicationsIdPatchRaw(requestParameters: ApplicationsIdPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Application>>;
+    updateApplicationRaw(requestParameters: UpdateApplicationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Application>>;
 
     /**
      * Update application
      */
-    applicationsIdPatch(id: number, application: UpdateApplication, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Application>;
+    updateApplication(id: number, application: UpdateApplication, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Application>;
 
     /**
      * 
-     * @summary Create application
-     * @param {CreateApplication} application create application
+     * @summary Update application permission
+     * @param {number} applicationId application id
+     * @param {number} id application permission id
+     * @param {UpdateApplicationPermission} application update application
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ApplicationApiInterface
      */
-    applicationsPostRaw(requestParameters: ApplicationsPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Application>>;
+    updateApplicationPermissionRaw(requestParameters: UpdateApplicationPermissionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ApplicationPermission>>;
 
     /**
-     * Create application
+     * Update application permission
      */
-    applicationsPost(application: CreateApplication, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Application>;
+    updateApplicationPermission(applicationId: number, id: number, application: UpdateApplicationPermission, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ApplicationPermission>;
+
+    /**
+     * 
+     * @summary Update application tenent
+     * @param {number} applicationId application id
+     * @param {number} id application tenent id
+     * @param {UpdateApplicationTenent} application update application
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ApplicationApiInterface
+     */
+    updateApplicationTenentRaw(requestParameters: UpdateApplicationTenentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ApplicationTenent>>;
+
+    /**
+     * Update application tenent
+     */
+    updateApplicationTenent(applicationId: number, id: number, application: UpdateApplicationTenent, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ApplicationTenent>;
 
 }
 
@@ -145,9 +429,236 @@ export interface ApplicationApiInterface {
 export class ApplicationApi extends runtime.BaseAPI implements ApplicationApiInterface {
 
     /**
+     * Add permission to user
+     */
+    async addApplicationPermissionToUserRaw(requestParameters: AddApplicationPermissionToUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.applicationId === null || requestParameters.applicationId === undefined) {
+            throw new runtime.RequiredError('applicationId','Required parameter requestParameters.applicationId was null or undefined when calling addApplicationPermissionToUser.');
+        }
+
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling addApplicationPermissionToUser.');
+        }
+
+        if (requestParameters.userId === null || requestParameters.userId === undefined) {
+            throw new runtime.RequiredError('userId','Required parameter requestParameters.userId was null or undefined when calling addApplicationPermissionToUser.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
+        }
+
+        const response = await this.request({
+            path: `/applications/{applicationId}/permissions/{id}/add-user/{userId}`.replace(`{${"applicationId"}}`, encodeURIComponent(String(requestParameters.applicationId))).replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))).replace(`{${"userId"}}`, encodeURIComponent(String(requestParameters.userId))),
+            method: 'PATCH',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Add permission to user
+     */
+    async addApplicationPermissionToUser(applicationId: number, id: number, userId: number, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.addApplicationPermissionToUserRaw({ applicationId: applicationId, id: id, userId: userId }, initOverrides);
+    }
+
+    /**
+     * Get application by id
+     */
+    async applicationByIdRaw(requestParameters: ApplicationByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Application>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling applicationById.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
+        }
+
+        const response = await this.request({
+            path: `/applications/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => ApplicationFromJSON(jsonValue));
+    }
+
+    /**
+     * Get application by id
+     */
+    async applicationById(id: number, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Application> {
+        const response = await this.applicationByIdRaw({ id: id }, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get application permission by id
+     */
+    async applicationPermissionByIdRaw(requestParameters: ApplicationPermissionByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ApplicationPermission>> {
+        if (requestParameters.applicationId === null || requestParameters.applicationId === undefined) {
+            throw new runtime.RequiredError('applicationId','Required parameter requestParameters.applicationId was null or undefined when calling applicationPermissionById.');
+        }
+
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling applicationPermissionById.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
+        }
+
+        const response = await this.request({
+            path: `/applications/{applicationId}/permissions/{id}`.replace(`{${"applicationId"}}`, encodeURIComponent(String(requestParameters.applicationId))).replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => ApplicationPermissionFromJSON(jsonValue));
+    }
+
+    /**
+     * Get application permission by id
+     */
+    async applicationPermissionById(applicationId: number, id: string, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ApplicationPermission> {
+        const response = await this.applicationPermissionByIdRaw({ applicationId: applicationId, id: id }, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get application permissions
+     */
+    async applicationPermissionsRaw(requestParameters: ApplicationPermissionsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<ApplicationPermission>>> {
+        if (requestParameters.applicationId === null || requestParameters.applicationId === undefined) {
+            throw new runtime.RequiredError('applicationId','Required parameter requestParameters.applicationId was null or undefined when calling applicationPermissions.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
+        }
+
+        const response = await this.request({
+            path: `/applications/{applicationId}/permissions`.replace(`{${"applicationId"}}`, encodeURIComponent(String(requestParameters.applicationId))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(ApplicationPermissionFromJSON));
+    }
+
+    /**
+     * Get application permissions
+     */
+    async applicationPermissions(applicationId: number, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<ApplicationPermission>> {
+        const response = await this.applicationPermissionsRaw({ applicationId: applicationId }, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get application tenent by id
+     */
+    async applicationTenentByIdRaw(requestParameters: ApplicationTenentByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ApplicationTenent>> {
+        if (requestParameters.applicationId === null || requestParameters.applicationId === undefined) {
+            throw new runtime.RequiredError('applicationId','Required parameter requestParameters.applicationId was null or undefined when calling applicationTenentById.');
+        }
+
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling applicationTenentById.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
+        }
+
+        const response = await this.request({
+            path: `/applications/{applicationId}/tenents/{id}`.replace(`{${"applicationId"}}`, encodeURIComponent(String(requestParameters.applicationId))).replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => ApplicationTenentFromJSON(jsonValue));
+    }
+
+    /**
+     * Get application tenent by id
+     */
+    async applicationTenentById(applicationId: number, id: number, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ApplicationTenent> {
+        const response = await this.applicationTenentByIdRaw({ applicationId: applicationId, id: id }, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get application tenents
+     */
+    async applicationTenentsRaw(requestParameters: ApplicationTenentsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PaginationApplicationTenent>> {
+        if (requestParameters.applicationId === null || requestParameters.applicationId === undefined) {
+            throw new runtime.RequiredError('applicationId','Required parameter requestParameters.applicationId was null or undefined when calling applicationTenents.');
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters.limit !== undefined) {
+            queryParameters['limit'] = requestParameters.limit;
+        }
+
+        if (requestParameters.offset !== undefined) {
+            queryParameters['offset'] = requestParameters.offset;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
+        }
+
+        const response = await this.request({
+            path: `/applications/{applicationId}/tenents`.replace(`{${"applicationId"}}`, encodeURIComponent(String(requestParameters.applicationId))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => PaginationApplicationTenentFromJSON(jsonValue));
+    }
+
+    /**
+     * Get application tenents
+     */
+    async applicationTenents(applicationId: number, limit?: number, offset?: number, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PaginationApplicationTenent> {
+        const response = await this.applicationTenentsRaw({ applicationId: applicationId, limit: limit, offset: offset }, initOverrides);
+        return await response.value();
+    }
+
+    /**
      * Get applications
      */
-    async applicationsGetRaw(requestParameters: ApplicationsGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PaginationApplication>> {
+    async applicationsRaw(requestParameters: ApplicationsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PaginationApplication>> {
         const queryParameters: any = {};
 
         if (requestParameters.limit !== undefined) {
@@ -177,125 +688,17 @@ export class ApplicationApi extends runtime.BaseAPI implements ApplicationApiInt
     /**
      * Get applications
      */
-    async applicationsGet(limit?: number, offset?: number, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PaginationApplication> {
-        const response = await this.applicationsGetRaw({ limit: limit, offset: offset }, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Delete application
-     */
-    async applicationsIdDeleteRaw(requestParameters: ApplicationsIdDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling applicationsIdDelete.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
-        }
-
-        const response = await this.request({
-            path: `/applications/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
-            method: 'DELETE',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.VoidApiResponse(response);
-    }
-
-    /**
-     * Delete application
-     */
-    async applicationsIdDelete(id: number, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.applicationsIdDeleteRaw({ id: id }, initOverrides);
-    }
-
-    /**
-     * Get application by id
-     */
-    async applicationsIdGetRaw(requestParameters: ApplicationsIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Application>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling applicationsIdGet.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
-        }
-
-        const response = await this.request({
-            path: `/applications/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => ApplicationFromJSON(jsonValue));
-    }
-
-    /**
-     * Get application by id
-     */
-    async applicationsIdGet(id: number, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Application> {
-        const response = await this.applicationsIdGetRaw({ id: id }, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Update application
-     */
-    async applicationsIdPatchRaw(requestParameters: ApplicationsIdPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Application>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling applicationsIdPatch.');
-        }
-
-        if (requestParameters.application === null || requestParameters.application === undefined) {
-            throw new runtime.RequiredError('application','Required parameter requestParameters.application was null or undefined when calling applicationsIdPatch.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
-        }
-
-        const response = await this.request({
-            path: `/applications/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
-            method: 'PATCH',
-            headers: headerParameters,
-            query: queryParameters,
-            body: UpdateApplicationToJSON(requestParameters.application),
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => ApplicationFromJSON(jsonValue));
-    }
-
-    /**
-     * Update application
-     */
-    async applicationsIdPatch(id: number, application: UpdateApplication, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Application> {
-        const response = await this.applicationsIdPatchRaw({ id: id, application: application }, initOverrides);
+    async applications(limit?: number, offset?: number, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PaginationApplication> {
+        const response = await this.applicationsRaw({ limit: limit, offset: offset }, initOverrides);
         return await response.value();
     }
 
     /**
      * Create application
      */
-    async applicationsPostRaw(requestParameters: ApplicationsPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Application>> {
+    async createApplicationRaw(requestParameters: CreateApplicationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Application>> {
         if (requestParameters.application === null || requestParameters.application === undefined) {
-            throw new runtime.RequiredError('application','Required parameter requestParameters.application was null or undefined when calling applicationsPost.');
+            throw new runtime.RequiredError('application','Required parameter requestParameters.application was null or undefined when calling createApplication.');
         }
 
         const queryParameters: any = {};
@@ -322,8 +725,369 @@ export class ApplicationApi extends runtime.BaseAPI implements ApplicationApiInt
     /**
      * Create application
      */
-    async applicationsPost(application: CreateApplication, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Application> {
-        const response = await this.applicationsPostRaw({ application: application }, initOverrides);
+    async createApplication(application: CreateApplication, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Application> {
+        const response = await this.createApplicationRaw({ application: application }, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Create application permission
+     */
+    async createApplicationPermissionRaw(requestParameters: CreateApplicationPermissionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ApplicationPermission>> {
+        if (requestParameters.applicationId === null || requestParameters.applicationId === undefined) {
+            throw new runtime.RequiredError('applicationId','Required parameter requestParameters.applicationId was null or undefined when calling createApplicationPermission.');
+        }
+
+        if (requestParameters.application === null || requestParameters.application === undefined) {
+            throw new runtime.RequiredError('application','Required parameter requestParameters.application was null or undefined when calling createApplicationPermission.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
+        }
+
+        const response = await this.request({
+            path: `/applications/{applicationId}/permissions`.replace(`{${"applicationId"}}`, encodeURIComponent(String(requestParameters.applicationId))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: CreateApplicationPermissionToJSON(requestParameters.application),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => ApplicationPermissionFromJSON(jsonValue));
+    }
+
+    /**
+     * Create application permission
+     */
+    async createApplicationPermission(applicationId: number, application: CreateApplicationPermission, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ApplicationPermission> {
+        const response = await this.createApplicationPermissionRaw({ applicationId: applicationId, application: application }, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Create application tenent
+     */
+    async createApplicationTenentRaw(requestParameters: CreateApplicationTenentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ApplicationTenent>> {
+        if (requestParameters.applicationId === null || requestParameters.applicationId === undefined) {
+            throw new runtime.RequiredError('applicationId','Required parameter requestParameters.applicationId was null or undefined when calling createApplicationTenent.');
+        }
+
+        if (requestParameters.application === null || requestParameters.application === undefined) {
+            throw new runtime.RequiredError('application','Required parameter requestParameters.application was null or undefined when calling createApplicationTenent.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
+        }
+
+        const response = await this.request({
+            path: `/applications/{applicationId}/tenents`.replace(`{${"applicationId"}}`, encodeURIComponent(String(requestParameters.applicationId))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: CreateApplicationTenentToJSON(requestParameters.application),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => ApplicationTenentFromJSON(jsonValue));
+    }
+
+    /**
+     * Create application tenent
+     */
+    async createApplicationTenent(applicationId: number, application: CreateApplicationTenent, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ApplicationTenent> {
+        const response = await this.createApplicationTenentRaw({ applicationId: applicationId, application: application }, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Delete application
+     */
+    async deleteApplicationRaw(requestParameters: DeleteApplicationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deleteApplication.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
+        }
+
+        const response = await this.request({
+            path: `/applications/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Delete application
+     */
+    async deleteApplication(id: number, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.deleteApplicationRaw({ id: id }, initOverrides);
+    }
+
+    /**
+     * Delete application permission
+     */
+    async deleteApplicationPermissionRaw(requestParameters: DeleteApplicationPermissionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.applicationId === null || requestParameters.applicationId === undefined) {
+            throw new runtime.RequiredError('applicationId','Required parameter requestParameters.applicationId was null or undefined when calling deleteApplicationPermission.');
+        }
+
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deleteApplicationPermission.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
+        }
+
+        const response = await this.request({
+            path: `/applications/{applicationId}/permissions/{id}`.replace(`{${"applicationId"}}`, encodeURIComponent(String(requestParameters.applicationId))).replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Delete application permission
+     */
+    async deleteApplicationPermission(applicationId: number, id: string, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.deleteApplicationPermissionRaw({ applicationId: applicationId, id: id }, initOverrides);
+    }
+
+    /**
+     * Delete application tenent
+     */
+    async deleteApplicationTenentRaw(requestParameters: DeleteApplicationTenentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.applicationId === null || requestParameters.applicationId === undefined) {
+            throw new runtime.RequiredError('applicationId','Required parameter requestParameters.applicationId was null or undefined when calling deleteApplicationTenent.');
+        }
+
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deleteApplicationTenent.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
+        }
+
+        const response = await this.request({
+            path: `/applications/{applicationId}/tenents/{id}`.replace(`{${"applicationId"}}`, encodeURIComponent(String(requestParameters.applicationId))).replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Delete application tenent
+     */
+    async deleteApplicationTenent(applicationId: number, id: number, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.deleteApplicationTenentRaw({ applicationId: applicationId, id: id }, initOverrides);
+    }
+
+    /**
+     * Remove permission from user
+     */
+    async removeApplicationPermissionFromUserRaw(requestParameters: RemoveApplicationPermissionFromUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.applicationId === null || requestParameters.applicationId === undefined) {
+            throw new runtime.RequiredError('applicationId','Required parameter requestParameters.applicationId was null or undefined when calling removeApplicationPermissionFromUser.');
+        }
+
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling removeApplicationPermissionFromUser.');
+        }
+
+        if (requestParameters.userId === null || requestParameters.userId === undefined) {
+            throw new runtime.RequiredError('userId','Required parameter requestParameters.userId was null or undefined when calling removeApplicationPermissionFromUser.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
+        }
+
+        const response = await this.request({
+            path: `/applications/{applicationId}/permissions/{id}/remove-user/{userId}`.replace(`{${"applicationId"}}`, encodeURIComponent(String(requestParameters.applicationId))).replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))).replace(`{${"userId"}}`, encodeURIComponent(String(requestParameters.userId))),
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Remove permission from user
+     */
+    async removeApplicationPermissionFromUser(applicationId: number, id: number, userId: number, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.removeApplicationPermissionFromUserRaw({ applicationId: applicationId, id: id, userId: userId }, initOverrides);
+    }
+
+    /**
+     * Update application
+     */
+    async updateApplicationRaw(requestParameters: UpdateApplicationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Application>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling updateApplication.');
+        }
+
+        if (requestParameters.application === null || requestParameters.application === undefined) {
+            throw new runtime.RequiredError('application','Required parameter requestParameters.application was null or undefined when calling updateApplication.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
+        }
+
+        const response = await this.request({
+            path: `/applications/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'PATCH',
+            headers: headerParameters,
+            query: queryParameters,
+            body: UpdateApplicationToJSON(requestParameters.application),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => ApplicationFromJSON(jsonValue));
+    }
+
+    /**
+     * Update application
+     */
+    async updateApplication(id: number, application: UpdateApplication, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Application> {
+        const response = await this.updateApplicationRaw({ id: id, application: application }, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Update application permission
+     */
+    async updateApplicationPermissionRaw(requestParameters: UpdateApplicationPermissionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ApplicationPermission>> {
+        if (requestParameters.applicationId === null || requestParameters.applicationId === undefined) {
+            throw new runtime.RequiredError('applicationId','Required parameter requestParameters.applicationId was null or undefined when calling updateApplicationPermission.');
+        }
+
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling updateApplicationPermission.');
+        }
+
+        if (requestParameters.application === null || requestParameters.application === undefined) {
+            throw new runtime.RequiredError('application','Required parameter requestParameters.application was null or undefined when calling updateApplicationPermission.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
+        }
+
+        const response = await this.request({
+            path: `/applications/{applicationId}/permissions/{id}`.replace(`{${"applicationId"}}`, encodeURIComponent(String(requestParameters.applicationId))).replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'PATCH',
+            headers: headerParameters,
+            query: queryParameters,
+            body: UpdateApplicationPermissionToJSON(requestParameters.application),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => ApplicationPermissionFromJSON(jsonValue));
+    }
+
+    /**
+     * Update application permission
+     */
+    async updateApplicationPermission(applicationId: number, id: number, application: UpdateApplicationPermission, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ApplicationPermission> {
+        const response = await this.updateApplicationPermissionRaw({ applicationId: applicationId, id: id, application: application }, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Update application tenent
+     */
+    async updateApplicationTenentRaw(requestParameters: UpdateApplicationTenentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ApplicationTenent>> {
+        if (requestParameters.applicationId === null || requestParameters.applicationId === undefined) {
+            throw new runtime.RequiredError('applicationId','Required parameter requestParameters.applicationId was null or undefined when calling updateApplicationTenent.');
+        }
+
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling updateApplicationTenent.');
+        }
+
+        if (requestParameters.application === null || requestParameters.application === undefined) {
+            throw new runtime.RequiredError('application','Required parameter requestParameters.application was null or undefined when calling updateApplicationTenent.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
+        }
+
+        const response = await this.request({
+            path: `/applications/{applicationId}/tenents/{id}`.replace(`{${"applicationId"}}`, encodeURIComponent(String(requestParameters.applicationId))).replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'PATCH',
+            headers: headerParameters,
+            query: queryParameters,
+            body: UpdateApplicationTenentToJSON(requestParameters.application),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => ApplicationTenentFromJSON(jsonValue));
+    }
+
+    /**
+     * Update application tenent
+     */
+    async updateApplicationTenent(applicationId: number, id: number, application: UpdateApplicationTenent, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ApplicationTenent> {
+        const response = await this.updateApplicationTenentRaw({ applicationId: applicationId, id: id, application: application }, initOverrides);
         return await response.value();
     }
 

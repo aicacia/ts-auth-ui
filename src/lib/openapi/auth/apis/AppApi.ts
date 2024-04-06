@@ -39,12 +39,12 @@ export interface AppApiInterface {
      * @throws {RequiredError}
      * @memberof AppApiInterface
      */
-    healthGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Health>>;
+    healthCheckRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Health>>;
 
     /**
      * Get Health Check
      */
-    healthGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Health>;
+    healthCheck(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Health>;
 
     /**
      * 
@@ -53,12 +53,12 @@ export interface AppApiInterface {
      * @throws {RequiredError}
      * @memberof AppApiInterface
      */
-    versionGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Version>>;
+    versionRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Version>>;
 
     /**
      * Get Version
      */
-    versionGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Version>;
+    version(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Version>;
 
 }
 
@@ -70,7 +70,7 @@ export class AppApi extends runtime.BaseAPI implements AppApiInterface {
     /**
      * Get Health Check
      */
-    async healthGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Health>> {
+    async healthCheckRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Health>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -88,15 +88,15 @@ export class AppApi extends runtime.BaseAPI implements AppApiInterface {
     /**
      * Get Health Check
      */
-    async healthGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Health> {
-        const response = await this.healthGetRaw(initOverrides);
+    async healthCheck(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Health> {
+        const response = await this.healthCheckRaw(initOverrides);
         return await response.value();
     }
 
     /**
      * Get Version
      */
-    async versionGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Version>> {
+    async versionRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Version>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -114,8 +114,8 @@ export class AppApi extends runtime.BaseAPI implements AppApiInterface {
     /**
      * Get Version
      */
-    async versionGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Version> {
-        const response = await this.versionGetRaw(initOverrides);
+    async version(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Version> {
+        const response = await this.versionRaw(initOverrides);
         return await response.value();
     }
 

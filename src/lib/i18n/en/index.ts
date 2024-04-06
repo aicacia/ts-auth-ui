@@ -1,12 +1,17 @@
 import type { BaseTranslation } from '../i18n-types';
 
 const en = {
-	sign_in: 'Sign in',
-	sign_up: 'Sign up',
-	not_a_member: 'Not a member?',
-	already_a_member: 'Already a member?',
-	username_placeholder: 'Username/Email',
-	password_placeholder: 'Password'
+	auth: {
+		signIn: 'Sign in',
+		signUp: 'Sign up',
+		notAMember: 'Not a member?',
+		alreadyAMember: 'Already a member?',
+		emailPlaceholder: 'Email',
+		usernamePlaceholder: 'Username',
+		usernameOrEmailPlaceholder: 'Username/Email',
+		passwordPlaceholder: 'Password',
+		passwordConfirmationPlaceholder: 'Password Confirmation'
+	}
 } satisfies BaseTranslation;
 
 export default en;

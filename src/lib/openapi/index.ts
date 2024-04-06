@@ -1,15 +1,11 @@
 import {
 	Configuration,
 	UserApi,
-	UserEmailApi,
-	UserPhoneNumberApi,
-	UserApplicationApi,
 	TokenApi,
 	WellKnownApi,
 	type ConfigurationParameters,
 	ApplicationApi,
 	RegisterApi,
-	CurrentUserApi,
 	type Token
 } from './auth';
 import { PUBLIC_AUTH_API_URL, PUBLIC_TENENT_ID } from '$env/static/public';
@@ -41,12 +37,8 @@ const defaultAuthConfiguration: ConfigurationParameters = {
 export const authConfiguration = new Configuration(defaultAuthConfiguration);
 
 export const userApi = new UserApi(authConfiguration);
-export const userEmailApi = new UserEmailApi(authConfiguration);
-export const userPhoneNumberApi = new UserPhoneNumberApi(authConfiguration);
-export const userApplicationApi = new UserApplicationApi(authConfiguration);
 export const tokenApi = new TokenApi(authConfiguration);
 export const registerApi = new RegisterApi(authConfiguration);
-export const currentUserApi = new CurrentUserApi(authConfiguration);
 export const applicationApi = new ApplicationApi(authConfiguration);
 export const wellKnownApi = new WellKnownApi(authConfiguration);
 

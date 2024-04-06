@@ -3,13 +3,11 @@ import { localstorageWritable } from 'svelte-localstorage-writable';
 import { isOnline } from './online';
 import {
 	authConfiguration,
-	currentUserApi,
 	getAuthToken,
 	registerApi,
 	setAuthToken,
 	tokenApi,
-	userApi,
-	userEmailApi
+	userApi
 } from '$lib/openapi';
 import { type Token, type UserWithPermissions } from '$lib/openapi/auth';
 import EventEmitter from 'eventemitter3';
@@ -46,7 +44,7 @@ export function getUser() {
 }
 
 export async function signIn(usernameOrEmail: string, password: string) {
-	const token = await tokenApi.tokenPost({
+	const token = await tokenApi.createToken({
 		grant_type: 'password',
 		username: usernameOrEmail,
 		password
@@ -60,7 +58,7 @@ export async function signUp(
 	passwordConfirmation: string,
 	email: string
 ) {
-	const token = await registerApi.registerPost({
+	const token = await registerApi.registerUser({
 		username,
 		password,
 		password_confirmation: passwordConfirmation
@@ -70,7 +68,7 @@ export async function signUp(
 
 async function signInWithToken(token: Token) {
 	setAuthToken(token);
-	const user = await currentUserApi.userGet();
+	const user = await userApi.currentUser();
 	userWritable.set(user);
 	tokenWritable.set(token);
 	userEmitter.emit('user', user);
@@ -78,13 +76,13 @@ async function signInWithToken(token: Token) {
 }
 
 export async function changeUsername(username: string) {
-	await userApi.usersIdPatch(get(user)!.id, { username });
+	await userApi.updateUser(get(user)!.id, { username });
 	userWritable.update((user) => (user ? { ...user, username } : null));
 	await invalidateAll();
 }
 
 export async function setPrimaryEmail(emailId: number) {
-	await userEmailApi.usersUserIdEmailsIdSetPrimaryPatch(get(user)?.id as number, emailId);
+	await userApi.setPrimaryEmail(get(user)?.id as number, emailId);
 	userWritable.update((user) => {
 		if (user) {
 			const emailIndex = user.emails.findIndex((e) => e.id === emailId);
@@ -105,7 +103,7 @@ export async function setPrimaryEmail(emailId: number) {
 }
 
 export async function deleteEmail(emailId: number) {
-	await userEmailApi.usersUserIdEmailsIdDelete(get(user)?.id as number, emailId);
+	await userApi.deleteEmail(get(user)?.id as number, emailId);
 	userWritable.update((user) => {
 		if (user) {
 			const emailIndex = user.emails.findIndex((e) => e.id === emailId);
@@ -121,11 +119,11 @@ export async function deleteEmail(emailId: number) {
 }
 
 export async function sendConfirmationToEmail(emailId: number) {
-	await userEmailApi.usersUserIdEmailsIdSendConfirmationPatch(get(user)?.id as number, emailId);
+	await userApi.sendConfirmationToEmail(get(user)?.id as number, emailId);
 }
 
 export async function confirmEmail(emailId: number, confirmationToken: string) {
-	await userEmailApi.usersUserIdEmailsIdConfirmPatch(get(user)?.id as number, emailId, {
+	await userApi.confirmEmail(get(user)?.id as number, emailId, {
 		token: confirmationToken
 	});
 	userWritable.update((user) => {
@@ -146,7 +144,7 @@ export async function confirmEmail(emailId: number, confirmationToken: string) {
 }
 
 export async function createEmail(email: string) {
-	const newEmail = await userEmailApi.usersUserIdEmailsPost(get(user)?.id as number, { email });
+	const newEmail = await userApi.createEmail(get(user)?.id as number, { email });
 	userWritable.update((user) => {
 		if (user) {
 			const newEmails = user.emails.slice();
@@ -156,6 +154,11 @@ export async function createEmail(email: string) {
 		return user;
 	});
 	await invalidateAll();
+	return newEmail;
+}
+
+export async function removeApplication(applicationId: number) {
+	await userApi.removeUserFromApplication(get(user)?.id as number, applicationId);
 }
 
 export function signOut() {
@@ -174,7 +177,7 @@ export async function getCurrentUser() {
 				const token = get(tokenWritable);
 				if (token) {
 					setAuthToken(token);
-					user = await currentUserApi.userGet();
+					user = await userApi.currentUser();
 					userWritable.set(user);
 					userEmitter.emit('user', user);
 				} else {

@@ -15,17 +15,20 @@
 
 import * as runtime from '../runtime';
 import type {
+  Errors,
   Token,
   TokenRequest,
 } from '../models/index';
 import {
+    ErrorsFromJSON,
+    ErrorsToJSON,
     TokenFromJSON,
     TokenToJSON,
     TokenRequestFromJSON,
     TokenRequestToJSON,
 } from '../models/index';
 
-export interface TokenPostRequest {
+export interface CreateTokenRequest {
     tokenRequest: TokenRequest;
 }
 
@@ -44,12 +47,12 @@ export interface TokenApiInterface {
      * @throws {RequiredError}
      * @memberof TokenApiInterface
      */
-    tokenPostRaw(requestParameters: TokenPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Token>>;
+    createTokenRaw(requestParameters: CreateTokenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Token>>;
 
     /**
      * Create JWT Token
      */
-    tokenPost(tokenRequest: TokenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Token>;
+    createToken(tokenRequest: TokenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Token>;
 
 }
 
@@ -61,9 +64,9 @@ export class TokenApi extends runtime.BaseAPI implements TokenApiInterface {
     /**
      * Create JWT Token
      */
-    async tokenPostRaw(requestParameters: TokenPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Token>> {
+    async createTokenRaw(requestParameters: CreateTokenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Token>> {
         if (requestParameters.tokenRequest === null || requestParameters.tokenRequest === undefined) {
-            throw new runtime.RequiredError('tokenRequest','Required parameter requestParameters.tokenRequest was null or undefined when calling tokenPost.');
+            throw new runtime.RequiredError('tokenRequest','Required parameter requestParameters.tokenRequest was null or undefined when calling createToken.');
         }
 
         const queryParameters: any = {};
@@ -90,8 +93,8 @@ export class TokenApi extends runtime.BaseAPI implements TokenApiInterface {
     /**
      * Create JWT Token
      */
-    async tokenPost(tokenRequest: TokenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Token> {
-        const response = await this.tokenPostRaw({ tokenRequest: tokenRequest }, initOverrides);
+    async createToken(tokenRequest: TokenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Token> {
+        const response = await this.createTokenRaw({ tokenRequest: tokenRequest }, initOverrides);
         return await response.value();
     }
 

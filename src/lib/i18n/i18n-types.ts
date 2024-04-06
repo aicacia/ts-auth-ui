@@ -13,57 +13,85 @@ export type Translation = RootTranslation
 export type Translations = RootTranslation
 
 type RootTranslation = {
-	/**
-	 * S​i​g​n​ ​i​n
-	 */
-	sign_in: string
-	/**
-	 * S​i​g​n​ ​u​p
-	 */
-	sign_up: string
-	/**
-	 * N​o​t​ ​a​ ​m​e​m​b​e​r​?
-	 */
-	not_a_member: string
-	/**
-	 * A​l​r​e​a​d​y​ ​a​ ​m​e​m​b​e​r​?
-	 */
-	already_a_member: string
-	/**
-	 * U​s​e​r​n​a​m​e​/​E​m​a​i​l
-	 */
-	username_placeholder: string
-	/**
-	 * P​a​s​s​w​o​r​d
-	 */
-	password_placeholder: string
+	auth: {
+		/**
+		 * S​i​g​n​ ​i​n
+		 */
+		signIn: string
+		/**
+		 * S​i​g​n​ ​u​p
+		 */
+		signUp: string
+		/**
+		 * N​o​t​ ​a​ ​m​e​m​b​e​r​?
+		 */
+		notAMember: string
+		/**
+		 * A​l​r​e​a​d​y​ ​a​ ​m​e​m​b​e​r​?
+		 */
+		alreadyAMember: string
+		/**
+		 * E​m​a​i​l
+		 */
+		emailPlaceholder: string
+		/**
+		 * U​s​e​r​n​a​m​e
+		 */
+		usernamePlaceholder: string
+		/**
+		 * U​s​e​r​n​a​m​e​/​E​m​a​i​l
+		 */
+		usernameOrEmailPlaceholder: string
+		/**
+		 * P​a​s​s​w​o​r​d
+		 */
+		passwordPlaceholder: string
+		/**
+		 * P​a​s​s​w​o​r​d​ ​C​o​n​f​i​r​m​a​t​i​o​n
+		 */
+		passwordConfirmationPlaceholder: string
+	}
 }
 
 export type TranslationFunctions = {
-	/**
-	 * Sign in
-	 */
-	sign_in: () => LocalizedString
-	/**
-	 * Sign up
-	 */
-	sign_up: () => LocalizedString
-	/**
-	 * Not a member?
-	 */
-	not_a_member: () => LocalizedString
-	/**
-	 * Already a member?
-	 */
-	already_a_member: () => LocalizedString
-	/**
-	 * Username/Email
-	 */
-	username_placeholder: () => LocalizedString
-	/**
-	 * Password
-	 */
-	password_placeholder: () => LocalizedString
+	auth: {
+		/**
+		 * Sign in
+		 */
+		signIn: () => LocalizedString
+		/**
+		 * Sign up
+		 */
+		signUp: () => LocalizedString
+		/**
+		 * Not a member?
+		 */
+		notAMember: () => LocalizedString
+		/**
+		 * Already a member?
+		 */
+		alreadyAMember: () => LocalizedString
+		/**
+		 * Email
+		 */
+		emailPlaceholder: () => LocalizedString
+		/**
+		 * Username
+		 */
+		usernamePlaceholder: () => LocalizedString
+		/**
+		 * Username/Email
+		 */
+		usernameOrEmailPlaceholder: () => LocalizedString
+		/**
+		 * Password
+		 */
+		passwordPlaceholder: () => LocalizedString
+		/**
+		 * Password Confirmation
+		 */
+		passwordConfirmationPlaceholder: () => LocalizedString
+	}
 }
 
 export type Formatters = {}

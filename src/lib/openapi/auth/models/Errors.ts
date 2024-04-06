@@ -23,32 +23,32 @@ import {
 /**
  * 
  * @export
- * @interface ModelError
+ * @interface Errors
  */
-export interface ModelError {
+export interface Errors {
     /**
      * 
      * @type {{ [key: string]: Array<ErrorMessage>; }}
-     * @memberof ModelError
+     * @memberof Errors
      */
     errors: { [key: string]: Array<ErrorMessage>; };
 }
 
 /**
- * Check if a given object implements the ModelError interface.
+ * Check if a given object implements the Errors interface.
  */
-export function instanceOfModelError(value: object): boolean {
+export function instanceOfErrors(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "errors" in value;
 
     return isInstance;
 }
 
-export function ModelErrorFromJSON(json: any): ModelError {
-    return ModelErrorFromJSONTyped(json, false);
+export function ErrorsFromJSON(json: any): Errors {
+    return ErrorsFromJSONTyped(json, false);
 }
 
-export function ModelErrorFromJSONTyped(json: any, ignoreDiscriminator: boolean): ModelError {
+export function ErrorsFromJSONTyped(json: any, ignoreDiscriminator: boolean): Errors {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -58,7 +58,7 @@ export function ModelErrorFromJSONTyped(json: any, ignoreDiscriminator: boolean)
     };
 }
 
-export function ModelErrorToJSON(value?: ModelError | null): any {
+export function ErrorsToJSON(value?: Errors | null): any {
     if (value === undefined) {
         return undefined;
     }

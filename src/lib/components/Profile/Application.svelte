@@ -2,15 +2,21 @@
 
 <script lang="ts">
 	import Dropdown from '$lib/components/Dropdown.svelte';
+	import { handleError } from '$lib/errors';
 	import type { Application } from '$lib/openapi/auth';
+	import { removeApplication } from '$lib/stores/user';
 	import EllipsisVertical from 'lucide-svelte/icons/ellipsis-vertical';
 	import Trash from 'lucide-svelte/icons/trash';
 
 	export let application: Application;
 
 	let open = false;
-	function onRemove() {
-		open = false;
+	async function onRemove() {
+		try {
+			await removeApplication(application.id);
+		} catch (error) {
+			handleError(error);
+		}
 	}
 </script>
 

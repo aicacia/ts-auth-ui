@@ -36,19 +36,7 @@ export interface Application {
      * @type {number}
      * @memberof Application
      */
-    email_token_length: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof Application
-     */
     id: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof Application
-     */
-    phone_number_token_length: number;
     /**
      * 
      * @type {string}
@@ -88,9 +76,7 @@ export function instanceOfApplication(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "created_at" in value;
     isInstance = isInstance && "description" in value;
-    isInstance = isInstance && "email_token_length" in value;
     isInstance = isInstance && "id" in value;
-    isInstance = isInstance && "phone_number_token_length" in value;
     isInstance = isInstance && "signup_enabled" in value;
     isInstance = isInstance && "signup_password" in value;
     isInstance = isInstance && "updated_at" in value;
@@ -111,9 +97,7 @@ export function ApplicationFromJSONTyped(json: any, ignoreDiscriminator: boolean
         
         'created_at': (new Date(json['created_at'])),
         'description': json['description'],
-        'email_token_length': json['email_token_length'],
         'id': json['id'],
-        'phone_number_token_length': json['phone_number_token_length'],
         'public_url': !exists(json, 'public_url') ? undefined : json['public_url'],
         'signup_enabled': json['signup_enabled'],
         'signup_password': json['signup_password'],
@@ -133,9 +117,7 @@ export function ApplicationToJSON(value?: Application | null): any {
         
         'created_at': (value.created_at.toISOString()),
         'description': value.description,
-        'email_token_length': value.email_token_length,
         'id': value.id,
-        'phone_number_token_length': value.phone_number_token_length,
         'public_url': value.public_url,
         'signup_enabled': value.signup_enabled,
         'signup_password': value.signup_password,

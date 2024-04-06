@@ -15,38 +15,157 @@
 
 import * as runtime from '../runtime';
 import type {
+  Application,
+  ConfirmEmail,
+  ConfirmPhoneNumber,
+  CreateEmail,
+  CreatePhoneNumber,
   CreateUser,
+  Email,
+  Errors,
+  PaginationApplication,
   PaginationUser,
+  PhoneNumber,
+  ResetPassword,
+  UpdateApplication,
   UpdateUser,
+  UpdateUserInfoRequest,
   User,
+  UserInfo,
+  UserWithPermissions,
 } from '../models/index';
 import {
+    ApplicationFromJSON,
+    ApplicationToJSON,
+    ConfirmEmailFromJSON,
+    ConfirmEmailToJSON,
+    ConfirmPhoneNumberFromJSON,
+    ConfirmPhoneNumberToJSON,
+    CreateEmailFromJSON,
+    CreateEmailToJSON,
+    CreatePhoneNumberFromJSON,
+    CreatePhoneNumberToJSON,
     CreateUserFromJSON,
     CreateUserToJSON,
+    EmailFromJSON,
+    EmailToJSON,
+    ErrorsFromJSON,
+    ErrorsToJSON,
+    PaginationApplicationFromJSON,
+    PaginationApplicationToJSON,
     PaginationUserFromJSON,
     PaginationUserToJSON,
+    PhoneNumberFromJSON,
+    PhoneNumberToJSON,
+    ResetPasswordFromJSON,
+    ResetPasswordToJSON,
+    UpdateApplicationFromJSON,
+    UpdateApplicationToJSON,
     UpdateUserFromJSON,
     UpdateUserToJSON,
+    UpdateUserInfoRequestFromJSON,
+    UpdateUserInfoRequestToJSON,
     UserFromJSON,
     UserToJSON,
+    UserInfoFromJSON,
+    UserInfoToJSON,
+    UserWithPermissionsFromJSON,
+    UserWithPermissionsToJSON,
 } from '../models/index';
 
-export interface UsersGetRequest {
-    limit?: number;
-    offset?: number;
+export interface AddUserToApplicationRequest {
+    userId: number;
+    id: number;
+    application: UpdateApplication;
 }
 
-export interface UsersIdGetRequest {
+export interface ConfirmEmailRequest {
+    userId: number;
+    id: number;
+    confirmEmail: ConfirmEmail;
+}
+
+export interface ConfirmPhoneNumberRequest {
+    userId: number;
+    id: number;
+    confirmPhoneNumber: ConfirmPhoneNumber;
+}
+
+export interface CreateEmailRequest {
+    userId: number;
+    createEmail: CreateEmail;
+}
+
+export interface CreatePhoneNumberRequest {
+    userId: number;
+    createPhoneNumber: CreatePhoneNumber;
+}
+
+export interface CreateUserRequest {
+    createUser: CreateUser;
+}
+
+export interface DeleteEmailRequest {
+    userId: number;
     id: number;
 }
 
-export interface UsersIdPatchRequest {
+export interface DeletePhoneNumberRequest {
+    userId: number;
+    id: number;
+}
+
+export interface RemoveUserFromApplicationRequest {
+    userId: number;
+    id: number;
+}
+
+export interface ResetPasswordRequest {
+    resetPassword: ResetPassword;
+}
+
+export interface SendConfirmationToEmailRequest {
+    userId: number;
+    id: number;
+}
+
+export interface SendConfirmationToPhoneNumberRequest {
+    userId: number;
+    id: number;
+}
+
+export interface SetPrimaryEmailRequest {
+    userId: number;
+    id: number;
+}
+
+export interface SetPrimaryPhoneNumberRequest {
+    userId: number;
+    id: number;
+}
+
+export interface UpdateUserRequest {
     id: number;
     updateUser: UpdateUser;
 }
 
-export interface UsersPostRequest {
-    createUser: CreateUser;
+export interface UpdateUserInfoOperationRequest {
+    userinfoUpdates: UpdateUserInfoRequest;
+}
+
+export interface UserApplicationsRequest {
+    userId: number;
+    limit?: number;
+    offset?: number;
+}
+
+export interface UserByIdRequest {
+    id: number;
+}
+
+export interface UsersRequest {
+    limit?: number;
+    offset?: number;
 }
 
 /**
@@ -58,34 +177,256 @@ export interface UsersPostRequest {
 export interface UserApiInterface {
     /**
      * 
-     * @summary Get users
-     * @param {number} [limit] limit
-     * @param {number} [offset] offset
+     * @summary Update application
+     * @param {number} userId user id
+     * @param {number} id application id
+     * @param {UpdateApplication} application update application
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof UserApiInterface
      */
-    usersGetRaw(requestParameters: UsersGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PaginationUser>>;
+    addUserToApplicationRaw(requestParameters: AddUserToApplicationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Application>>;
 
     /**
-     * Get users
+     * Update application
      */
-    usersGet(limit?: number, offset?: number, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PaginationUser>;
+    addUserToApplication(userId: number, id: number, application: UpdateApplication, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Application>;
 
     /**
      * 
-     * @summary Get user by id
-     * @param {number} id user id
+     * @summary Confirm email with token
+     * @param {number} userId user id
+     * @param {number} id email id
+     * @param {ConfirmEmail} confirmEmail email confirmation
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof UserApiInterface
      */
-    usersIdGetRaw(requestParameters: UsersIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<User>>;
+    confirmEmailRaw(requestParameters: ConfirmEmailRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Email>>;
 
     /**
-     * Get user by id
+     * Confirm email with token
      */
-    usersIdGet(id: number, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<User>;
+    confirmEmail(userId: number, id: number, confirmEmail: ConfirmEmail, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Email>;
+
+    /**
+     * 
+     * @summary Confirm phone_number with token
+     * @param {number} userId user id
+     * @param {number} id phone_number id
+     * @param {ConfirmPhoneNumber} confirmPhoneNumber phone_number confirmation
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UserApiInterface
+     */
+    confirmPhoneNumberRaw(requestParameters: ConfirmPhoneNumberRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PhoneNumber>>;
+
+    /**
+     * Confirm phone_number with token
+     */
+    confirmPhoneNumber(userId: number, id: number, confirmPhoneNumber: ConfirmPhoneNumber, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PhoneNumber>;
+
+    /**
+     * 
+     * @summary Create user email
+     * @param {number} userId user id
+     * @param {CreateEmail} createEmail update email
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UserApiInterface
+     */
+    createEmailRaw(requestParameters: CreateEmailRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Email>>;
+
+    /**
+     * Create user email
+     */
+    createEmail(userId: number, createEmail: CreateEmail, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Email>;
+
+    /**
+     * 
+     * @summary Create user phone number
+     * @param {number} userId user id
+     * @param {CreatePhoneNumber} createPhoneNumber update phone_number
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UserApiInterface
+     */
+    createPhoneNumberRaw(requestParameters: CreatePhoneNumberRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PhoneNumber>>;
+
+    /**
+     * Create user phone number
+     */
+    createPhoneNumber(userId: number, createPhoneNumber: CreatePhoneNumber, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PhoneNumber>;
+
+    /**
+     * 
+     * @summary Create user
+     * @param {CreateUser} createUser create user
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UserApiInterface
+     */
+    createUserRaw(requestParameters: CreateUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<User>>;
+
+    /**
+     * Create user
+     */
+    createUser(createUser: CreateUser, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<User>;
+
+    /**
+     * 
+     * @summary Get current user
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UserApiInterface
+     */
+    currentUserRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<UserWithPermissions>>;
+
+    /**
+     * Get current user
+     */
+    currentUser(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<UserWithPermissions>;
+
+    /**
+     * 
+     * @summary Delete user email
+     * @param {number} userId user id
+     * @param {number} id email id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UserApiInterface
+     */
+    deleteEmailRaw(requestParameters: DeleteEmailRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>>;
+
+    /**
+     * Delete user email
+     */
+    deleteEmail(userId: number, id: number, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void>;
+
+    /**
+     * 
+     * @summary Delete user phone number
+     * @param {number} userId user id
+     * @param {number} id phone_number id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UserApiInterface
+     */
+    deletePhoneNumberRaw(requestParameters: DeletePhoneNumberRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>>;
+
+    /**
+     * Delete user phone number
+     */
+    deletePhoneNumber(userId: number, id: number, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void>;
+
+    /**
+     * 
+     * @summary Get user info
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UserApiInterface
+     */
+    getUserInfoRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<UserInfo>>;
+
+    /**
+     * Get user info
+     */
+    getUserInfo(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<UserInfo>;
+
+    /**
+     * 
+     * @summary Delete application
+     * @param {number} userId user id
+     * @param {number} id application id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UserApiInterface
+     */
+    removeUserFromApplicationRaw(requestParameters: RemoveUserFromApplicationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>>;
+
+    /**
+     * Delete application
+     */
+    removeUserFromApplication(userId: number, id: number, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void>;
+
+    /**
+     * 
+     * @summary Resets a user\'s password
+     * @param {ResetPassword} resetPassword reset user\&#39;s password
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UserApiInterface
+     */
+    resetPasswordRaw(requestParameters: ResetPasswordRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>>;
+
+    /**
+     * Resets a user\'s password
+     */
+    resetPassword(resetPassword: ResetPassword, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void>;
+
+    /**
+     * 
+     * @summary Send confirmation token to user email
+     * @param {number} userId user id
+     * @param {number} id email id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UserApiInterface
+     */
+    sendConfirmationToEmailRaw(requestParameters: SendConfirmationToEmailRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>>;
+
+    /**
+     * Send confirmation token to user email
+     */
+    sendConfirmationToEmail(userId: number, id: number, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void>;
+
+    /**
+     * 
+     * @summary Send confirmation token to user phone_number
+     * @param {number} userId user id
+     * @param {number} id phone_number id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UserApiInterface
+     */
+    sendConfirmationToPhoneNumberRaw(requestParameters: SendConfirmationToPhoneNumberRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>>;
+
+    /**
+     * Send confirmation token to user phone_number
+     */
+    sendConfirmationToPhoneNumber(userId: number, id: number, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void>;
+
+    /**
+     * 
+     * @summary Set a confirmed email to primary
+     * @param {number} userId user id
+     * @param {number} id email id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UserApiInterface
+     */
+    setPrimaryEmailRaw(requestParameters: SetPrimaryEmailRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>>;
+
+    /**
+     * Set a confirmed email to primary
+     */
+    setPrimaryEmail(userId: number, id: number, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void>;
+
+    /**
+     * 
+     * @summary Set a confirmed phone to primary
+     * @param {number} userId user id
+     * @param {number} id email id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UserApiInterface
+     */
+    setPrimaryPhoneNumberRaw(requestParameters: SetPrimaryPhoneNumberRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>>;
+
+    /**
+     * Set a confirmed phone to primary
+     */
+    setPrimaryPhoneNumber(userId: number, id: number, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void>;
 
     /**
      * 
@@ -96,27 +437,75 @@ export interface UserApiInterface {
      * @throws {RequiredError}
      * @memberof UserApiInterface
      */
-    usersIdPatchRaw(requestParameters: UsersIdPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<User>>;
+    updateUserRaw(requestParameters: UpdateUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<User>>;
 
     /**
      * Updates a user\'s username
      */
-    usersIdPatch(id: number, updateUser: UpdateUser, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<User>;
+    updateUser(id: number, updateUser: UpdateUser, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<User>;
 
     /**
      * 
-     * @summary Create user
-     * @param {CreateUser} createUser create user
+     * @summary Updates the user\'s info
+     * @param {UpdateUserInfoRequest} userinfoUpdates User info updates
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof UserApiInterface
      */
-    usersPostRaw(requestParameters: UsersPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<User>>;
+    updateUserInfoRaw(requestParameters: UpdateUserInfoOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<UserInfo>>;
 
     /**
-     * Create user
+     * Updates the user\'s info
      */
-    usersPost(createUser: CreateUser, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<User>;
+    updateUserInfo(userinfoUpdates: UpdateUserInfoRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<UserInfo>;
+
+    /**
+     * 
+     * @summary Get user applications
+     * @param {number} userId user id
+     * @param {number} [limit] limit
+     * @param {number} [offset] offset
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UserApiInterface
+     */
+    userApplicationsRaw(requestParameters: UserApplicationsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PaginationApplication>>;
+
+    /**
+     * Get user applications
+     */
+    userApplications(userId: number, limit?: number, offset?: number, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PaginationApplication>;
+
+    /**
+     * 
+     * @summary Get user by id
+     * @param {number} id user id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UserApiInterface
+     */
+    userByIdRaw(requestParameters: UserByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<User>>;
+
+    /**
+     * Get user by id
+     */
+    userById(id: number, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<User>;
+
+    /**
+     * 
+     * @summary Get users
+     * @param {number} [limit] limit
+     * @param {number} [offset] offset
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UserApiInterface
+     */
+    usersRaw(requestParameters: UsersRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PaginationUser>>;
+
+    /**
+     * Get users
+     */
+    users(limit?: number, offset?: number, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PaginationUser>;
 
 }
 
@@ -126,9 +515,772 @@ export interface UserApiInterface {
 export class UserApi extends runtime.BaseAPI implements UserApiInterface {
 
     /**
+     * Update application
+     */
+    async addUserToApplicationRaw(requestParameters: AddUserToApplicationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Application>> {
+        if (requestParameters.userId === null || requestParameters.userId === undefined) {
+            throw new runtime.RequiredError('userId','Required parameter requestParameters.userId was null or undefined when calling addUserToApplication.');
+        }
+
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling addUserToApplication.');
+        }
+
+        if (requestParameters.application === null || requestParameters.application === undefined) {
+            throw new runtime.RequiredError('application','Required parameter requestParameters.application was null or undefined when calling addUserToApplication.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
+        }
+
+        const response = await this.request({
+            path: `/users/{userId}/applications/{id}`.replace(`{${"userId"}}`, encodeURIComponent(String(requestParameters.userId))).replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'PATCH',
+            headers: headerParameters,
+            query: queryParameters,
+            body: UpdateApplicationToJSON(requestParameters.application),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => ApplicationFromJSON(jsonValue));
+    }
+
+    /**
+     * Update application
+     */
+    async addUserToApplication(userId: number, id: number, application: UpdateApplication, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Application> {
+        const response = await this.addUserToApplicationRaw({ userId: userId, id: id, application: application }, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Confirm email with token
+     */
+    async confirmEmailRaw(requestParameters: ConfirmEmailRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Email>> {
+        if (requestParameters.userId === null || requestParameters.userId === undefined) {
+            throw new runtime.RequiredError('userId','Required parameter requestParameters.userId was null or undefined when calling confirmEmail.');
+        }
+
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling confirmEmail.');
+        }
+
+        if (requestParameters.confirmEmail === null || requestParameters.confirmEmail === undefined) {
+            throw new runtime.RequiredError('confirmEmail','Required parameter requestParameters.confirmEmail was null or undefined when calling confirmEmail.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
+        }
+
+        const response = await this.request({
+            path: `/users/{userId}/emails/{id}/confirm`.replace(`{${"userId"}}`, encodeURIComponent(String(requestParameters.userId))).replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'PATCH',
+            headers: headerParameters,
+            query: queryParameters,
+            body: ConfirmEmailToJSON(requestParameters.confirmEmail),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => EmailFromJSON(jsonValue));
+    }
+
+    /**
+     * Confirm email with token
+     */
+    async confirmEmail(userId: number, id: number, confirmEmail: ConfirmEmail, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Email> {
+        const response = await this.confirmEmailRaw({ userId: userId, id: id, confirmEmail: confirmEmail }, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Confirm phone_number with token
+     */
+    async confirmPhoneNumberRaw(requestParameters: ConfirmPhoneNumberRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PhoneNumber>> {
+        if (requestParameters.userId === null || requestParameters.userId === undefined) {
+            throw new runtime.RequiredError('userId','Required parameter requestParameters.userId was null or undefined when calling confirmPhoneNumber.');
+        }
+
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling confirmPhoneNumber.');
+        }
+
+        if (requestParameters.confirmPhoneNumber === null || requestParameters.confirmPhoneNumber === undefined) {
+            throw new runtime.RequiredError('confirmPhoneNumber','Required parameter requestParameters.confirmPhoneNumber was null or undefined when calling confirmPhoneNumber.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
+        }
+
+        const response = await this.request({
+            path: `/users/{userId}/phone-numbers/{id}/confirm`.replace(`{${"userId"}}`, encodeURIComponent(String(requestParameters.userId))).replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'PATCH',
+            headers: headerParameters,
+            query: queryParameters,
+            body: ConfirmPhoneNumberToJSON(requestParameters.confirmPhoneNumber),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => PhoneNumberFromJSON(jsonValue));
+    }
+
+    /**
+     * Confirm phone_number with token
+     */
+    async confirmPhoneNumber(userId: number, id: number, confirmPhoneNumber: ConfirmPhoneNumber, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PhoneNumber> {
+        const response = await this.confirmPhoneNumberRaw({ userId: userId, id: id, confirmPhoneNumber: confirmPhoneNumber }, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Create user email
+     */
+    async createEmailRaw(requestParameters: CreateEmailRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Email>> {
+        if (requestParameters.userId === null || requestParameters.userId === undefined) {
+            throw new runtime.RequiredError('userId','Required parameter requestParameters.userId was null or undefined when calling createEmail.');
+        }
+
+        if (requestParameters.createEmail === null || requestParameters.createEmail === undefined) {
+            throw new runtime.RequiredError('createEmail','Required parameter requestParameters.createEmail was null or undefined when calling createEmail.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
+        }
+
+        const response = await this.request({
+            path: `/users/{userId}/emails`.replace(`{${"userId"}}`, encodeURIComponent(String(requestParameters.userId))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: CreateEmailToJSON(requestParameters.createEmail),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => EmailFromJSON(jsonValue));
+    }
+
+    /**
+     * Create user email
+     */
+    async createEmail(userId: number, createEmail: CreateEmail, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Email> {
+        const response = await this.createEmailRaw({ userId: userId, createEmail: createEmail }, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Create user phone number
+     */
+    async createPhoneNumberRaw(requestParameters: CreatePhoneNumberRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PhoneNumber>> {
+        if (requestParameters.userId === null || requestParameters.userId === undefined) {
+            throw new runtime.RequiredError('userId','Required parameter requestParameters.userId was null or undefined when calling createPhoneNumber.');
+        }
+
+        if (requestParameters.createPhoneNumber === null || requestParameters.createPhoneNumber === undefined) {
+            throw new runtime.RequiredError('createPhoneNumber','Required parameter requestParameters.createPhoneNumber was null or undefined when calling createPhoneNumber.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
+        }
+
+        const response = await this.request({
+            path: `/users/{userId}/phone-numbers`.replace(`{${"userId"}}`, encodeURIComponent(String(requestParameters.userId))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: CreatePhoneNumberToJSON(requestParameters.createPhoneNumber),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => PhoneNumberFromJSON(jsonValue));
+    }
+
+    /**
+     * Create user phone number
+     */
+    async createPhoneNumber(userId: number, createPhoneNumber: CreatePhoneNumber, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PhoneNumber> {
+        const response = await this.createPhoneNumberRaw({ userId: userId, createPhoneNumber: createPhoneNumber }, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Create user
+     */
+    async createUserRaw(requestParameters: CreateUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<User>> {
+        if (requestParameters.createUser === null || requestParameters.createUser === undefined) {
+            throw new runtime.RequiredError('createUser','Required parameter requestParameters.createUser was null or undefined when calling createUser.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
+        }
+
+        const response = await this.request({
+            path: `/users`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: CreateUserToJSON(requestParameters.createUser),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => UserFromJSON(jsonValue));
+    }
+
+    /**
+     * Create user
+     */
+    async createUser(createUser: CreateUser, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<User> {
+        const response = await this.createUserRaw({ createUser: createUser }, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get current user
+     */
+    async currentUserRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<UserWithPermissions>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
+        }
+
+        const response = await this.request({
+            path: `/user`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => UserWithPermissionsFromJSON(jsonValue));
+    }
+
+    /**
+     * Get current user
+     */
+    async currentUser(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<UserWithPermissions> {
+        const response = await this.currentUserRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Delete user email
+     */
+    async deleteEmailRaw(requestParameters: DeleteEmailRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.userId === null || requestParameters.userId === undefined) {
+            throw new runtime.RequiredError('userId','Required parameter requestParameters.userId was null or undefined when calling deleteEmail.');
+        }
+
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deleteEmail.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
+        }
+
+        const response = await this.request({
+            path: `/users/{userId}/emails/{id}`.replace(`{${"userId"}}`, encodeURIComponent(String(requestParameters.userId))).replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Delete user email
+     */
+    async deleteEmail(userId: number, id: number, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.deleteEmailRaw({ userId: userId, id: id }, initOverrides);
+    }
+
+    /**
+     * Delete user phone number
+     */
+    async deletePhoneNumberRaw(requestParameters: DeletePhoneNumberRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.userId === null || requestParameters.userId === undefined) {
+            throw new runtime.RequiredError('userId','Required parameter requestParameters.userId was null or undefined when calling deletePhoneNumber.');
+        }
+
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deletePhoneNumber.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
+        }
+
+        const response = await this.request({
+            path: `/users/{userId}/phone-numbers/{id}`.replace(`{${"userId"}}`, encodeURIComponent(String(requestParameters.userId))).replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Delete user phone number
+     */
+    async deletePhoneNumber(userId: number, id: number, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.deletePhoneNumberRaw({ userId: userId, id: id }, initOverrides);
+    }
+
+    /**
+     * Get user info
+     */
+    async getUserInfoRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<UserInfo>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
+        }
+
+        const response = await this.request({
+            path: `/userinfo`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => UserInfoFromJSON(jsonValue));
+    }
+
+    /**
+     * Get user info
+     */
+    async getUserInfo(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<UserInfo> {
+        const response = await this.getUserInfoRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Delete application
+     */
+    async removeUserFromApplicationRaw(requestParameters: RemoveUserFromApplicationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.userId === null || requestParameters.userId === undefined) {
+            throw new runtime.RequiredError('userId','Required parameter requestParameters.userId was null or undefined when calling removeUserFromApplication.');
+        }
+
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling removeUserFromApplication.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
+        }
+
+        const response = await this.request({
+            path: `/users/{userId}/applications/{id}`.replace(`{${"userId"}}`, encodeURIComponent(String(requestParameters.userId))).replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Delete application
+     */
+    async removeUserFromApplication(userId: number, id: number, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.removeUserFromApplicationRaw({ userId: userId, id: id }, initOverrides);
+    }
+
+    /**
+     * Resets a user\'s password
+     */
+    async resetPasswordRaw(requestParameters: ResetPasswordRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.resetPassword === null || requestParameters.resetPassword === undefined) {
+            throw new runtime.RequiredError('resetPassword','Required parameter requestParameters.resetPassword was null or undefined when calling resetPassword.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
+        }
+
+        const response = await this.request({
+            path: `/user/reset-password`,
+            method: 'PATCH',
+            headers: headerParameters,
+            query: queryParameters,
+            body: ResetPasswordToJSON(requestParameters.resetPassword),
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Resets a user\'s password
+     */
+    async resetPassword(resetPassword: ResetPassword, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.resetPasswordRaw({ resetPassword: resetPassword }, initOverrides);
+    }
+
+    /**
+     * Send confirmation token to user email
+     */
+    async sendConfirmationToEmailRaw(requestParameters: SendConfirmationToEmailRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.userId === null || requestParameters.userId === undefined) {
+            throw new runtime.RequiredError('userId','Required parameter requestParameters.userId was null or undefined when calling sendConfirmationToEmail.');
+        }
+
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling sendConfirmationToEmail.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
+        }
+
+        const response = await this.request({
+            path: `/users/{userId}/emails/{id}/send-confirmation`.replace(`{${"userId"}}`, encodeURIComponent(String(requestParameters.userId))).replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'PATCH',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Send confirmation token to user email
+     */
+    async sendConfirmationToEmail(userId: number, id: number, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.sendConfirmationToEmailRaw({ userId: userId, id: id }, initOverrides);
+    }
+
+    /**
+     * Send confirmation token to user phone_number
+     */
+    async sendConfirmationToPhoneNumberRaw(requestParameters: SendConfirmationToPhoneNumberRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.userId === null || requestParameters.userId === undefined) {
+            throw new runtime.RequiredError('userId','Required parameter requestParameters.userId was null or undefined when calling sendConfirmationToPhoneNumber.');
+        }
+
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling sendConfirmationToPhoneNumber.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
+        }
+
+        const response = await this.request({
+            path: `/users/{userId}/phone-numbers/{id}/send-confirmation`.replace(`{${"userId"}}`, encodeURIComponent(String(requestParameters.userId))).replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'PATCH',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Send confirmation token to user phone_number
+     */
+    async sendConfirmationToPhoneNumber(userId: number, id: number, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.sendConfirmationToPhoneNumberRaw({ userId: userId, id: id }, initOverrides);
+    }
+
+    /**
+     * Set a confirmed email to primary
+     */
+    async setPrimaryEmailRaw(requestParameters: SetPrimaryEmailRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.userId === null || requestParameters.userId === undefined) {
+            throw new runtime.RequiredError('userId','Required parameter requestParameters.userId was null or undefined when calling setPrimaryEmail.');
+        }
+
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling setPrimaryEmail.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
+        }
+
+        const response = await this.request({
+            path: `/users/{userId}/emails/{id}/set-primary`.replace(`{${"userId"}}`, encodeURIComponent(String(requestParameters.userId))).replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'PATCH',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Set a confirmed email to primary
+     */
+    async setPrimaryEmail(userId: number, id: number, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.setPrimaryEmailRaw({ userId: userId, id: id }, initOverrides);
+    }
+
+    /**
+     * Set a confirmed phone to primary
+     */
+    async setPrimaryPhoneNumberRaw(requestParameters: SetPrimaryPhoneNumberRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.userId === null || requestParameters.userId === undefined) {
+            throw new runtime.RequiredError('userId','Required parameter requestParameters.userId was null or undefined when calling setPrimaryPhoneNumber.');
+        }
+
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling setPrimaryPhoneNumber.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
+        }
+
+        const response = await this.request({
+            path: `/users/{userId}/phone-numbers/{id}/set-primary`.replace(`{${"userId"}}`, encodeURIComponent(String(requestParameters.userId))).replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'PATCH',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Set a confirmed phone to primary
+     */
+    async setPrimaryPhoneNumber(userId: number, id: number, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.setPrimaryPhoneNumberRaw({ userId: userId, id: id }, initOverrides);
+    }
+
+    /**
+     * Updates a user\'s username
+     */
+    async updateUserRaw(requestParameters: UpdateUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<User>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling updateUser.');
+        }
+
+        if (requestParameters.updateUser === null || requestParameters.updateUser === undefined) {
+            throw new runtime.RequiredError('updateUser','Required parameter requestParameters.updateUser was null or undefined when calling updateUser.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
+        }
+
+        const response = await this.request({
+            path: `/users/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'PATCH',
+            headers: headerParameters,
+            query: queryParameters,
+            body: UpdateUserToJSON(requestParameters.updateUser),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => UserFromJSON(jsonValue));
+    }
+
+    /**
+     * Updates a user\'s username
+     */
+    async updateUser(id: number, updateUser: UpdateUser, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<User> {
+        const response = await this.updateUserRaw({ id: id, updateUser: updateUser }, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Updates the user\'s info
+     */
+    async updateUserInfoRaw(requestParameters: UpdateUserInfoOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<UserInfo>> {
+        if (requestParameters.userinfoUpdates === null || requestParameters.userinfoUpdates === undefined) {
+            throw new runtime.RequiredError('userinfoUpdates','Required parameter requestParameters.userinfoUpdates was null or undefined when calling updateUserInfo.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
+        }
+
+        const response = await this.request({
+            path: `/userinfo`,
+            method: 'PATCH',
+            headers: headerParameters,
+            query: queryParameters,
+            body: UpdateUserInfoRequestToJSON(requestParameters.userinfoUpdates),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => UserInfoFromJSON(jsonValue));
+    }
+
+    /**
+     * Updates the user\'s info
+     */
+    async updateUserInfo(userinfoUpdates: UpdateUserInfoRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<UserInfo> {
+        const response = await this.updateUserInfoRaw({ userinfoUpdates: userinfoUpdates }, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get user applications
+     */
+    async userApplicationsRaw(requestParameters: UserApplicationsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PaginationApplication>> {
+        if (requestParameters.userId === null || requestParameters.userId === undefined) {
+            throw new runtime.RequiredError('userId','Required parameter requestParameters.userId was null or undefined when calling userApplications.');
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters.limit !== undefined) {
+            queryParameters['limit'] = requestParameters.limit;
+        }
+
+        if (requestParameters.offset !== undefined) {
+            queryParameters['offset'] = requestParameters.offset;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
+        }
+
+        const response = await this.request({
+            path: `/users/{userId}/applications`.replace(`{${"userId"}}`, encodeURIComponent(String(requestParameters.userId))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => PaginationApplicationFromJSON(jsonValue));
+    }
+
+    /**
+     * Get user applications
+     */
+    async userApplications(userId: number, limit?: number, offset?: number, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PaginationApplication> {
+        const response = await this.userApplicationsRaw({ userId: userId, limit: limit, offset: offset }, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get user by id
+     */
+    async userByIdRaw(requestParameters: UserByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<User>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling userById.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
+        }
+
+        const response = await this.request({
+            path: `/users/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => UserFromJSON(jsonValue));
+    }
+
+    /**
+     * Get user by id
+     */
+    async userById(id: number, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<User> {
+        const response = await this.userByIdRaw({ id: id }, initOverrides);
+        return await response.value();
+    }
+
+    /**
      * Get users
      */
-    async usersGetRaw(requestParameters: UsersGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PaginationUser>> {
+    async usersRaw(requestParameters: UsersRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PaginationUser>> {
         const queryParameters: any = {};
 
         if (requestParameters.limit !== undefined) {
@@ -158,120 +1310,8 @@ export class UserApi extends runtime.BaseAPI implements UserApiInterface {
     /**
      * Get users
      */
-    async usersGet(limit?: number, offset?: number, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PaginationUser> {
-        const response = await this.usersGetRaw({ limit: limit, offset: offset }, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Get user by id
-     */
-    async usersIdGetRaw(requestParameters: UsersIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<User>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling usersIdGet.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
-        }
-
-        const response = await this.request({
-            path: `/users/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => UserFromJSON(jsonValue));
-    }
-
-    /**
-     * Get user by id
-     */
-    async usersIdGet(id: number, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<User> {
-        const response = await this.usersIdGetRaw({ id: id }, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Updates a user\'s username
-     */
-    async usersIdPatchRaw(requestParameters: UsersIdPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<User>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling usersIdPatch.');
-        }
-
-        if (requestParameters.updateUser === null || requestParameters.updateUser === undefined) {
-            throw new runtime.RequiredError('updateUser','Required parameter requestParameters.updateUser was null or undefined when calling usersIdPatch.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
-        }
-
-        const response = await this.request({
-            path: `/users/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
-            method: 'PATCH',
-            headers: headerParameters,
-            query: queryParameters,
-            body: UpdateUserToJSON(requestParameters.updateUser),
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => UserFromJSON(jsonValue));
-    }
-
-    /**
-     * Updates a user\'s username
-     */
-    async usersIdPatch(id: number, updateUser: UpdateUser, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<User> {
-        const response = await this.usersIdPatchRaw({ id: id, updateUser: updateUser }, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Create user
-     */
-    async usersPostRaw(requestParameters: UsersPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<User>> {
-        if (requestParameters.createUser === null || requestParameters.createUser === undefined) {
-            throw new runtime.RequiredError('createUser','Required parameter requestParameters.createUser was null or undefined when calling usersPost.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
-        }
-
-        const response = await this.request({
-            path: `/users`,
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-            body: CreateUserToJSON(requestParameters.createUser),
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => UserFromJSON(jsonValue));
-    }
-
-    /**
-     * Create user
-     */
-    async usersPost(createUser: CreateUser, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<User> {
-        const response = await this.usersPostRaw({ createUser: createUser }, initOverrides);
+    async users(limit?: number, offset?: number, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PaginationUser> {
+        const response = await this.usersRaw({ limit: limit, offset: offset }, initOverrides);
         return await response.value();
     }
 

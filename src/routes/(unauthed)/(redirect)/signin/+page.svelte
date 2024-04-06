@@ -89,18 +89,18 @@
 </script>
 
 <svelte:head>
-	<title>{$LL.sign_in()}</title>
+	<title>{$LL.auth.signIn()}</title>
 </svelte:head>
 
 <div class="flex flex-col flex-grow justify-end md:justify-start">
 	<div
 		class="flex flex-col flex-shrink md:w-72 w-full mx-auto my-10 bg-white dark:bg-gray-800 shadow p-4"
 	>
-		<h1 class="mb-1">{$LL.sign_in()}</h1>
+		<h1 class="mb-1">{$LL.auth.signIn()}</h1>
 		{#if data.openIDConfiguration?.grant_types_supported.includes('password')}
 			<p class="py-2">
-				<span>{$LL.not_a_member()}</span>
-				<a href={`${base}/signup`} class="underline text-blue-500">{$LL.sign_up()}</a>
+				<span>{$LL.auth.notAMember()}</span>
+				<a href={`${base}/signup`} class="underline text-blue-500">{$LL.auth.signUp()}</a>
 			</p>
 		{/if}
 		<form on:submit|preventDefault={onSubmit}>
@@ -110,7 +110,7 @@
 					type="text"
 					name="username"
 					autocomplete="username"
-					placeholder={$LL.username_placeholder()}
+					placeholder={$LL.auth.usernameOrEmailPlaceholder()}
 					bind:value={username}
 					on:input={onChange}
 				/>
@@ -122,7 +122,7 @@
 					type="password"
 					name="password"
 					autocomplete="current-password"
-					placeholder={$LL.password_placeholder()}
+					placeholder={$LL.auth.passwordPlaceholder()}
 					bind:value={password}
 					on:input={onChange}
 				/>
@@ -133,7 +133,7 @@
 					{#if loading}<div class="flex flex-row justify-center mr-2">
 							<div class="inline-block w-6 h-6"><Spinner /></div>
 						</div>{/if}
-					{$LL.sign_in()}
+					{$LL.auth.signIn()}
 				</button>
 			</div>
 		</form>

@@ -15,9 +15,12 @@
 
 import * as runtime from '../runtime';
 import type {
+  Errors,
   OpenIDConfiguration,
 } from '../models/index';
 import {
+    ErrorsFromJSON,
+    ErrorsToJSON,
     OpenIDConfigurationFromJSON,
     OpenIDConfigurationToJSON,
 } from '../models/index';
@@ -36,12 +39,12 @@ export interface WellKnownApiInterface {
      * @throws {RequiredError}
      * @memberof WellKnownApiInterface
      */
-    wellKnownOpenidConfigurationGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<OpenIDConfiguration>>;
+    openidConfigurationRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<OpenIDConfiguration>>;
 
     /**
      * Get openid configuration
      */
-    wellKnownOpenidConfigurationGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<OpenIDConfiguration>;
+    openidConfiguration(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<OpenIDConfiguration>;
 
 }
 
@@ -53,7 +56,7 @@ export class WellKnownApi extends runtime.BaseAPI implements WellKnownApiInterfa
     /**
      * Get openid configuration
      */
-    async wellKnownOpenidConfigurationGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<OpenIDConfiguration>> {
+    async openidConfigurationRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<OpenIDConfiguration>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -75,8 +78,8 @@ export class WellKnownApi extends runtime.BaseAPI implements WellKnownApiInterfa
     /**
      * Get openid configuration
      */
-    async wellKnownOpenidConfigurationGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<OpenIDConfiguration> {
-        const response = await this.wellKnownOpenidConfigurationGetRaw(initOverrides);
+    async openidConfiguration(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<OpenIDConfiguration> {
+        const response = await this.openidConfigurationRaw(initOverrides);
         return await response.value();
     }
 

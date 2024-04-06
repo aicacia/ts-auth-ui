@@ -20,6 +20,7 @@
 
 	export let email: Email;
 	export let primary = false;
+	export let sentEmailConfirmation = false;
 
 	let open = false;
 
@@ -40,7 +41,6 @@
 		}
 	}
 
-	let sentEmailConfirmation = false;
 	let emailConfirmation: string;
 	async function onSendConfirmation() {
 		try {
@@ -56,7 +56,7 @@
 		try {
 			await confirmEmail(email.id, emailConfirmation.trim());
 			sentEmailConfirmation = false;
-			createNotification('email_confirm', 'success');
+			createNotification('email_confirmed', 'success');
 		} catch (error) {
 			await handleError(error);
 		}

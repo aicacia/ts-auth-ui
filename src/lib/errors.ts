@@ -1,4 +1,4 @@
-import { ResponseError, type ModelError } from '$lib/openapi/auth';
+import { ResponseError, type Errors } from '$lib/openapi/auth';
 import { createNotification } from './stores/notifications';
 
 export async function handleError(error: unknown) {
@@ -6,7 +6,7 @@ export async function handleError(error: unknown) {
 		const errors = await error.response.json();
 		if (errors) {
 			notifyErrors(errors);
-			return errors as ModelError;
+			return errors as Errors;
 		}
 	}
 	console.error(error);
@@ -14,7 +14,7 @@ export async function handleError(error: unknown) {
 	throw error;
 }
 
-export async function notifyErrors(errors: ModelError) {
+export async function notifyErrors(errors: Errors) {
 	for (const [name, messages] of Object.entries(errors.errors)) {
 		for (const message of messages) {
 			createNotification(`${name}.${message.error}: ${message.parameters}`);

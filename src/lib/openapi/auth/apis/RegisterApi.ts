@@ -15,17 +15,20 @@
 
 import * as runtime from '../runtime';
 import type {
+  Errors,
   RegisterRequest,
   Token,
 } from '../models/index';
 import {
+    ErrorsFromJSON,
+    ErrorsToJSON,
     RegisterRequestFromJSON,
     RegisterRequestToJSON,
     TokenFromJSON,
     TokenToJSON,
 } from '../models/index';
 
-export interface RegisterPostRequest {
+export interface RegisterUserRequest {
     registerRequest: RegisterRequest;
 }
 
@@ -44,12 +47,12 @@ export interface RegisterApiInterface {
      * @throws {RequiredError}
      * @memberof RegisterApiInterface
      */
-    registerPostRaw(requestParameters: RegisterPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Token>>;
+    registerUserRaw(requestParameters: RegisterUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Token>>;
 
     /**
      * Register as a new user
      */
-    registerPost(registerRequest: RegisterRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Token>;
+    registerUser(registerRequest: RegisterRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Token>;
 
 }
 
@@ -61,9 +64,9 @@ export class RegisterApi extends runtime.BaseAPI implements RegisterApiInterface
     /**
      * Register as a new user
      */
-    async registerPostRaw(requestParameters: RegisterPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Token>> {
+    async registerUserRaw(requestParameters: RegisterUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Token>> {
         if (requestParameters.registerRequest === null || requestParameters.registerRequest === undefined) {
-            throw new runtime.RequiredError('registerRequest','Required parameter requestParameters.registerRequest was null or undefined when calling registerPost.');
+            throw new runtime.RequiredError('registerRequest','Required parameter requestParameters.registerRequest was null or undefined when calling registerUser.');
         }
 
         const queryParameters: any = {};
@@ -90,8 +93,8 @@ export class RegisterApi extends runtime.BaseAPI implements RegisterApiInterface
     /**
      * Register as a new user
      */
-    async registerPost(registerRequest: RegisterRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Token> {
-        const response = await this.registerPostRaw({ registerRequest: registerRequest }, initOverrides);
+    async registerUser(registerRequest: RegisterRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Token> {
+        const response = await this.registerUserRaw({ registerRequest: registerRequest }, initOverrides);
         return await response.value();
     }
 

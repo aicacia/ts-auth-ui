@@ -23,7 +23,7 @@ export function waitForOpenIDConfiguration() {
 
 async function fetchOpenIDConfiguration() {
 	try {
-		const openIDConfiguration = await wellKnownApi.wellKnownOpenidConfigurationGet();
+		const openIDConfiguration = await wellKnownApi.openidConfiguration();
 		openIDConfigurationWritable.set(openIDConfiguration);
 		openIDConfigurationLoaded = true;
 		emitter.emit('openIDConfiguration', openIDConfiguration);

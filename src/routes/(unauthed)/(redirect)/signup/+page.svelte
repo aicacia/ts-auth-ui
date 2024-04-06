@@ -36,6 +36,7 @@
 </script>
 
 <script lang="ts">
+	import LL from '$lib/i18n/i18n-svelte';
 	import classNames from 'vest/classnames';
 	import { goto } from '$app/navigation';
 	import { base } from '$app/paths';
@@ -101,17 +102,17 @@
 </script>
 
 <svelte:head>
-	<title>Sign up</title>
+	<title>{$LL.auth.signUp()}</title>
 </svelte:head>
 
 <div class="flex flex-col flex-grow justify-end md:justify-start">
 	<div
 		class="flex flex-col flex-shrink md:w-72 w-full mx-auto my-10 bg-white dark:bg-gray-800 shadow p-4"
 	>
-		<h1 class="mb-1">Sign in</h1>
+		<h1 class="mb-1">{$LL.auth.signUp()}</h1>
 		<p class="py-2">
-			<span>Already a member?</span>
-			<a href={`${base}/signin`} class="underline text-blue-500">Sign in</a>
+			<span>{$LL.auth.alreadyAMember()}</span>
+			<a href={`${base}/signin`} class="underline text-blue-500">{$LL.auth.signIn()}</a>
 		</p>
 		<form on:submit|preventDefault={onSubmit}>
 			<div class="mb-2">
@@ -120,7 +121,7 @@
 					type="email"
 					name="email"
 					autocomplete="email"
-					placeholder="Email"
+					placeholder={$LL.auth.emailPlaceholder()}
 					bind:value={email}
 					on:input={onChange}
 				/>
@@ -132,7 +133,7 @@
 					type="text"
 					name="username"
 					autocomplete="username"
-					placeholder="Username"
+					placeholder={$LL.auth.usernamePlaceholder()}
 					bind:value={username}
 					on:input={onChange}
 				/>
@@ -144,7 +145,7 @@
 					type="password"
 					name="password"
 					autocomplete="new-password"
-					placeholder="Password"
+					placeholder={$LL.auth.passwordPlaceholder()}
 					bind:value={password}
 					on:input={onChange}
 				/>
@@ -156,7 +157,7 @@
 					type="password"
 					name="passwordConfirmation"
 					autocomplete="new-password"
-					placeholder="Password Confirmation"
+					placeholder={$LL.auth.passwordConfirmationPlaceholder()}
 					bind:value={passwordConfirmation}
 					on:input={onChange}
 				/>
@@ -167,7 +168,7 @@
 					{#if loading}<div class="flex flex-row justify-center mr-2">
 							<div class="inline-block w-6 h-6"><Spinner /></div>
 						</div>{/if}
-					Sign up
+					{$LL.auth.signUp()}
 				</button>
 			</div>
 		</form>

@@ -3,7 +3,7 @@
 <script lang="ts">
 	import type { PaginationApplication } from '$lib/openapi/auth';
 	import { onMount } from 'svelte';
-	import { userApplicationApi } from '$lib/openapi';
+	import { userApi } from '$lib/openapi';
 	import { handleError } from '$lib/errors';
 	import Profile from '$lib/components/Profile/Profile.svelte';
 	import type { PageData } from './$types';
@@ -13,7 +13,7 @@
 	let applications: PaginationApplication = { has_more: false, items: [] };
 	onMount(async () => {
 		try {
-			applications = await userApplicationApi.usersUserIdApplicationsGet(data.user.id);
+			applications = await userApi.userApplications(data.user.id);
 		} catch (error) {
 			await handleError(error);
 		}
