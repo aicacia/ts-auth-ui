@@ -157,6 +157,87 @@ export async function createEmail(email: string) {
 	return newEmail;
 }
 
+export async function setPrimaryPhoneNumber(phoneNumberId: number) {
+	await userApi.setPrimaryPhoneNumber(get(user)?.id as number, phoneNumberId);
+	userWritable.update((user) => {
+		if (user) {
+			const phoneNumberIndex = user.phone_numbers.findIndex((e) => e.id === phoneNumberId);
+			if (phoneNumberIndex !== -1) {
+				const newPhoneNumbers = user.phone_numbers.slice();
+				const newPhoneNumber = newPhoneNumbers[phoneNumberIndex];
+				if (user.phone_number) {
+					newPhoneNumbers[phoneNumberIndex] = user.phone_number;
+				} else {
+					newPhoneNumbers.splice(phoneNumberIndex, 1);
+				}
+				return { ...user, phone_number: newPhoneNumber, phone_numbers: newPhoneNumbers };
+			}
+		}
+		return user;
+	});
+	await invalidateAll();
+}
+
+export async function deletePhoneNumber(phoneNumberId: number) {
+	await userApi.deletePhoneNumber(get(user)?.id as number, phoneNumberId);
+	userWritable.update((user) => {
+		if (user) {
+			const phoneNumberIndex = user.phone_numbers.findIndex((e) => e.id === phoneNumberId);
+			if (phoneNumberIndex !== -1) {
+				const newPhoneNumbers = user.phone_numbers.slice();
+				newPhoneNumbers.splice(phoneNumberIndex, 1);
+				return { ...user, phone_numbers: newPhoneNumbers };
+			}
+		}
+		return user;
+	});
+	await invalidateAll();
+}
+
+export async function sendConfirmationToPhoneNumber(phoneNumberId: number) {
+	await userApi.sendConfirmationToPhoneNumber(get(user)?.id as number, phoneNumberId);
+}
+
+export async function confirmPhoneNumber(phoneNumberId: number, confirmationToken: string) {
+	await userApi.confirmPhoneNumber(get(user)?.id as number, phoneNumberId, {
+		token: confirmationToken
+	});
+	userWritable.update((user) => {
+		if (user) {
+			if (user.phone_number?.id === phoneNumberId) {
+				return { ...user, phone_number: { ...user.phone_number, confirmed: true } };
+			}
+			const phoneNumberIndex = user.phone_numbers.findIndex((e) => e.id === phoneNumberId);
+			if (phoneNumberIndex !== -1) {
+				const newPhoneNumbers = user.phone_numbers.slice();
+				newPhoneNumbers[phoneNumberIndex] = {
+					...newPhoneNumbers[phoneNumberIndex],
+					confirmed: true
+				};
+				return { ...user, phone_numbers: newPhoneNumbers };
+			}
+		}
+		return user;
+	});
+	await invalidateAll();
+}
+
+export async function createPhoneNumber(phoneNumber: string) {
+	const newPhoneNumber = await userApi.createPhoneNumber(get(user)?.id as number, {
+		phone_number: phoneNumber
+	});
+	userWritable.update((user) => {
+		if (user) {
+			const newPhoneNumbers = user.phone_numbers.slice();
+			newPhoneNumbers.push(newPhoneNumber);
+			return { ...user, phone_numbers: newPhoneNumbers };
+		}
+		return user;
+	});
+	await invalidateAll();
+	return newPhoneNumber;
+}
+
 export async function removeApplication(applicationId: number) {
 	await userApi.removeUserFromApplication(get(user)?.id as number, applicationId);
 }
