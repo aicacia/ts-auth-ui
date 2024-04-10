@@ -77,7 +77,7 @@
 			loading = true;
 			validateAll();
 			if (result.isValid()) {
-				user = await userApi.updateUser(user.id, { username });
+				user = await userApi.updateUserById(user.id, { username });
 				updateCurrentUser(user);
 				suite.reset();
 				result = suite.get();

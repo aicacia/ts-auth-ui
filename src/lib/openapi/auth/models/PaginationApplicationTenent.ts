@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { ApplicationTenent } from './ApplicationTenent';
 import {
     ApplicationTenentFromJSON,
@@ -44,11 +44,9 @@ export interface PaginationApplicationTenent {
  * Check if a given object implements the PaginationApplicationTenent interface.
  */
 export function instanceOfPaginationApplicationTenent(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "has_more" in value;
-    isInstance = isInstance && "items" in value;
-
-    return isInstance;
+    if (!('has_more' in value)) return false;
+    if (!('items' in value)) return false;
+    return true;
 }
 
 export function PaginationApplicationTenentFromJSON(json: any): PaginationApplicationTenent {
@@ -56,7 +54,7 @@ export function PaginationApplicationTenentFromJSON(json: any): PaginationApplic
 }
 
 export function PaginationApplicationTenentFromJSONTyped(json: any, ignoreDiscriminator: boolean): PaginationApplicationTenent {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -67,16 +65,13 @@ export function PaginationApplicationTenentFromJSONTyped(json: any, ignoreDiscri
 }
 
 export function PaginationApplicationTenentToJSON(value?: PaginationApplicationTenent | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'has_more': value.has_more,
-        'items': ((value.items as Array<any>).map(ApplicationTenentToJSON)),
+        'has_more': value['has_more'],
+        'items': ((value['items'] as Array<any>).map(ApplicationTenentToJSON)),
     };
 }
 

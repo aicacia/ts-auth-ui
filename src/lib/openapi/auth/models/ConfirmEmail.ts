@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -31,10 +31,8 @@ export interface ConfirmEmail {
  * Check if a given object implements the ConfirmEmail interface.
  */
 export function instanceOfConfirmEmail(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "token" in value;
-
-    return isInstance;
+    if (!('token' in value)) return false;
+    return true;
 }
 
 export function ConfirmEmailFromJSON(json: any): ConfirmEmail {
@@ -42,7 +40,7 @@ export function ConfirmEmailFromJSON(json: any): ConfirmEmail {
 }
 
 export function ConfirmEmailFromJSONTyped(json: any, ignoreDiscriminator: boolean): ConfirmEmail {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -52,15 +50,12 @@ export function ConfirmEmailFromJSONTyped(json: any, ignoreDiscriminator: boolea
 }
 
 export function ConfirmEmailToJSON(value?: ConfirmEmail | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'token': value.token,
+        'token': value['token'],
     };
 }
 

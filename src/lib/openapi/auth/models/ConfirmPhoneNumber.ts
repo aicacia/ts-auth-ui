@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -31,10 +31,8 @@ export interface ConfirmPhoneNumber {
  * Check if a given object implements the ConfirmPhoneNumber interface.
  */
 export function instanceOfConfirmPhoneNumber(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "token" in value;
-
-    return isInstance;
+    if (!('token' in value)) return false;
+    return true;
 }
 
 export function ConfirmPhoneNumberFromJSON(json: any): ConfirmPhoneNumber {
@@ -42,7 +40,7 @@ export function ConfirmPhoneNumberFromJSON(json: any): ConfirmPhoneNumber {
 }
 
 export function ConfirmPhoneNumberFromJSONTyped(json: any, ignoreDiscriminator: boolean): ConfirmPhoneNumber {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -52,15 +50,12 @@ export function ConfirmPhoneNumberFromJSONTyped(json: any, ignoreDiscriminator: 
 }
 
 export function ConfirmPhoneNumberToJSON(value?: ConfirmPhoneNumber | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'token': value.token,
+        'token': value['token'],
     };
 }
 

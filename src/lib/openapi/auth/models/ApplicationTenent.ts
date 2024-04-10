@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -97,19 +97,17 @@ export interface ApplicationTenent {
  * Check if a given object implements the ApplicationTenent interface.
  */
 export function instanceOfApplicationTenent(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "algorithm" in value;
-    isInstance = isInstance && "application_id" in value;
-    isInstance = isInstance && "client_id" in value;
-    isInstance = isInstance && "created_at" in value;
-    isInstance = isInstance && "description" in value;
-    isInstance = isInstance && "expires_in_seconds" in value;
-    isInstance = isInstance && "id" in value;
-    isInstance = isInstance && "refresh_expires_in_seconds" in value;
-    isInstance = isInstance && "updated_at" in value;
-    isInstance = isInstance && "uri" in value;
-
-    return isInstance;
+    if (!('algorithm' in value)) return false;
+    if (!('application_id' in value)) return false;
+    if (!('client_id' in value)) return false;
+    if (!('created_at' in value)) return false;
+    if (!('description' in value)) return false;
+    if (!('expires_in_seconds' in value)) return false;
+    if (!('id' in value)) return false;
+    if (!('refresh_expires_in_seconds' in value)) return false;
+    if (!('updated_at' in value)) return false;
+    if (!('uri' in value)) return false;
+    return true;
 }
 
 export function ApplicationTenentFromJSON(json: any): ApplicationTenent {
@@ -117,7 +115,7 @@ export function ApplicationTenentFromJSON(json: any): ApplicationTenent {
 }
 
 export function ApplicationTenentFromJSONTyped(json: any, ignoreDiscriminator: boolean): ApplicationTenent {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -129,8 +127,8 @@ export function ApplicationTenentFromJSONTyped(json: any, ignoreDiscriminator: b
         'description': json['description'],
         'expires_in_seconds': json['expires_in_seconds'],
         'id': json['id'],
-        'public_key': !exists(json, 'public_key') ? undefined : json['public_key'],
-        'public_uri': !exists(json, 'public_uri') ? undefined : json['public_uri'],
+        'public_key': json['public_key'] == null ? undefined : json['public_key'],
+        'public_uri': json['public_uri'] == null ? undefined : json['public_uri'],
         'refresh_expires_in_seconds': json['refresh_expires_in_seconds'],
         'updated_at': (new Date(json['updated_at'])),
         'uri': json['uri'],
@@ -138,26 +136,23 @@ export function ApplicationTenentFromJSONTyped(json: any, ignoreDiscriminator: b
 }
 
 export function ApplicationTenentToJSON(value?: ApplicationTenent | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'algorithm': value.algorithm,
-        'application_id': value.application_id,
-        'client_id': value.client_id,
-        'created_at': (value.created_at.toISOString()),
-        'description': value.description,
-        'expires_in_seconds': value.expires_in_seconds,
-        'id': value.id,
-        'public_key': value.public_key,
-        'public_uri': value.public_uri,
-        'refresh_expires_in_seconds': value.refresh_expires_in_seconds,
-        'updated_at': (value.updated_at.toISOString()),
-        'uri': value.uri,
+        'algorithm': value['algorithm'],
+        'application_id': value['application_id'],
+        'client_id': value['client_id'],
+        'created_at': ((value['created_at']).toISOString()),
+        'description': value['description'],
+        'expires_in_seconds': value['expires_in_seconds'],
+        'id': value['id'],
+        'public_key': value['public_key'],
+        'public_uri': value['public_uri'],
+        'refresh_expires_in_seconds': value['refresh_expires_in_seconds'],
+        'updated_at': ((value['updated_at']).toISOString()),
+        'uri': value['uri'],
     };
 }
 

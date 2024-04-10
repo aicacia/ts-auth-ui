@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { User } from './User';
 import {
     UserFromJSON,
@@ -44,11 +44,9 @@ export interface PaginationUser {
  * Check if a given object implements the PaginationUser interface.
  */
 export function instanceOfPaginationUser(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "has_more" in value;
-    isInstance = isInstance && "items" in value;
-
-    return isInstance;
+    if (!('has_more' in value)) return false;
+    if (!('items' in value)) return false;
+    return true;
 }
 
 export function PaginationUserFromJSON(json: any): PaginationUser {
@@ -56,7 +54,7 @@ export function PaginationUserFromJSON(json: any): PaginationUser {
 }
 
 export function PaginationUserFromJSONTyped(json: any, ignoreDiscriminator: boolean): PaginationUser {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -67,16 +65,13 @@ export function PaginationUserFromJSONTyped(json: any, ignoreDiscriminator: bool
 }
 
 export function PaginationUserToJSON(value?: PaginationUser | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'has_more': value.has_more,
-        'items': ((value.items as Array<any>).map(UserToJSON)),
+        'has_more': value['has_more'],
+        'items': ((value['items'] as Array<any>).map(UserToJSON)),
     };
 }
 

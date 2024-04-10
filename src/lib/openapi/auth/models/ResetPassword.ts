@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -37,11 +37,9 @@ export interface ResetPassword {
  * Check if a given object implements the ResetPassword interface.
  */
 export function instanceOfResetPassword(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "password" in value;
-    isInstance = isInstance && "password_confirmation" in value;
-
-    return isInstance;
+    if (!('password' in value)) return false;
+    if (!('password_confirmation' in value)) return false;
+    return true;
 }
 
 export function ResetPasswordFromJSON(json: any): ResetPassword {
@@ -49,7 +47,7 @@ export function ResetPasswordFromJSON(json: any): ResetPassword {
 }
 
 export function ResetPasswordFromJSONTyped(json: any, ignoreDiscriminator: boolean): ResetPassword {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -60,16 +58,13 @@ export function ResetPasswordFromJSONTyped(json: any, ignoreDiscriminator: boole
 }
 
 export function ResetPasswordToJSON(value?: ResetPassword | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'password': value.password,
-        'password_confirmation': value.password_confirmation,
+        'password': value['password'],
+        'password_confirmation': value['password_confirmation'],
     };
 }
 

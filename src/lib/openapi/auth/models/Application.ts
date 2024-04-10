@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -73,16 +73,14 @@ export interface Application {
  * Check if a given object implements the Application interface.
  */
 export function instanceOfApplication(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "created_at" in value;
-    isInstance = isInstance && "description" in value;
-    isInstance = isInstance && "id" in value;
-    isInstance = isInstance && "signup_enabled" in value;
-    isInstance = isInstance && "signup_password" in value;
-    isInstance = isInstance && "updated_at" in value;
-    isInstance = isInstance && "uri" in value;
-
-    return isInstance;
+    if (!('created_at' in value)) return false;
+    if (!('description' in value)) return false;
+    if (!('id' in value)) return false;
+    if (!('signup_enabled' in value)) return false;
+    if (!('signup_password' in value)) return false;
+    if (!('updated_at' in value)) return false;
+    if (!('uri' in value)) return false;
+    return true;
 }
 
 export function ApplicationFromJSON(json: any): Application {
@@ -90,7 +88,7 @@ export function ApplicationFromJSON(json: any): Application {
 }
 
 export function ApplicationFromJSONTyped(json: any, ignoreDiscriminator: boolean): Application {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -98,7 +96,7 @@ export function ApplicationFromJSONTyped(json: any, ignoreDiscriminator: boolean
         'created_at': (new Date(json['created_at'])),
         'description': json['description'],
         'id': json['id'],
-        'public_url': !exists(json, 'public_url') ? undefined : json['public_url'],
+        'public_url': json['public_url'] == null ? undefined : json['public_url'],
         'signup_enabled': json['signup_enabled'],
         'signup_password': json['signup_password'],
         'updated_at': (new Date(json['updated_at'])),
@@ -107,22 +105,19 @@ export function ApplicationFromJSONTyped(json: any, ignoreDiscriminator: boolean
 }
 
 export function ApplicationToJSON(value?: Application | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'created_at': (value.created_at.toISOString()),
-        'description': value.description,
-        'id': value.id,
-        'public_url': value.public_url,
-        'signup_enabled': value.signup_enabled,
-        'signup_password': value.signup_password,
-        'updated_at': (value.updated_at.toISOString()),
-        'uri': value.uri,
+        'created_at': ((value['created_at']).toISOString()),
+        'description': value['description'],
+        'id': value['id'],
+        'public_url': value['public_url'],
+        'signup_enabled': value['signup_enabled'],
+        'signup_password': value['signup_password'],
+        'updated_at': ((value['updated_at']).toISOString()),
+        'uri': value['uri'],
     };
 }
 

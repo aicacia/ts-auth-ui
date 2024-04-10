@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -37,11 +37,9 @@ export interface Health {
  * Check if a given object implements the Health interface.
  */
 export function instanceOfHealth(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "date" in value;
-    isInstance = isInstance && "db" in value;
-
-    return isInstance;
+    if (!('date' in value)) return false;
+    if (!('db' in value)) return false;
+    return true;
 }
 
 export function HealthFromJSON(json: any): Health {
@@ -49,7 +47,7 @@ export function HealthFromJSON(json: any): Health {
 }
 
 export function HealthFromJSONTyped(json: any, ignoreDiscriminator: boolean): Health {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -60,16 +58,13 @@ export function HealthFromJSONTyped(json: any, ignoreDiscriminator: boolean): He
 }
 
 export function HealthToJSON(value?: Health | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'date': (value.date.toISOString()),
-        'db': value.db,
+        'date': ((value['date']).toISOString()),
+        'db': value['db'],
     };
 }
 

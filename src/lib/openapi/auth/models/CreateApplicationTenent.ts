@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -73,11 +73,9 @@ export interface CreateApplicationTenent {
  * Check if a given object implements the CreateApplicationTenent interface.
  */
 export function instanceOfCreateApplicationTenent(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "description" in value;
-    isInstance = isInstance && "uri" in value;
-
-    return isInstance;
+    if (!('description' in value)) return false;
+    if (!('uri' in value)) return false;
+    return true;
 }
 
 export function CreateApplicationTenentFromJSON(json: any): CreateApplicationTenent {
@@ -85,39 +83,36 @@ export function CreateApplicationTenentFromJSON(json: any): CreateApplicationTen
 }
 
 export function CreateApplicationTenentFromJSONTyped(json: any, ignoreDiscriminator: boolean): CreateApplicationTenent {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'algorithm': !exists(json, 'algorithm') ? undefined : json['algorithm'],
-        'client_id': !exists(json, 'client_id') ? undefined : json['client_id'],
+        'algorithm': json['algorithm'] == null ? undefined : json['algorithm'],
+        'client_id': json['client_id'] == null ? undefined : json['client_id'],
         'description': json['description'],
-        'expires_in_seconds': !exists(json, 'expires_in_seconds') ? undefined : json['expires_in_seconds'],
-        'private_key': !exists(json, 'private_key') ? undefined : json['private_key'],
-        'public_key': !exists(json, 'public_key') ? undefined : json['public_key'],
-        'refresh_expires_in_seconds': !exists(json, 'refresh_expires_in_seconds') ? undefined : json['refresh_expires_in_seconds'],
+        'expires_in_seconds': json['expires_in_seconds'] == null ? undefined : json['expires_in_seconds'],
+        'private_key': json['private_key'] == null ? undefined : json['private_key'],
+        'public_key': json['public_key'] == null ? undefined : json['public_key'],
+        'refresh_expires_in_seconds': json['refresh_expires_in_seconds'] == null ? undefined : json['refresh_expires_in_seconds'],
         'uri': json['uri'],
     };
 }
 
 export function CreateApplicationTenentToJSON(value?: CreateApplicationTenent | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'algorithm': value.algorithm,
-        'client_id': value.client_id,
-        'description': value.description,
-        'expires_in_seconds': value.expires_in_seconds,
-        'private_key': value.private_key,
-        'public_key': value.public_key,
-        'refresh_expires_in_seconds': value.refresh_expires_in_seconds,
-        'uri': value.uri,
+        'algorithm': value['algorithm'],
+        'client_id': value['client_id'],
+        'description': value['description'],
+        'expires_in_seconds': value['expires_in_seconds'],
+        'private_key': value['private_key'],
+        'public_key': value['public_key'],
+        'refresh_expires_in_seconds': value['refresh_expires_in_seconds'],
+        'uri': value['uri'],
     };
 }
 

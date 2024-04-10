@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -37,11 +37,9 @@ export interface CreateApplicationPermission {
  * Check if a given object implements the CreateApplicationPermission interface.
  */
 export function instanceOfCreateApplicationPermission(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "description" in value;
-    isInstance = isInstance && "uri" in value;
-
-    return isInstance;
+    if (!('description' in value)) return false;
+    if (!('uri' in value)) return false;
+    return true;
 }
 
 export function CreateApplicationPermissionFromJSON(json: any): CreateApplicationPermission {
@@ -49,7 +47,7 @@ export function CreateApplicationPermissionFromJSON(json: any): CreateApplicatio
 }
 
 export function CreateApplicationPermissionFromJSONTyped(json: any, ignoreDiscriminator: boolean): CreateApplicationPermission {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -60,16 +58,13 @@ export function CreateApplicationPermissionFromJSONTyped(json: any, ignoreDiscri
 }
 
 export function CreateApplicationPermissionToJSON(value?: CreateApplicationPermission | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'description': value.description,
-        'uri': value.uri,
+        'description': value['description'],
+        'uri': value['uri'],
     };
 }
 

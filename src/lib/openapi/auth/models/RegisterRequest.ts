@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -43,9 +43,7 @@ export interface RegisterRequest {
  * Check if a given object implements the RegisterRequest interface.
  */
 export function instanceOfRegisterRequest(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+    return true;
 }
 
 export function RegisterRequestFromJSON(json: any): RegisterRequest {
@@ -53,29 +51,26 @@ export function RegisterRequestFromJSON(json: any): RegisterRequest {
 }
 
 export function RegisterRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): RegisterRequest {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'password': !exists(json, 'password') ? undefined : json['password'],
-        'password_confirmation': !exists(json, 'password_confirmation') ? undefined : json['password_confirmation'],
-        'username': !exists(json, 'username') ? undefined : json['username'],
+        'password': json['password'] == null ? undefined : json['password'],
+        'password_confirmation': json['password_confirmation'] == null ? undefined : json['password_confirmation'],
+        'username': json['username'] == null ? undefined : json['username'],
     };
 }
 
 export function RegisterRequestToJSON(value?: RegisterRequest | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'password': value.password,
-        'password_confirmation': value.password_confirmation,
-        'username': value.username,
+        'password': value['password'],
+        'password_confirmation': value['password_confirmation'],
+        'username': value['username'],
     };
 }
 

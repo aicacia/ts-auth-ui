@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { UserInfoAddress } from './UserInfoAddress';
 import {
     UserInfoAddressFromJSON,
@@ -110,9 +110,7 @@ export interface UpdateUserInfoRequest {
  * Check if a given object implements the UpdateUserInfoRequest interface.
  */
 export function instanceOfUpdateUserInfoRequest(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+    return true;
 }
 
 export function UpdateUserInfoRequestFromJSON(json: any): UpdateUserInfoRequest {
@@ -120,49 +118,46 @@ export function UpdateUserInfoRequestFromJSON(json: any): UpdateUserInfoRequest 
 }
 
 export function UpdateUserInfoRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): UpdateUserInfoRequest {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'address': !exists(json, 'address') ? undefined : UserInfoAddressFromJSON(json['address']),
-        'birthdate': !exists(json, 'birthdate') ? undefined : json['birthdate'],
-        'family_name': !exists(json, 'family_name') ? undefined : json['family_name'],
-        'gender': !exists(json, 'gender') ? undefined : json['gender'],
-        'given_name': !exists(json, 'given_name') ? undefined : json['given_name'],
-        'locale': !exists(json, 'locale') ? undefined : json['locale'],
-        'middle_name': !exists(json, 'middle_name') ? undefined : json['middle_name'],
-        'name': !exists(json, 'name') ? undefined : json['name'],
-        'nickname': !exists(json, 'nickname') ? undefined : json['nickname'],
-        'picture': !exists(json, 'picture') ? undefined : json['picture'],
-        'profile': !exists(json, 'profile') ? undefined : json['profile'],
-        'website': !exists(json, 'website') ? undefined : json['website'],
-        'zoneinfo': !exists(json, 'zoneinfo') ? undefined : json['zoneinfo'],
+        'address': json['address'] == null ? undefined : UserInfoAddressFromJSON(json['address']),
+        'birthdate': json['birthdate'] == null ? undefined : json['birthdate'],
+        'family_name': json['family_name'] == null ? undefined : json['family_name'],
+        'gender': json['gender'] == null ? undefined : json['gender'],
+        'given_name': json['given_name'] == null ? undefined : json['given_name'],
+        'locale': json['locale'] == null ? undefined : json['locale'],
+        'middle_name': json['middle_name'] == null ? undefined : json['middle_name'],
+        'name': json['name'] == null ? undefined : json['name'],
+        'nickname': json['nickname'] == null ? undefined : json['nickname'],
+        'picture': json['picture'] == null ? undefined : json['picture'],
+        'profile': json['profile'] == null ? undefined : json['profile'],
+        'website': json['website'] == null ? undefined : json['website'],
+        'zoneinfo': json['zoneinfo'] == null ? undefined : json['zoneinfo'],
     };
 }
 
 export function UpdateUserInfoRequestToJSON(value?: UpdateUserInfoRequest | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'address': UserInfoAddressToJSON(value.address),
-        'birthdate': value.birthdate,
-        'family_name': value.family_name,
-        'gender': value.gender,
-        'given_name': value.given_name,
-        'locale': value.locale,
-        'middle_name': value.middle_name,
-        'name': value.name,
-        'nickname': value.nickname,
-        'picture': value.picture,
-        'profile': value.profile,
-        'website': value.website,
-        'zoneinfo': value.zoneinfo,
+        'address': UserInfoAddressToJSON(value['address']),
+        'birthdate': value['birthdate'],
+        'family_name': value['family_name'],
+        'gender': value['gender'],
+        'given_name': value['given_name'],
+        'locale': value['locale'],
+        'middle_name': value['middle_name'],
+        'name': value['name'],
+        'nickname': value['nickname'],
+        'picture': value['picture'],
+        'profile': value['profile'],
+        'website': value['website'],
+        'zoneinfo': value['zoneinfo'],
     };
 }
 

@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { Application } from './Application';
 import {
     ApplicationFromJSON,
@@ -44,11 +44,9 @@ export interface PaginationApplication {
  * Check if a given object implements the PaginationApplication interface.
  */
 export function instanceOfPaginationApplication(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "has_more" in value;
-    isInstance = isInstance && "items" in value;
-
-    return isInstance;
+    if (!('has_more' in value)) return false;
+    if (!('items' in value)) return false;
+    return true;
 }
 
 export function PaginationApplicationFromJSON(json: any): PaginationApplication {
@@ -56,7 +54,7 @@ export function PaginationApplicationFromJSON(json: any): PaginationApplication 
 }
 
 export function PaginationApplicationFromJSONTyped(json: any, ignoreDiscriminator: boolean): PaginationApplication {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -67,16 +65,13 @@ export function PaginationApplicationFromJSONTyped(json: any, ignoreDiscriminato
 }
 
 export function PaginationApplicationToJSON(value?: PaginationApplication | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'has_more': value.has_more,
-        'items': ((value.items as Array<any>).map(ApplicationToJSON)),
+        'has_more': value['has_more'],
+        'items': ((value['items'] as Array<any>).map(ApplicationToJSON)),
     };
 }
 

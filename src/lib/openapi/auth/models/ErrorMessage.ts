@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -37,11 +37,9 @@ export interface ErrorMessage {
  * Check if a given object implements the ErrorMessage interface.
  */
 export function instanceOfErrorMessage(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "error" in value;
-    isInstance = isInstance && "parameters" in value;
-
-    return isInstance;
+    if (!('error' in value)) return false;
+    if (!('parameters' in value)) return false;
+    return true;
 }
 
 export function ErrorMessageFromJSON(json: any): ErrorMessage {
@@ -49,7 +47,7 @@ export function ErrorMessageFromJSON(json: any): ErrorMessage {
 }
 
 export function ErrorMessageFromJSONTyped(json: any, ignoreDiscriminator: boolean): ErrorMessage {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -60,16 +58,13 @@ export function ErrorMessageFromJSONTyped(json: any, ignoreDiscriminator: boolea
 }
 
 export function ErrorMessageToJSON(value?: ErrorMessage | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'error': value.error,
-        'parameters': value.parameters,
+        'error': value['error'],
+        'parameters': value['parameters'],
     };
 }
 

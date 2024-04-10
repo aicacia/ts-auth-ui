@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -31,10 +31,8 @@ export interface CreatePhoneNumber {
  * Check if a given object implements the CreatePhoneNumber interface.
  */
 export function instanceOfCreatePhoneNumber(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "phone_number" in value;
-
-    return isInstance;
+    if (!('phone_number' in value)) return false;
+    return true;
 }
 
 export function CreatePhoneNumberFromJSON(json: any): CreatePhoneNumber {
@@ -42,7 +40,7 @@ export function CreatePhoneNumberFromJSON(json: any): CreatePhoneNumber {
 }
 
 export function CreatePhoneNumberFromJSONTyped(json: any, ignoreDiscriminator: boolean): CreatePhoneNumber {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -52,15 +50,12 @@ export function CreatePhoneNumberFromJSONTyped(json: any, ignoreDiscriminator: b
 }
 
 export function CreatePhoneNumberToJSON(value?: CreatePhoneNumber | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'phone_number': value.phone_number,
+        'phone_number': value['phone_number'],
     };
 }
 

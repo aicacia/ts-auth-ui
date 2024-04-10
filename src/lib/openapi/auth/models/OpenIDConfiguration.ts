@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -109,20 +109,18 @@ export interface OpenIDConfiguration {
  * Check if a given object implements the OpenIDConfiguration interface.
  */
 export function instanceOfOpenIDConfiguration(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "claims_supported" in value;
-    isInstance = isInstance && "code_challenge_methods_supported" in value;
-    isInstance = isInstance && "grant_types_supported" in value;
-    isInstance = isInstance && "id_token_signing_alg_values_supported" in value;
-    isInstance = isInstance && "issuer" in value;
-    isInstance = isInstance && "response_types_supported" in value;
-    isInstance = isInstance && "scopes_supported" in value;
-    isInstance = isInstance && "subject_types_supported" in value;
-    isInstance = isInstance && "token_endpoint" in value;
-    isInstance = isInstance && "token_endpoint_auth_methods_supported" in value;
-    isInstance = isInstance && "userinfo_endpoint" in value;
-
-    return isInstance;
+    if (!('claims_supported' in value)) return false;
+    if (!('code_challenge_methods_supported' in value)) return false;
+    if (!('grant_types_supported' in value)) return false;
+    if (!('id_token_signing_alg_values_supported' in value)) return false;
+    if (!('issuer' in value)) return false;
+    if (!('response_types_supported' in value)) return false;
+    if (!('scopes_supported' in value)) return false;
+    if (!('subject_types_supported' in value)) return false;
+    if (!('token_endpoint' in value)) return false;
+    if (!('token_endpoint_auth_methods_supported' in value)) return false;
+    if (!('userinfo_endpoint' in value)) return false;
+    return true;
 }
 
 export function OpenIDConfigurationFromJSON(json: any): OpenIDConfiguration {
@@ -130,19 +128,19 @@ export function OpenIDConfigurationFromJSON(json: any): OpenIDConfiguration {
 }
 
 export function OpenIDConfigurationFromJSONTyped(json: any, ignoreDiscriminator: boolean): OpenIDConfiguration {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'authorization_endpoint': !exists(json, 'authorization_endpoint') ? undefined : json['authorization_endpoint'],
+        'authorization_endpoint': json['authorization_endpoint'] == null ? undefined : json['authorization_endpoint'],
         'claims_supported': json['claims_supported'],
         'code_challenge_methods_supported': json['code_challenge_methods_supported'],
         'grant_types_supported': json['grant_types_supported'],
         'id_token_signing_alg_values_supported': json['id_token_signing_alg_values_supported'],
         'issuer': json['issuer'],
-        'jwks_uri': !exists(json, 'jwks_uri') ? undefined : json['jwks_uri'],
-        'registration_endpoint': !exists(json, 'registration_endpoint') ? undefined : json['registration_endpoint'],
+        'jwks_uri': json['jwks_uri'] == null ? undefined : json['jwks_uri'],
+        'registration_endpoint': json['registration_endpoint'] == null ? undefined : json['registration_endpoint'],
         'response_types_supported': json['response_types_supported'],
         'scopes_supported': json['scopes_supported'],
         'subject_types_supported': json['subject_types_supported'],
@@ -153,28 +151,25 @@ export function OpenIDConfigurationFromJSONTyped(json: any, ignoreDiscriminator:
 }
 
 export function OpenIDConfigurationToJSON(value?: OpenIDConfiguration | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'authorization_endpoint': value.authorization_endpoint,
-        'claims_supported': value.claims_supported,
-        'code_challenge_methods_supported': value.code_challenge_methods_supported,
-        'grant_types_supported': value.grant_types_supported,
-        'id_token_signing_alg_values_supported': value.id_token_signing_alg_values_supported,
-        'issuer': value.issuer,
-        'jwks_uri': value.jwks_uri,
-        'registration_endpoint': value.registration_endpoint,
-        'response_types_supported': value.response_types_supported,
-        'scopes_supported': value.scopes_supported,
-        'subject_types_supported': value.subject_types_supported,
-        'token_endpoint': value.token_endpoint,
-        'token_endpoint_auth_methods_supported': value.token_endpoint_auth_methods_supported,
-        'userinfo_endpoint': value.userinfo_endpoint,
+        'authorization_endpoint': value['authorization_endpoint'],
+        'claims_supported': value['claims_supported'],
+        'code_challenge_methods_supported': value['code_challenge_methods_supported'],
+        'grant_types_supported': value['grant_types_supported'],
+        'id_token_signing_alg_values_supported': value['id_token_signing_alg_values_supported'],
+        'issuer': value['issuer'],
+        'jwks_uri': value['jwks_uri'],
+        'registration_endpoint': value['registration_endpoint'],
+        'response_types_supported': value['response_types_supported'],
+        'scopes_supported': value['scopes_supported'],
+        'subject_types_supported': value['subject_types_supported'],
+        'token_endpoint': value['token_endpoint'],
+        'token_endpoint_auth_methods_supported': value['token_endpoint_auth_methods_supported'],
+        'userinfo_endpoint': value['userinfo_endpoint'],
     };
 }
 

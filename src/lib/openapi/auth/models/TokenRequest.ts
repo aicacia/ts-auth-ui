@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -115,10 +115,8 @@ export interface TokenRequest {
  * Check if a given object implements the TokenRequest interface.
  */
 export function instanceOfTokenRequest(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "grant_type" in value;
-
-    return isInstance;
+    if (!('grant_type' in value)) return false;
+    return true;
 }
 
 export function TokenRequestFromJSON(json: any): TokenRequest {
@@ -126,53 +124,50 @@ export function TokenRequestFromJSON(json: any): TokenRequest {
 }
 
 export function TokenRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): TokenRequest {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'actor_token': !exists(json, 'actor_token') ? undefined : json['actor_token'],
-        'actor_token_type': !exists(json, 'actor_token_type') ? undefined : json['actor_token_type'],
-        'assertion': !exists(json, 'assertion') ? undefined : json['assertion'],
-        'audience': !exists(json, 'audience') ? undefined : json['audience'],
-        'code': !exists(json, 'code') ? undefined : json['code'],
-        'code_verifier': !exists(json, 'code_verifier') ? undefined : json['code_verifier'],
+        'actor_token': json['actor_token'] == null ? undefined : json['actor_token'],
+        'actor_token_type': json['actor_token_type'] == null ? undefined : json['actor_token_type'],
+        'assertion': json['assertion'] == null ? undefined : json['assertion'],
+        'audience': json['audience'] == null ? undefined : json['audience'],
+        'code': json['code'] == null ? undefined : json['code'],
+        'code_verifier': json['code_verifier'] == null ? undefined : json['code_verifier'],
         'grant_type': json['grant_type'],
-        'password': !exists(json, 'password') ? undefined : json['password'],
-        'refresh_token': !exists(json, 'refresh_token') ? undefined : json['refresh_token'],
-        'requested_token_type': !exists(json, 'requested_token_type') ? undefined : json['requested_token_type'],
-        'resource': !exists(json, 'resource') ? undefined : json['resource'],
-        'scope': !exists(json, 'scope') ? undefined : json['scope'],
-        'subject_token': !exists(json, 'subject_token') ? undefined : json['subject_token'],
-        'subject_token_type': !exists(json, 'subject_token_type') ? undefined : json['subject_token_type'],
-        'username': !exists(json, 'username') ? undefined : json['username'],
+        'password': json['password'] == null ? undefined : json['password'],
+        'refresh_token': json['refresh_token'] == null ? undefined : json['refresh_token'],
+        'requested_token_type': json['requested_token_type'] == null ? undefined : json['requested_token_type'],
+        'resource': json['resource'] == null ? undefined : json['resource'],
+        'scope': json['scope'] == null ? undefined : json['scope'],
+        'subject_token': json['subject_token'] == null ? undefined : json['subject_token'],
+        'subject_token_type': json['subject_token_type'] == null ? undefined : json['subject_token_type'],
+        'username': json['username'] == null ? undefined : json['username'],
     };
 }
 
 export function TokenRequestToJSON(value?: TokenRequest | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'actor_token': value.actor_token,
-        'actor_token_type': value.actor_token_type,
-        'assertion': value.assertion,
-        'audience': value.audience,
-        'code': value.code,
-        'code_verifier': value.code_verifier,
-        'grant_type': value.grant_type,
-        'password': value.password,
-        'refresh_token': value.refresh_token,
-        'requested_token_type': value.requested_token_type,
-        'resource': value.resource,
-        'scope': value.scope,
-        'subject_token': value.subject_token,
-        'subject_token_type': value.subject_token_type,
-        'username': value.username,
+        'actor_token': value['actor_token'],
+        'actor_token_type': value['actor_token_type'],
+        'assertion': value['assertion'],
+        'audience': value['audience'],
+        'code': value['code'],
+        'code_verifier': value['code_verifier'],
+        'grant_type': value['grant_type'],
+        'password': value['password'],
+        'refresh_token': value['refresh_token'],
+        'requested_token_type': value['requested_token_type'],
+        'resource': value['resource'],
+        'scope': value['scope'],
+        'subject_token': value['subject_token'],
+        'subject_token_type': value['subject_token_type'],
+        'username': value['username'],
     };
 }
 

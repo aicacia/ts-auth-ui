@@ -65,8 +65,11 @@ export class TokenApi extends runtime.BaseAPI implements TokenApiInterface {
      * Create JWT Token
      */
     async createTokenRaw(requestParameters: CreateTokenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Token>> {
-        if (requestParameters.tokenRequest === null || requestParameters.tokenRequest === undefined) {
-            throw new runtime.RequiredError('tokenRequest','Required parameter requestParameters.tokenRequest was null or undefined when calling createToken.');
+        if (requestParameters['tokenRequest'] == null) {
+            throw new runtime.RequiredError(
+                'tokenRequest',
+                'Required parameter "tokenRequest" was null or undefined when calling createToken().'
+            );
         }
 
         const queryParameters: any = {};
@@ -76,7 +79,7 @@ export class TokenApi extends runtime.BaseAPI implements TokenApiInterface {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Tenent-Id"] = this.configuration.apiKey("Tenent-Id"); // ApplicationTenentId authentication
+            headerParameters["Tenent-Id"] = await this.configuration.apiKey("Tenent-Id"); // ApplicationTenentId authentication
         }
 
         const response = await this.request({
@@ -84,7 +87,7 @@ export class TokenApi extends runtime.BaseAPI implements TokenApiInterface {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: TokenRequestToJSON(requestParameters.tokenRequest),
+            body: TokenRequestToJSON(requestParameters['tokenRequest']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => TokenFromJSON(jsonValue));

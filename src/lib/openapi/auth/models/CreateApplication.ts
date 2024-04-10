@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -55,12 +55,10 @@ export interface CreateApplication {
  * Check if a given object implements the CreateApplication interface.
  */
 export function instanceOfCreateApplication(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "description" in value;
-    isInstance = isInstance && "public_url" in value;
-    isInstance = isInstance && "uri" in value;
-
-    return isInstance;
+    if (!('description' in value)) return false;
+    if (!('public_url' in value)) return false;
+    if (!('uri' in value)) return false;
+    return true;
 }
 
 export function CreateApplicationFromJSON(json: any): CreateApplication {
@@ -68,33 +66,30 @@ export function CreateApplicationFromJSON(json: any): CreateApplication {
 }
 
 export function CreateApplicationFromJSONTyped(json: any, ignoreDiscriminator: boolean): CreateApplication {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
         'description': json['description'],
         'public_url': json['public_url'],
-        'signup_enabled': !exists(json, 'signup_enabled') ? undefined : json['signup_enabled'],
-        'signup_password': !exists(json, 'signup_password') ? undefined : json['signup_password'],
+        'signup_enabled': json['signup_enabled'] == null ? undefined : json['signup_enabled'],
+        'signup_password': json['signup_password'] == null ? undefined : json['signup_password'],
         'uri': json['uri'],
     };
 }
 
 export function CreateApplicationToJSON(value?: CreateApplication | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'description': value.description,
-        'public_url': value.public_url,
-        'signup_enabled': value.signup_enabled,
-        'signup_password': value.signup_password,
-        'uri': value.uri,
+        'description': value['description'],
+        'public_url': value['public_url'],
+        'signup_enabled': value['signup_enabled'],
+        'signup_password': value['signup_password'],
+        'uri': value['uri'],
     };
 }
 

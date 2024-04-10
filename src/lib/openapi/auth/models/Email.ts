@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -55,14 +55,12 @@ export interface Email {
  * Check if a given object implements the Email interface.
  */
 export function instanceOfEmail(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "confirmed" in value;
-    isInstance = isInstance && "created_at" in value;
-    isInstance = isInstance && "email" in value;
-    isInstance = isInstance && "id" in value;
-    isInstance = isInstance && "updated_at" in value;
-
-    return isInstance;
+    if (!('confirmed' in value)) return false;
+    if (!('created_at' in value)) return false;
+    if (!('email' in value)) return false;
+    if (!('id' in value)) return false;
+    if (!('updated_at' in value)) return false;
+    return true;
 }
 
 export function EmailFromJSON(json: any): Email {
@@ -70,7 +68,7 @@ export function EmailFromJSON(json: any): Email {
 }
 
 export function EmailFromJSONTyped(json: any, ignoreDiscriminator: boolean): Email {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -84,19 +82,16 @@ export function EmailFromJSONTyped(json: any, ignoreDiscriminator: boolean): Ema
 }
 
 export function EmailToJSON(value?: Email | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'confirmed': value.confirmed,
-        'created_at': (value.created_at.toISOString()),
-        'email': value.email,
-        'id': value.id,
-        'updated_at': (value.updated_at.toISOString()),
+        'confirmed': value['confirmed'],
+        'created_at': ((value['created_at']).toISOString()),
+        'email': value['email'],
+        'id': value['id'],
+        'updated_at': ((value['updated_at']).toISOString()),
     };
 }
 

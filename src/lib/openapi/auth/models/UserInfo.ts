@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { UserInfoAddress } from './UserInfoAddress';
 import {
     UserInfoAddressFromJSON,
@@ -134,13 +134,11 @@ export interface UserInfo {
  * Check if a given object implements the UserInfo interface.
  */
 export function instanceOfUserInfo(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "created_at" in value;
-    isInstance = isInstance && "preferred_username" in value;
-    isInstance = isInstance && "updated_at" in value;
-    isInstance = isInstance && "user_id" in value;
-
-    return isInstance;
+    if (!('created_at' in value)) return false;
+    if (!('preferred_username' in value)) return false;
+    if (!('updated_at' in value)) return false;
+    if (!('user_id' in value)) return false;
+    return true;
 }
 
 export function UserInfoFromJSON(json: any): UserInfo {
@@ -148,57 +146,54 @@ export function UserInfoFromJSON(json: any): UserInfo {
 }
 
 export function UserInfoFromJSONTyped(json: any, ignoreDiscriminator: boolean): UserInfo {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'address': !exists(json, 'address') ? undefined : UserInfoAddressFromJSON(json['address']),
-        'birthdate': !exists(json, 'birthdate') ? undefined : (new Date(json['birthdate'])),
+        'address': json['address'] == null ? undefined : UserInfoAddressFromJSON(json['address']),
+        'birthdate': json['birthdate'] == null ? undefined : (new Date(json['birthdate'])),
         'created_at': (new Date(json['created_at'])),
-        'family_name': !exists(json, 'family_name') ? undefined : json['family_name'],
-        'gender': !exists(json, 'gender') ? undefined : json['gender'],
-        'given_name': !exists(json, 'given_name') ? undefined : json['given_name'],
-        'locale': !exists(json, 'locale') ? undefined : json['locale'],
-        'middle_name': !exists(json, 'middle_name') ? undefined : json['middle_name'],
-        'name': !exists(json, 'name') ? undefined : json['name'],
-        'nickname': !exists(json, 'nickname') ? undefined : json['nickname'],
-        'picture': !exists(json, 'picture') ? undefined : json['picture'],
+        'family_name': json['family_name'] == null ? undefined : json['family_name'],
+        'gender': json['gender'] == null ? undefined : json['gender'],
+        'given_name': json['given_name'] == null ? undefined : json['given_name'],
+        'locale': json['locale'] == null ? undefined : json['locale'],
+        'middle_name': json['middle_name'] == null ? undefined : json['middle_name'],
+        'name': json['name'] == null ? undefined : json['name'],
+        'nickname': json['nickname'] == null ? undefined : json['nickname'],
+        'picture': json['picture'] == null ? undefined : json['picture'],
         'preferred_username': json['preferred_username'],
-        'profile': !exists(json, 'profile') ? undefined : json['profile'],
+        'profile': json['profile'] == null ? undefined : json['profile'],
         'updated_at': (new Date(json['updated_at'])),
         'user_id': json['user_id'],
-        'website': !exists(json, 'website') ? undefined : json['website'],
-        'zoneinfo': !exists(json, 'zoneinfo') ? undefined : json['zoneinfo'],
+        'website': json['website'] == null ? undefined : json['website'],
+        'zoneinfo': json['zoneinfo'] == null ? undefined : json['zoneinfo'],
     };
 }
 
 export function UserInfoToJSON(value?: UserInfo | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'address': UserInfoAddressToJSON(value.address),
-        'birthdate': value.birthdate === undefined ? undefined : (value.birthdate.toISOString()),
-        'created_at': (value.created_at.toISOString()),
-        'family_name': value.family_name,
-        'gender': value.gender,
-        'given_name': value.given_name,
-        'locale': value.locale,
-        'middle_name': value.middle_name,
-        'name': value.name,
-        'nickname': value.nickname,
-        'picture': value.picture,
-        'preferred_username': value.preferred_username,
-        'profile': value.profile,
-        'updated_at': (value.updated_at.toISOString()),
-        'user_id': value.user_id,
-        'website': value.website,
-        'zoneinfo': value.zoneinfo,
+        'address': UserInfoAddressToJSON(value['address']),
+        'birthdate': value['birthdate'] == null ? undefined : ((value['birthdate']).toISOString()),
+        'created_at': ((value['created_at']).toISOString()),
+        'family_name': value['family_name'],
+        'gender': value['gender'],
+        'given_name': value['given_name'],
+        'locale': value['locale'],
+        'middle_name': value['middle_name'],
+        'name': value['name'],
+        'nickname': value['nickname'],
+        'picture': value['picture'],
+        'preferred_username': value['preferred_username'],
+        'profile': value['profile'],
+        'updated_at': ((value['updated_at']).toISOString()),
+        'user_id': value['user_id'],
+        'website': value['website'],
+        'zoneinfo': value['zoneinfo'],
     };
 }
 

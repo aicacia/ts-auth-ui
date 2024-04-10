@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -37,9 +37,7 @@ export interface UpdateApplicationPermission {
  * Check if a given object implements the UpdateApplicationPermission interface.
  */
 export function instanceOfUpdateApplicationPermission(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+    return true;
 }
 
 export function UpdateApplicationPermissionFromJSON(json: any): UpdateApplicationPermission {
@@ -47,27 +45,24 @@ export function UpdateApplicationPermissionFromJSON(json: any): UpdateApplicatio
 }
 
 export function UpdateApplicationPermissionFromJSONTyped(json: any, ignoreDiscriminator: boolean): UpdateApplicationPermission {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'description': !exists(json, 'description') ? undefined : json['description'],
-        'uri': !exists(json, 'uri') ? undefined : json['uri'],
+        'description': json['description'] == null ? undefined : json['description'],
+        'uri': json['uri'] == null ? undefined : json['uri'],
     };
 }
 
 export function UpdateApplicationPermissionToJSON(value?: UpdateApplicationPermission | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'description': value.description,
-        'uri': value.uri,
+        'description': value['description'],
+        'uri': value['uri'],
     };
 }
 

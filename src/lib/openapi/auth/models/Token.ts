@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -73,16 +73,14 @@ export interface Token {
  * Check if a given object implements the Token interface.
  */
 export function instanceOfToken(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "access_token" in value;
-    isInstance = isInstance && "expires_in" in value;
-    isInstance = isInstance && "issued_token_type" in value;
-    isInstance = isInstance && "refresh_token" in value;
-    isInstance = isInstance && "refresh_token_expires_in" in value;
-    isInstance = isInstance && "scope" in value;
-    isInstance = isInstance && "token_type" in value;
-
-    return isInstance;
+    if (!('access_token' in value)) return false;
+    if (!('expires_in' in value)) return false;
+    if (!('issued_token_type' in value)) return false;
+    if (!('refresh_token' in value)) return false;
+    if (!('refresh_token_expires_in' in value)) return false;
+    if (!('scope' in value)) return false;
+    if (!('token_type' in value)) return false;
+    return true;
 }
 
 export function TokenFromJSON(json: any): Token {
@@ -90,14 +88,14 @@ export function TokenFromJSON(json: any): Token {
 }
 
 export function TokenFromJSONTyped(json: any, ignoreDiscriminator: boolean): Token {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
         'access_token': json['access_token'],
         'expires_in': json['expires_in'],
-        'id_token': !exists(json, 'id_token') ? undefined : json['id_token'],
+        'id_token': json['id_token'] == null ? undefined : json['id_token'],
         'issued_token_type': json['issued_token_type'],
         'refresh_token': json['refresh_token'],
         'refresh_token_expires_in': json['refresh_token_expires_in'],
@@ -107,22 +105,19 @@ export function TokenFromJSONTyped(json: any, ignoreDiscriminator: boolean): Tok
 }
 
 export function TokenToJSON(value?: Token | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'access_token': value.access_token,
-        'expires_in': value.expires_in,
-        'id_token': value.id_token,
-        'issued_token_type': value.issued_token_type,
-        'refresh_token': value.refresh_token,
-        'refresh_token_expires_in': value.refresh_token_expires_in,
-        'scope': value.scope,
-        'token_type': value.token_type,
+        'access_token': value['access_token'],
+        'expires_in': value['expires_in'],
+        'id_token': value['id_token'],
+        'issued_token_type': value['issued_token_type'],
+        'refresh_token': value['refresh_token'],
+        'refresh_token_expires_in': value['refresh_token_expires_in'],
+        'scope': value['scope'],
+        'token_type': value['token_type'],
     };
 }
 

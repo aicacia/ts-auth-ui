@@ -65,8 +65,11 @@ export class RegisterApi extends runtime.BaseAPI implements RegisterApiInterface
      * Register as a new user
      */
     async registerUserRaw(requestParameters: RegisterUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Token>> {
-        if (requestParameters.registerRequest === null || requestParameters.registerRequest === undefined) {
-            throw new runtime.RequiredError('registerRequest','Required parameter requestParameters.registerRequest was null or undefined when calling registerUser.');
+        if (requestParameters['registerRequest'] == null) {
+            throw new runtime.RequiredError(
+                'registerRequest',
+                'Required parameter "registerRequest" was null or undefined when calling registerUser().'
+            );
         }
 
         const queryParameters: any = {};
@@ -76,7 +79,7 @@ export class RegisterApi extends runtime.BaseAPI implements RegisterApiInterface
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Tenent-Id"] = this.configuration.apiKey("Tenent-Id"); // ApplicationTenentId authentication
+            headerParameters["Tenent-Id"] = await this.configuration.apiKey("Tenent-Id"); // ApplicationTenentId authentication
         }
 
         const response = await this.request({
@@ -84,7 +87,7 @@ export class RegisterApi extends runtime.BaseAPI implements RegisterApiInterface
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: RegisterRequestToJSON(requestParameters.registerRequest),
+            body: RegisterRequestToJSON(requestParameters['registerRequest']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => TokenFromJSON(jsonValue));

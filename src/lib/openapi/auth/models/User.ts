@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { Email } from './Email';
 import {
     EmailFromJSON,
@@ -86,15 +86,13 @@ export interface User {
  * Check if a given object implements the User interface.
  */
 export function instanceOfUser(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "created_at" in value;
-    isInstance = isInstance && "emails" in value;
-    isInstance = isInstance && "id" in value;
-    isInstance = isInstance && "phone_numbers" in value;
-    isInstance = isInstance && "updated_at" in value;
-    isInstance = isInstance && "username" in value;
-
-    return isInstance;
+    if (!('created_at' in value)) return false;
+    if (!('emails' in value)) return false;
+    if (!('id' in value)) return false;
+    if (!('phone_numbers' in value)) return false;
+    if (!('updated_at' in value)) return false;
+    if (!('username' in value)) return false;
+    return true;
 }
 
 export function UserFromJSON(json: any): User {
@@ -102,16 +100,16 @@ export function UserFromJSON(json: any): User {
 }
 
 export function UserFromJSONTyped(json: any, ignoreDiscriminator: boolean): User {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
         'created_at': (new Date(json['created_at'])),
-        'email': !exists(json, 'email') ? undefined : EmailFromJSON(json['email']),
+        'email': json['email'] == null ? undefined : EmailFromJSON(json['email']),
         'emails': ((json['emails'] as Array<any>).map(EmailFromJSON)),
         'id': json['id'],
-        'phone_number': !exists(json, 'phone_number') ? undefined : PhoneNumberFromJSON(json['phone_number']),
+        'phone_number': json['phone_number'] == null ? undefined : PhoneNumberFromJSON(json['phone_number']),
         'phone_numbers': ((json['phone_numbers'] as Array<any>).map(PhoneNumberFromJSON)),
         'updated_at': (new Date(json['updated_at'])),
         'username': json['username'],
@@ -119,22 +117,19 @@ export function UserFromJSONTyped(json: any, ignoreDiscriminator: boolean): User
 }
 
 export function UserToJSON(value?: User | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'created_at': (value.created_at.toISOString()),
-        'email': EmailToJSON(value.email),
-        'emails': ((value.emails as Array<any>).map(EmailToJSON)),
-        'id': value.id,
-        'phone_number': PhoneNumberToJSON(value.phone_number),
-        'phone_numbers': ((value.phone_numbers as Array<any>).map(PhoneNumberToJSON)),
-        'updated_at': (value.updated_at.toISOString()),
-        'username': value.username,
+        'created_at': ((value['created_at']).toISOString()),
+        'email': EmailToJSON(value['email']),
+        'emails': ((value['emails'] as Array<any>).map(EmailToJSON)),
+        'id': value['id'],
+        'phone_number': PhoneNumberToJSON(value['phone_number']),
+        'phone_numbers': ((value['phone_numbers'] as Array<any>).map(PhoneNumberToJSON)),
+        'updated_at': ((value['updated_at']).toISOString()),
+        'username': value['username'],
     };
 }
 

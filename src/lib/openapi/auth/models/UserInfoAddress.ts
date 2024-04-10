@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -55,9 +55,7 @@ export interface UserInfoAddress {
  * Check if a given object implements the UserInfoAddress interface.
  */
 export function instanceOfUserInfoAddress(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+    return true;
 }
 
 export function UserInfoAddressFromJSON(json: any): UserInfoAddress {
@@ -65,33 +63,30 @@ export function UserInfoAddressFromJSON(json: any): UserInfoAddress {
 }
 
 export function UserInfoAddressFromJSONTyped(json: any, ignoreDiscriminator: boolean): UserInfoAddress {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'country': !exists(json, 'country') ? undefined : json['country'],
-        'locality': !exists(json, 'locality') ? undefined : json['locality'],
-        'postal_code': !exists(json, 'postal_code') ? undefined : json['postal_code'],
-        'region': !exists(json, 'region') ? undefined : json['region'],
-        'street_address': !exists(json, 'street_address') ? undefined : json['street_address'],
+        'country': json['country'] == null ? undefined : json['country'],
+        'locality': json['locality'] == null ? undefined : json['locality'],
+        'postal_code': json['postal_code'] == null ? undefined : json['postal_code'],
+        'region': json['region'] == null ? undefined : json['region'],
+        'street_address': json['street_address'] == null ? undefined : json['street_address'],
     };
 }
 
 export function UserInfoAddressToJSON(value?: UserInfoAddress | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'country': value.country,
-        'locality': value.locality,
-        'postal_code': value.postal_code,
-        'region': value.region,
-        'street_address': value.street_address,
+        'country': value['country'],
+        'locality': value['locality'],
+        'postal_code': value['postal_code'],
+        'region': value['region'],
+        'street_address': value['street_address'],
     };
 }
 

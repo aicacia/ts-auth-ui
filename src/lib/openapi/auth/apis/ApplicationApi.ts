@@ -22,6 +22,7 @@ import type {
   CreateApplicationPermission,
   CreateApplicationTenent,
   Errors,
+  ModelApplicationConfigST,
   PaginationApplication,
   PaginationApplicationTenent,
   UpdateApplication,
@@ -43,6 +44,8 @@ import {
     CreateApplicationTenentToJSON,
     ErrorsFromJSON,
     ErrorsToJSON,
+    ModelApplicationConfigSTFromJSON,
+    ModelApplicationConfigSTToJSON,
     PaginationApplicationFromJSON,
     PaginationApplicationToJSON,
     PaginationApplicationTenentFromJSON,
@@ -63,6 +66,10 @@ export interface AddApplicationPermissionToUserRequest {
 
 export interface ApplicationByIdRequest {
     id: number;
+}
+
+export interface ApplicationConfigRequest {
+    applicationId: number;
 }
 
 export interface ApplicationPermissionByIdRequest {
@@ -179,6 +186,21 @@ export interface ApplicationApiInterface {
      * Get application by id
      */
     applicationById(id: number, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Application>;
+
+    /**
+     * 
+     * @summary Get application config
+     * @param {number} applicationId application id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ApplicationApiInterface
+     */
+    applicationConfigRaw(requestParameters: ApplicationConfigRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ModelApplicationConfigST>>;
+
+    /**
+     * Get application config
+     */
+    applicationConfig(applicationId: number, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ModelApplicationConfigST>;
 
     /**
      * 
@@ -432,16 +454,25 @@ export class ApplicationApi extends runtime.BaseAPI implements ApplicationApiInt
      * Add permission to user
      */
     async addApplicationPermissionToUserRaw(requestParameters: AddApplicationPermissionToUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.applicationId === null || requestParameters.applicationId === undefined) {
-            throw new runtime.RequiredError('applicationId','Required parameter requestParameters.applicationId was null or undefined when calling addApplicationPermissionToUser.');
+        if (requestParameters['applicationId'] == null) {
+            throw new runtime.RequiredError(
+                'applicationId',
+                'Required parameter "applicationId" was null or undefined when calling addApplicationPermissionToUser().'
+            );
         }
 
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling addApplicationPermissionToUser.');
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling addApplicationPermissionToUser().'
+            );
         }
 
-        if (requestParameters.userId === null || requestParameters.userId === undefined) {
-            throw new runtime.RequiredError('userId','Required parameter requestParameters.userId was null or undefined when calling addApplicationPermissionToUser.');
+        if (requestParameters['userId'] == null) {
+            throw new runtime.RequiredError(
+                'userId',
+                'Required parameter "userId" was null or undefined when calling addApplicationPermissionToUser().'
+            );
         }
 
         const queryParameters: any = {};
@@ -449,11 +480,11 @@ export class ApplicationApi extends runtime.BaseAPI implements ApplicationApiInt
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
+            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // Authorization authentication
         }
 
         const response = await this.request({
-            path: `/applications/{applicationId}/permissions/{id}/add-user/{userId}`.replace(`{${"applicationId"}}`, encodeURIComponent(String(requestParameters.applicationId))).replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))).replace(`{${"userId"}}`, encodeURIComponent(String(requestParameters.userId))),
+            path: `/applications/{applicationId}/permissions/{id}/add-user/{userId}`.replace(`{${"applicationId"}}`, encodeURIComponent(String(requestParameters['applicationId']))).replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id']))).replace(`{${"userId"}}`, encodeURIComponent(String(requestParameters['userId']))),
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
@@ -473,8 +504,11 @@ export class ApplicationApi extends runtime.BaseAPI implements ApplicationApiInt
      * Get application by id
      */
     async applicationByIdRaw(requestParameters: ApplicationByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Application>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling applicationById.');
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling applicationById().'
+            );
         }
 
         const queryParameters: any = {};
@@ -482,11 +516,11 @@ export class ApplicationApi extends runtime.BaseAPI implements ApplicationApiInt
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
+            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // Authorization authentication
         }
 
         const response = await this.request({
-            path: `/applications/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/applications/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id']))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -504,15 +538,14 @@ export class ApplicationApi extends runtime.BaseAPI implements ApplicationApiInt
     }
 
     /**
-     * Get application permission by id
+     * Get application config
      */
-    async applicationPermissionByIdRaw(requestParameters: ApplicationPermissionByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ApplicationPermission>> {
-        if (requestParameters.applicationId === null || requestParameters.applicationId === undefined) {
-            throw new runtime.RequiredError('applicationId','Required parameter requestParameters.applicationId was null or undefined when calling applicationPermissionById.');
-        }
-
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling applicationPermissionById.');
+    async applicationConfigRaw(requestParameters: ApplicationConfigRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ModelApplicationConfigST>> {
+        if (requestParameters['applicationId'] == null) {
+            throw new runtime.RequiredError(
+                'applicationId',
+                'Required parameter "applicationId" was null or undefined when calling applicationConfig().'
+            );
         }
 
         const queryParameters: any = {};
@@ -520,11 +553,55 @@ export class ApplicationApi extends runtime.BaseAPI implements ApplicationApiInt
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
+            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // Authorization authentication
         }
 
         const response = await this.request({
-            path: `/applications/{applicationId}/permissions/{id}`.replace(`{${"applicationId"}}`, encodeURIComponent(String(requestParameters.applicationId))).replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/applications/{applicationId}/config`.replace(`{${"applicationId"}}`, encodeURIComponent(String(requestParameters['applicationId']))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => ModelApplicationConfigSTFromJSON(jsonValue));
+    }
+
+    /**
+     * Get application config
+     */
+    async applicationConfig(applicationId: number, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ModelApplicationConfigST> {
+        const response = await this.applicationConfigRaw({ applicationId: applicationId }, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get application permission by id
+     */
+    async applicationPermissionByIdRaw(requestParameters: ApplicationPermissionByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ApplicationPermission>> {
+        if (requestParameters['applicationId'] == null) {
+            throw new runtime.RequiredError(
+                'applicationId',
+                'Required parameter "applicationId" was null or undefined when calling applicationPermissionById().'
+            );
+        }
+
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling applicationPermissionById().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // Authorization authentication
+        }
+
+        const response = await this.request({
+            path: `/applications/{applicationId}/permissions/{id}`.replace(`{${"applicationId"}}`, encodeURIComponent(String(requestParameters['applicationId']))).replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id']))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -545,8 +622,11 @@ export class ApplicationApi extends runtime.BaseAPI implements ApplicationApiInt
      * Get application permissions
      */
     async applicationPermissionsRaw(requestParameters: ApplicationPermissionsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<ApplicationPermission>>> {
-        if (requestParameters.applicationId === null || requestParameters.applicationId === undefined) {
-            throw new runtime.RequiredError('applicationId','Required parameter requestParameters.applicationId was null or undefined when calling applicationPermissions.');
+        if (requestParameters['applicationId'] == null) {
+            throw new runtime.RequiredError(
+                'applicationId',
+                'Required parameter "applicationId" was null or undefined when calling applicationPermissions().'
+            );
         }
 
         const queryParameters: any = {};
@@ -554,11 +634,11 @@ export class ApplicationApi extends runtime.BaseAPI implements ApplicationApiInt
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
+            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // Authorization authentication
         }
 
         const response = await this.request({
-            path: `/applications/{applicationId}/permissions`.replace(`{${"applicationId"}}`, encodeURIComponent(String(requestParameters.applicationId))),
+            path: `/applications/{applicationId}/permissions`.replace(`{${"applicationId"}}`, encodeURIComponent(String(requestParameters['applicationId']))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -579,12 +659,18 @@ export class ApplicationApi extends runtime.BaseAPI implements ApplicationApiInt
      * Get application tenent by id
      */
     async applicationTenentByIdRaw(requestParameters: ApplicationTenentByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ApplicationTenent>> {
-        if (requestParameters.applicationId === null || requestParameters.applicationId === undefined) {
-            throw new runtime.RequiredError('applicationId','Required parameter requestParameters.applicationId was null or undefined when calling applicationTenentById.');
+        if (requestParameters['applicationId'] == null) {
+            throw new runtime.RequiredError(
+                'applicationId',
+                'Required parameter "applicationId" was null or undefined when calling applicationTenentById().'
+            );
         }
 
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling applicationTenentById.');
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling applicationTenentById().'
+            );
         }
 
         const queryParameters: any = {};
@@ -592,11 +678,11 @@ export class ApplicationApi extends runtime.BaseAPI implements ApplicationApiInt
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
+            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // Authorization authentication
         }
 
         const response = await this.request({
-            path: `/applications/{applicationId}/tenents/{id}`.replace(`{${"applicationId"}}`, encodeURIComponent(String(requestParameters.applicationId))).replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/applications/{applicationId}/tenents/{id}`.replace(`{${"applicationId"}}`, encodeURIComponent(String(requestParameters['applicationId']))).replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id']))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -617,28 +703,31 @@ export class ApplicationApi extends runtime.BaseAPI implements ApplicationApiInt
      * Get application tenents
      */
     async applicationTenentsRaw(requestParameters: ApplicationTenentsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PaginationApplicationTenent>> {
-        if (requestParameters.applicationId === null || requestParameters.applicationId === undefined) {
-            throw new runtime.RequiredError('applicationId','Required parameter requestParameters.applicationId was null or undefined when calling applicationTenents.');
+        if (requestParameters['applicationId'] == null) {
+            throw new runtime.RequiredError(
+                'applicationId',
+                'Required parameter "applicationId" was null or undefined when calling applicationTenents().'
+            );
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters.limit !== undefined) {
-            queryParameters['limit'] = requestParameters.limit;
+        if (requestParameters['limit'] != null) {
+            queryParameters['limit'] = requestParameters['limit'];
         }
 
-        if (requestParameters.offset !== undefined) {
-            queryParameters['offset'] = requestParameters.offset;
+        if (requestParameters['offset'] != null) {
+            queryParameters['offset'] = requestParameters['offset'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
+            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // Authorization authentication
         }
 
         const response = await this.request({
-            path: `/applications/{applicationId}/tenents`.replace(`{${"applicationId"}}`, encodeURIComponent(String(requestParameters.applicationId))),
+            path: `/applications/{applicationId}/tenents`.replace(`{${"applicationId"}}`, encodeURIComponent(String(requestParameters['applicationId']))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -661,18 +750,18 @@ export class ApplicationApi extends runtime.BaseAPI implements ApplicationApiInt
     async applicationsRaw(requestParameters: ApplicationsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PaginationApplication>> {
         const queryParameters: any = {};
 
-        if (requestParameters.limit !== undefined) {
-            queryParameters['limit'] = requestParameters.limit;
+        if (requestParameters['limit'] != null) {
+            queryParameters['limit'] = requestParameters['limit'];
         }
 
-        if (requestParameters.offset !== undefined) {
-            queryParameters['offset'] = requestParameters.offset;
+        if (requestParameters['offset'] != null) {
+            queryParameters['offset'] = requestParameters['offset'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
+            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // Authorization authentication
         }
 
         const response = await this.request({
@@ -697,8 +786,11 @@ export class ApplicationApi extends runtime.BaseAPI implements ApplicationApiInt
      * Create application
      */
     async createApplicationRaw(requestParameters: CreateApplicationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Application>> {
-        if (requestParameters.application === null || requestParameters.application === undefined) {
-            throw new runtime.RequiredError('application','Required parameter requestParameters.application was null or undefined when calling createApplication.');
+        if (requestParameters['application'] == null) {
+            throw new runtime.RequiredError(
+                'application',
+                'Required parameter "application" was null or undefined when calling createApplication().'
+            );
         }
 
         const queryParameters: any = {};
@@ -708,7 +800,7 @@ export class ApplicationApi extends runtime.BaseAPI implements ApplicationApiInt
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
+            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // Authorization authentication
         }
 
         const response = await this.request({
@@ -716,7 +808,7 @@ export class ApplicationApi extends runtime.BaseAPI implements ApplicationApiInt
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: CreateApplicationToJSON(requestParameters.application),
+            body: CreateApplicationToJSON(requestParameters['application']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => ApplicationFromJSON(jsonValue));
@@ -734,12 +826,18 @@ export class ApplicationApi extends runtime.BaseAPI implements ApplicationApiInt
      * Create application permission
      */
     async createApplicationPermissionRaw(requestParameters: CreateApplicationPermissionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ApplicationPermission>> {
-        if (requestParameters.applicationId === null || requestParameters.applicationId === undefined) {
-            throw new runtime.RequiredError('applicationId','Required parameter requestParameters.applicationId was null or undefined when calling createApplicationPermission.');
+        if (requestParameters['applicationId'] == null) {
+            throw new runtime.RequiredError(
+                'applicationId',
+                'Required parameter "applicationId" was null or undefined when calling createApplicationPermission().'
+            );
         }
 
-        if (requestParameters.application === null || requestParameters.application === undefined) {
-            throw new runtime.RequiredError('application','Required parameter requestParameters.application was null or undefined when calling createApplicationPermission.');
+        if (requestParameters['application'] == null) {
+            throw new runtime.RequiredError(
+                'application',
+                'Required parameter "application" was null or undefined when calling createApplicationPermission().'
+            );
         }
 
         const queryParameters: any = {};
@@ -749,15 +847,15 @@ export class ApplicationApi extends runtime.BaseAPI implements ApplicationApiInt
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
+            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // Authorization authentication
         }
 
         const response = await this.request({
-            path: `/applications/{applicationId}/permissions`.replace(`{${"applicationId"}}`, encodeURIComponent(String(requestParameters.applicationId))),
+            path: `/applications/{applicationId}/permissions`.replace(`{${"applicationId"}}`, encodeURIComponent(String(requestParameters['applicationId']))),
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: CreateApplicationPermissionToJSON(requestParameters.application),
+            body: CreateApplicationPermissionToJSON(requestParameters['application']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => ApplicationPermissionFromJSON(jsonValue));
@@ -775,12 +873,18 @@ export class ApplicationApi extends runtime.BaseAPI implements ApplicationApiInt
      * Create application tenent
      */
     async createApplicationTenentRaw(requestParameters: CreateApplicationTenentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ApplicationTenent>> {
-        if (requestParameters.applicationId === null || requestParameters.applicationId === undefined) {
-            throw new runtime.RequiredError('applicationId','Required parameter requestParameters.applicationId was null or undefined when calling createApplicationTenent.');
+        if (requestParameters['applicationId'] == null) {
+            throw new runtime.RequiredError(
+                'applicationId',
+                'Required parameter "applicationId" was null or undefined when calling createApplicationTenent().'
+            );
         }
 
-        if (requestParameters.application === null || requestParameters.application === undefined) {
-            throw new runtime.RequiredError('application','Required parameter requestParameters.application was null or undefined when calling createApplicationTenent.');
+        if (requestParameters['application'] == null) {
+            throw new runtime.RequiredError(
+                'application',
+                'Required parameter "application" was null or undefined when calling createApplicationTenent().'
+            );
         }
 
         const queryParameters: any = {};
@@ -790,15 +894,15 @@ export class ApplicationApi extends runtime.BaseAPI implements ApplicationApiInt
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
+            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // Authorization authentication
         }
 
         const response = await this.request({
-            path: `/applications/{applicationId}/tenents`.replace(`{${"applicationId"}}`, encodeURIComponent(String(requestParameters.applicationId))),
+            path: `/applications/{applicationId}/tenents`.replace(`{${"applicationId"}}`, encodeURIComponent(String(requestParameters['applicationId']))),
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: CreateApplicationTenentToJSON(requestParameters.application),
+            body: CreateApplicationTenentToJSON(requestParameters['application']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => ApplicationTenentFromJSON(jsonValue));
@@ -816,8 +920,11 @@ export class ApplicationApi extends runtime.BaseAPI implements ApplicationApiInt
      * Delete application
      */
     async deleteApplicationRaw(requestParameters: DeleteApplicationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deleteApplication.');
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling deleteApplication().'
+            );
         }
 
         const queryParameters: any = {};
@@ -825,11 +932,11 @@ export class ApplicationApi extends runtime.BaseAPI implements ApplicationApiInt
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
+            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // Authorization authentication
         }
 
         const response = await this.request({
-            path: `/applications/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/applications/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id']))),
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
@@ -849,12 +956,18 @@ export class ApplicationApi extends runtime.BaseAPI implements ApplicationApiInt
      * Delete application permission
      */
     async deleteApplicationPermissionRaw(requestParameters: DeleteApplicationPermissionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.applicationId === null || requestParameters.applicationId === undefined) {
-            throw new runtime.RequiredError('applicationId','Required parameter requestParameters.applicationId was null or undefined when calling deleteApplicationPermission.');
+        if (requestParameters['applicationId'] == null) {
+            throw new runtime.RequiredError(
+                'applicationId',
+                'Required parameter "applicationId" was null or undefined when calling deleteApplicationPermission().'
+            );
         }
 
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deleteApplicationPermission.');
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling deleteApplicationPermission().'
+            );
         }
 
         const queryParameters: any = {};
@@ -862,11 +975,11 @@ export class ApplicationApi extends runtime.BaseAPI implements ApplicationApiInt
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
+            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // Authorization authentication
         }
 
         const response = await this.request({
-            path: `/applications/{applicationId}/permissions/{id}`.replace(`{${"applicationId"}}`, encodeURIComponent(String(requestParameters.applicationId))).replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/applications/{applicationId}/permissions/{id}`.replace(`{${"applicationId"}}`, encodeURIComponent(String(requestParameters['applicationId']))).replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id']))),
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
@@ -886,12 +999,18 @@ export class ApplicationApi extends runtime.BaseAPI implements ApplicationApiInt
      * Delete application tenent
      */
     async deleteApplicationTenentRaw(requestParameters: DeleteApplicationTenentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.applicationId === null || requestParameters.applicationId === undefined) {
-            throw new runtime.RequiredError('applicationId','Required parameter requestParameters.applicationId was null or undefined when calling deleteApplicationTenent.');
+        if (requestParameters['applicationId'] == null) {
+            throw new runtime.RequiredError(
+                'applicationId',
+                'Required parameter "applicationId" was null or undefined when calling deleteApplicationTenent().'
+            );
         }
 
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deleteApplicationTenent.');
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling deleteApplicationTenent().'
+            );
         }
 
         const queryParameters: any = {};
@@ -899,11 +1018,11 @@ export class ApplicationApi extends runtime.BaseAPI implements ApplicationApiInt
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
+            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // Authorization authentication
         }
 
         const response = await this.request({
-            path: `/applications/{applicationId}/tenents/{id}`.replace(`{${"applicationId"}}`, encodeURIComponent(String(requestParameters.applicationId))).replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/applications/{applicationId}/tenents/{id}`.replace(`{${"applicationId"}}`, encodeURIComponent(String(requestParameters['applicationId']))).replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id']))),
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
@@ -923,16 +1042,25 @@ export class ApplicationApi extends runtime.BaseAPI implements ApplicationApiInt
      * Remove permission from user
      */
     async removeApplicationPermissionFromUserRaw(requestParameters: RemoveApplicationPermissionFromUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.applicationId === null || requestParameters.applicationId === undefined) {
-            throw new runtime.RequiredError('applicationId','Required parameter requestParameters.applicationId was null or undefined when calling removeApplicationPermissionFromUser.');
+        if (requestParameters['applicationId'] == null) {
+            throw new runtime.RequiredError(
+                'applicationId',
+                'Required parameter "applicationId" was null or undefined when calling removeApplicationPermissionFromUser().'
+            );
         }
 
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling removeApplicationPermissionFromUser.');
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling removeApplicationPermissionFromUser().'
+            );
         }
 
-        if (requestParameters.userId === null || requestParameters.userId === undefined) {
-            throw new runtime.RequiredError('userId','Required parameter requestParameters.userId was null or undefined when calling removeApplicationPermissionFromUser.');
+        if (requestParameters['userId'] == null) {
+            throw new runtime.RequiredError(
+                'userId',
+                'Required parameter "userId" was null or undefined when calling removeApplicationPermissionFromUser().'
+            );
         }
 
         const queryParameters: any = {};
@@ -940,11 +1068,11 @@ export class ApplicationApi extends runtime.BaseAPI implements ApplicationApiInt
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
+            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // Authorization authentication
         }
 
         const response = await this.request({
-            path: `/applications/{applicationId}/permissions/{id}/remove-user/{userId}`.replace(`{${"applicationId"}}`, encodeURIComponent(String(requestParameters.applicationId))).replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))).replace(`{${"userId"}}`, encodeURIComponent(String(requestParameters.userId))),
+            path: `/applications/{applicationId}/permissions/{id}/remove-user/{userId}`.replace(`{${"applicationId"}}`, encodeURIComponent(String(requestParameters['applicationId']))).replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id']))).replace(`{${"userId"}}`, encodeURIComponent(String(requestParameters['userId']))),
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
@@ -964,12 +1092,18 @@ export class ApplicationApi extends runtime.BaseAPI implements ApplicationApiInt
      * Update application
      */
     async updateApplicationRaw(requestParameters: UpdateApplicationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Application>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling updateApplication.');
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling updateApplication().'
+            );
         }
 
-        if (requestParameters.application === null || requestParameters.application === undefined) {
-            throw new runtime.RequiredError('application','Required parameter requestParameters.application was null or undefined when calling updateApplication.');
+        if (requestParameters['application'] == null) {
+            throw new runtime.RequiredError(
+                'application',
+                'Required parameter "application" was null or undefined when calling updateApplication().'
+            );
         }
 
         const queryParameters: any = {};
@@ -979,15 +1113,15 @@ export class ApplicationApi extends runtime.BaseAPI implements ApplicationApiInt
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
+            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // Authorization authentication
         }
 
         const response = await this.request({
-            path: `/applications/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/applications/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id']))),
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
-            body: UpdateApplicationToJSON(requestParameters.application),
+            body: UpdateApplicationToJSON(requestParameters['application']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => ApplicationFromJSON(jsonValue));
@@ -1005,16 +1139,25 @@ export class ApplicationApi extends runtime.BaseAPI implements ApplicationApiInt
      * Update application permission
      */
     async updateApplicationPermissionRaw(requestParameters: UpdateApplicationPermissionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ApplicationPermission>> {
-        if (requestParameters.applicationId === null || requestParameters.applicationId === undefined) {
-            throw new runtime.RequiredError('applicationId','Required parameter requestParameters.applicationId was null or undefined when calling updateApplicationPermission.');
+        if (requestParameters['applicationId'] == null) {
+            throw new runtime.RequiredError(
+                'applicationId',
+                'Required parameter "applicationId" was null or undefined when calling updateApplicationPermission().'
+            );
         }
 
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling updateApplicationPermission.');
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling updateApplicationPermission().'
+            );
         }
 
-        if (requestParameters.application === null || requestParameters.application === undefined) {
-            throw new runtime.RequiredError('application','Required parameter requestParameters.application was null or undefined when calling updateApplicationPermission.');
+        if (requestParameters['application'] == null) {
+            throw new runtime.RequiredError(
+                'application',
+                'Required parameter "application" was null or undefined when calling updateApplicationPermission().'
+            );
         }
 
         const queryParameters: any = {};
@@ -1024,15 +1167,15 @@ export class ApplicationApi extends runtime.BaseAPI implements ApplicationApiInt
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
+            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // Authorization authentication
         }
 
         const response = await this.request({
-            path: `/applications/{applicationId}/permissions/{id}`.replace(`{${"applicationId"}}`, encodeURIComponent(String(requestParameters.applicationId))).replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/applications/{applicationId}/permissions/{id}`.replace(`{${"applicationId"}}`, encodeURIComponent(String(requestParameters['applicationId']))).replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id']))),
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
-            body: UpdateApplicationPermissionToJSON(requestParameters.application),
+            body: UpdateApplicationPermissionToJSON(requestParameters['application']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => ApplicationPermissionFromJSON(jsonValue));
@@ -1050,16 +1193,25 @@ export class ApplicationApi extends runtime.BaseAPI implements ApplicationApiInt
      * Update application tenent
      */
     async updateApplicationTenentRaw(requestParameters: UpdateApplicationTenentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ApplicationTenent>> {
-        if (requestParameters.applicationId === null || requestParameters.applicationId === undefined) {
-            throw new runtime.RequiredError('applicationId','Required parameter requestParameters.applicationId was null or undefined when calling updateApplicationTenent.');
+        if (requestParameters['applicationId'] == null) {
+            throw new runtime.RequiredError(
+                'applicationId',
+                'Required parameter "applicationId" was null or undefined when calling updateApplicationTenent().'
+            );
         }
 
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling updateApplicationTenent.');
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling updateApplicationTenent().'
+            );
         }
 
-        if (requestParameters.application === null || requestParameters.application === undefined) {
-            throw new runtime.RequiredError('application','Required parameter requestParameters.application was null or undefined when calling updateApplicationTenent.');
+        if (requestParameters['application'] == null) {
+            throw new runtime.RequiredError(
+                'application',
+                'Required parameter "application" was null or undefined when calling updateApplicationTenent().'
+            );
         }
 
         const queryParameters: any = {};
@@ -1069,15 +1221,15 @@ export class ApplicationApi extends runtime.BaseAPI implements ApplicationApiInt
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Authorization authentication
+            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // Authorization authentication
         }
 
         const response = await this.request({
-            path: `/applications/{applicationId}/tenents/{id}`.replace(`{${"applicationId"}}`, encodeURIComponent(String(requestParameters.applicationId))).replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/applications/{applicationId}/tenents/{id}`.replace(`{${"applicationId"}}`, encodeURIComponent(String(requestParameters['applicationId']))).replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id']))),
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
-            body: UpdateApplicationTenentToJSON(requestParameters.application),
+            body: UpdateApplicationTenentToJSON(requestParameters['application']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => ApplicationTenentFromJSON(jsonValue));

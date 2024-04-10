@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -31,10 +31,8 @@ export interface CreateUser {
  * Check if a given object implements the CreateUser interface.
  */
 export function instanceOfCreateUser(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "username" in value;
-
-    return isInstance;
+    if (!('username' in value)) return false;
+    return true;
 }
 
 export function CreateUserFromJSON(json: any): CreateUser {
@@ -42,7 +40,7 @@ export function CreateUserFromJSON(json: any): CreateUser {
 }
 
 export function CreateUserFromJSONTyped(json: any, ignoreDiscriminator: boolean): CreateUser {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -52,15 +50,12 @@ export function CreateUserFromJSONTyped(json: any, ignoreDiscriminator: boolean)
 }
 
 export function CreateUserToJSON(value?: CreateUser | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'username': value.username,
+        'username': value['username'],
     };
 }
 
