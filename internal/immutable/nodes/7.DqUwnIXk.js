@@ -1,0 +1,1 @@
+import{b as e}from"../chunks/paths.BVXwFHBQ.js";import{r as o}from"../chunks/index.De_1-CT6.js";const s=async r=>{const{user:a}=await r.parent();a.permissions.includes("admin")?o(302,`${e}/applications`):o(302,`${e}/profile`)},n=Object.freeze(Object.defineProperty({__proto__:null,load:s},Symbol.toStringTag,{value:"Module"}));export{n as universal};
