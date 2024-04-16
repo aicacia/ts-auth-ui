@@ -66,6 +66,12 @@ export interface TokenRequest {
      * @type {string}
      * @memberof TokenRequest
      */
+    key?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof TokenRequest
+     */
     password?: string;
     /**
      * 
@@ -91,6 +97,12 @@ export interface TokenRequest {
      * @memberof TokenRequest
      */
     scope?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof TokenRequest
+     */
+    secret?: string;
     /**
      * 
      * @type {string}
@@ -136,11 +148,13 @@ export function TokenRequestFromJSONTyped(json: any, ignoreDiscriminator: boolea
         'code': json['code'] == null ? undefined : json['code'],
         'code_verifier': json['code_verifier'] == null ? undefined : json['code_verifier'],
         'grant_type': json['grant_type'],
+        'key': json['key'] == null ? undefined : json['key'],
         'password': json['password'] == null ? undefined : json['password'],
         'refresh_token': json['refresh_token'] == null ? undefined : json['refresh_token'],
         'requested_token_type': json['requested_token_type'] == null ? undefined : json['requested_token_type'],
         'resource': json['resource'] == null ? undefined : json['resource'],
         'scope': json['scope'] == null ? undefined : json['scope'],
+        'secret': json['secret'] == null ? undefined : json['secret'],
         'subject_token': json['subject_token'] == null ? undefined : json['subject_token'],
         'subject_token_type': json['subject_token_type'] == null ? undefined : json['subject_token_type'],
         'username': json['username'] == null ? undefined : json['username'],
@@ -160,11 +174,13 @@ export function TokenRequestToJSON(value?: TokenRequest | null): any {
         'code': value['code'],
         'code_verifier': value['code_verifier'],
         'grant_type': value['grant_type'],
+        'key': value['key'],
         'password': value['password'],
         'refresh_token': value['refresh_token'],
         'requested_token_type': value['requested_token_type'],
         'resource': value['resource'],
         'scope': value['scope'],
+        'secret': value['secret'],
         'subject_token': value['subject_token'],
         'subject_token_type': value['subject_token_type'],
         'username': value['username'],

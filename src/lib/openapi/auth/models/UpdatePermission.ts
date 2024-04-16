@@ -16,35 +16,35 @@ import { mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface UpdateApplicationPermission
+ * @interface UpdatePermission
  */
-export interface UpdateApplicationPermission {
+export interface UpdatePermission {
     /**
      * 
      * @type {string}
-     * @memberof UpdateApplicationPermission
+     * @memberof UpdatePermission
      */
     description?: string;
     /**
      * 
      * @type {string}
-     * @memberof UpdateApplicationPermission
+     * @memberof UpdatePermission
      */
     uri?: string;
 }
 
 /**
- * Check if a given object implements the UpdateApplicationPermission interface.
+ * Check if a given object implements the UpdatePermission interface.
  */
-export function instanceOfUpdateApplicationPermission(value: object): boolean {
+export function instanceOfUpdatePermission(value: object): boolean {
     return true;
 }
 
-export function UpdateApplicationPermissionFromJSON(json: any): UpdateApplicationPermission {
-    return UpdateApplicationPermissionFromJSONTyped(json, false);
+export function UpdatePermissionFromJSON(json: any): UpdatePermission {
+    return UpdatePermissionFromJSONTyped(json, false);
 }
 
-export function UpdateApplicationPermissionFromJSONTyped(json: any, ignoreDiscriminator: boolean): UpdateApplicationPermission {
+export function UpdatePermissionFromJSONTyped(json: any, ignoreDiscriminator: boolean): UpdatePermission {
     if (json == null) {
         return json;
     }
@@ -55,7 +55,7 @@ export function UpdateApplicationPermissionFromJSONTyped(json: any, ignoreDiscri
     };
 }
 
-export function UpdateApplicationPermissionToJSON(value?: UpdateApplicationPermission | null): any {
+export function UpdatePermissionToJSON(value?: UpdatePermission | null): any {
     if (value == null) {
         return value;
     }

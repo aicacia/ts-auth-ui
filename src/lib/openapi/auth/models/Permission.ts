@@ -16,51 +16,51 @@ import { mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface ApplicationPermission
+ * @interface Permission
  */
-export interface ApplicationPermission {
+export interface Permission {
     /**
      * 
      * @type {number}
-     * @memberof ApplicationPermission
+     * @memberof Permission
      */
     application_id: number;
     /**
      * 
      * @type {Date}
-     * @memberof ApplicationPermission
+     * @memberof Permission
      */
     created_at: Date;
     /**
      * 
      * @type {string}
-     * @memberof ApplicationPermission
+     * @memberof Permission
      */
     description: string;
     /**
      * 
      * @type {number}
-     * @memberof ApplicationPermission
+     * @memberof Permission
      */
     id: number;
     /**
      * 
      * @type {Date}
-     * @memberof ApplicationPermission
+     * @memberof Permission
      */
     updated_at: Date;
     /**
      * 
      * @type {string}
-     * @memberof ApplicationPermission
+     * @memberof Permission
      */
     uri: string;
 }
 
 /**
- * Check if a given object implements the ApplicationPermission interface.
+ * Check if a given object implements the Permission interface.
  */
-export function instanceOfApplicationPermission(value: object): boolean {
+export function instanceOfPermission(value: object): boolean {
     if (!('application_id' in value)) return false;
     if (!('created_at' in value)) return false;
     if (!('description' in value)) return false;
@@ -70,11 +70,11 @@ export function instanceOfApplicationPermission(value: object): boolean {
     return true;
 }
 
-export function ApplicationPermissionFromJSON(json: any): ApplicationPermission {
-    return ApplicationPermissionFromJSONTyped(json, false);
+export function PermissionFromJSON(json: any): Permission {
+    return PermissionFromJSONTyped(json, false);
 }
 
-export function ApplicationPermissionFromJSONTyped(json: any, ignoreDiscriminator: boolean): ApplicationPermission {
+export function PermissionFromJSONTyped(json: any, ignoreDiscriminator: boolean): Permission {
     if (json == null) {
         return json;
     }
@@ -89,7 +89,7 @@ export function ApplicationPermissionFromJSONTyped(json: any, ignoreDiscriminato
     };
 }
 
-export function ApplicationPermissionToJSON(value?: ApplicationPermission | null): any {
+export function PermissionToJSON(value?: Permission | null): any {
     if (value == null) {
         return value;
     }

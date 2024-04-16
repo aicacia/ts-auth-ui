@@ -30,24 +30,6 @@ export interface CreateApplication {
      * @type {string}
      * @memberof CreateApplication
      */
-    public_url: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CreateApplication
-     */
-    signup_enabled?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CreateApplication
-     */
-    signup_password?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof CreateApplication
-     */
     uri: string;
 }
 
@@ -56,7 +38,6 @@ export interface CreateApplication {
  */
 export function instanceOfCreateApplication(value: object): boolean {
     if (!('description' in value)) return false;
-    if (!('public_url' in value)) return false;
     if (!('uri' in value)) return false;
     return true;
 }
@@ -72,9 +53,6 @@ export function CreateApplicationFromJSONTyped(json: any, ignoreDiscriminator: b
     return {
         
         'description': json['description'],
-        'public_url': json['public_url'],
-        'signup_enabled': json['signup_enabled'] == null ? undefined : json['signup_enabled'],
-        'signup_password': json['signup_password'] == null ? undefined : json['signup_password'],
         'uri': json['uri'],
     };
 }
@@ -86,9 +64,6 @@ export function CreateApplicationToJSON(value?: CreateApplication | null): any {
     return {
         
         'description': value['description'],
-        'public_url': value['public_url'],
-        'signup_enabled': value['signup_enabled'],
-        'signup_password': value['signup_password'],
         'uri': value['uri'],
     };
 }

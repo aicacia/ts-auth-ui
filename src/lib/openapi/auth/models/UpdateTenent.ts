@@ -16,73 +16,73 @@ import { mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface CreateApplicationTenent
+ * @interface UpdateTenent
  */
-export interface CreateApplicationTenent {
+export interface UpdateTenent {
     /**
      * 
      * @type {string}
-     * @memberof CreateApplicationTenent
+     * @memberof UpdateTenent
      */
     algorithm?: string;
     /**
      * 
      * @type {string}
-     * @memberof CreateApplicationTenent
+     * @memberof UpdateTenent
      */
     client_id?: string;
     /**
      * 
      * @type {string}
-     * @memberof CreateApplicationTenent
+     * @memberof UpdateTenent
      */
     description: string;
     /**
      * 
      * @type {number}
-     * @memberof CreateApplicationTenent
+     * @memberof UpdateTenent
      */
     expires_in_seconds?: number;
     /**
      * 
      * @type {string}
-     * @memberof CreateApplicationTenent
+     * @memberof UpdateTenent
      */
     private_key?: string;
     /**
      * 
      * @type {string}
-     * @memberof CreateApplicationTenent
+     * @memberof UpdateTenent
      */
     public_key?: string;
     /**
      * 
      * @type {number}
-     * @memberof CreateApplicationTenent
+     * @memberof UpdateTenent
      */
     refresh_expires_in_seconds?: number;
     /**
      * 
      * @type {string}
-     * @memberof CreateApplicationTenent
+     * @memberof UpdateTenent
      */
     uri: string;
 }
 
 /**
- * Check if a given object implements the CreateApplicationTenent interface.
+ * Check if a given object implements the UpdateTenent interface.
  */
-export function instanceOfCreateApplicationTenent(value: object): boolean {
+export function instanceOfUpdateTenent(value: object): boolean {
     if (!('description' in value)) return false;
     if (!('uri' in value)) return false;
     return true;
 }
 
-export function CreateApplicationTenentFromJSON(json: any): CreateApplicationTenent {
-    return CreateApplicationTenentFromJSONTyped(json, false);
+export function UpdateTenentFromJSON(json: any): UpdateTenent {
+    return UpdateTenentFromJSONTyped(json, false);
 }
 
-export function CreateApplicationTenentFromJSONTyped(json: any, ignoreDiscriminator: boolean): CreateApplicationTenent {
+export function UpdateTenentFromJSONTyped(json: any, ignoreDiscriminator: boolean): UpdateTenent {
     if (json == null) {
         return json;
     }
@@ -99,7 +99,7 @@ export function CreateApplicationTenentFromJSONTyped(json: any, ignoreDiscrimina
     };
 }
 
-export function CreateApplicationTenentToJSON(value?: CreateApplicationTenent | null): any {
+export function UpdateTenentToJSON(value?: UpdateTenent | null): any {
     if (value == null) {
         return value;
     }

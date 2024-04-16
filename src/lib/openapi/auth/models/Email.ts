@@ -21,6 +21,12 @@ import { mapValues } from '../runtime';
 export interface Email {
     /**
      * 
+     * @type {number}
+     * @memberof Email
+     */
+    application_id: number;
+    /**
+     * 
      * @type {boolean}
      * @memberof Email
      */
@@ -55,6 +61,7 @@ export interface Email {
  * Check if a given object implements the Email interface.
  */
 export function instanceOfEmail(value: object): boolean {
+    if (!('application_id' in value)) return false;
     if (!('confirmed' in value)) return false;
     if (!('created_at' in value)) return false;
     if (!('email' in value)) return false;
@@ -73,6 +80,7 @@ export function EmailFromJSONTyped(json: any, ignoreDiscriminator: boolean): Ema
     }
     return {
         
+        'application_id': json['application_id'],
         'confirmed': json['confirmed'],
         'created_at': (new Date(json['created_at'])),
         'email': json['email'],
@@ -87,6 +95,7 @@ export function EmailToJSON(value?: Email | null): any {
     }
     return {
         
+        'application_id': value['application_id'],
         'confirmed': value['confirmed'],
         'created_at': ((value['created_at']).toISOString()),
         'email': value['email'],

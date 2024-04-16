@@ -34,6 +34,12 @@ import {
 export interface UserWithPermissions {
     /**
      * 
+     * @type {number}
+     * @memberof UserWithPermissions
+     */
+    application_id: number;
+    /**
+     * 
      * @type {Date}
      * @memberof UserWithPermissions
      */
@@ -92,6 +98,7 @@ export interface UserWithPermissions {
  * Check if a given object implements the UserWithPermissions interface.
  */
 export function instanceOfUserWithPermissions(value: object): boolean {
+    if (!('application_id' in value)) return false;
     if (!('created_at' in value)) return false;
     if (!('emails' in value)) return false;
     if (!('id' in value)) return false;
@@ -112,6 +119,7 @@ export function UserWithPermissionsFromJSONTyped(json: any, ignoreDiscriminator:
     }
     return {
         
+        'application_id': json['application_id'],
         'created_at': (new Date(json['created_at'])),
         'email': json['email'] == null ? undefined : EmailFromJSON(json['email']),
         'emails': ((json['emails'] as Array<any>).map(EmailFromJSON)),
@@ -130,6 +138,7 @@ export function UserWithPermissionsToJSON(value?: UserWithPermissions | null): a
     }
     return {
         
+        'application_id': value['application_id'],
         'created_at': ((value['created_at']).toISOString()),
         'email': EmailToJSON(value['email']),
         'emails': ((value['emails'] as Array<any>).map(EmailToJSON)),

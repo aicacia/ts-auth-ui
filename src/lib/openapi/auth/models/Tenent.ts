@@ -16,87 +16,87 @@ import { mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface ApplicationTenent
+ * @interface Tenent
  */
-export interface ApplicationTenent {
+export interface Tenent {
     /**
      * 
      * @type {string}
-     * @memberof ApplicationTenent
+     * @memberof Tenent
      */
     algorithm: string;
     /**
      * 
      * @type {number}
-     * @memberof ApplicationTenent
+     * @memberof Tenent
      */
     application_id: number;
     /**
      * 
      * @type {string}
-     * @memberof ApplicationTenent
+     * @memberof Tenent
      */
     client_id: string;
     /**
      * 
      * @type {Date}
-     * @memberof ApplicationTenent
+     * @memberof Tenent
      */
     created_at: Date;
     /**
      * 
      * @type {string}
-     * @memberof ApplicationTenent
+     * @memberof Tenent
      */
     description: string;
     /**
      * 
      * @type {number}
-     * @memberof ApplicationTenent
+     * @memberof Tenent
      */
     expires_in_seconds: number;
     /**
      * 
      * @type {number}
-     * @memberof ApplicationTenent
+     * @memberof Tenent
      */
     id: number;
     /**
      * 
      * @type {string}
-     * @memberof ApplicationTenent
+     * @memberof Tenent
      */
     public_key?: string;
     /**
      * 
      * @type {string}
-     * @memberof ApplicationTenent
+     * @memberof Tenent
      */
     public_uri?: string;
     /**
      * 
      * @type {number}
-     * @memberof ApplicationTenent
+     * @memberof Tenent
      */
     refresh_expires_in_seconds: number;
     /**
      * 
      * @type {Date}
-     * @memberof ApplicationTenent
+     * @memberof Tenent
      */
     updated_at: Date;
     /**
      * 
      * @type {string}
-     * @memberof ApplicationTenent
+     * @memberof Tenent
      */
     uri: string;
 }
 
 /**
- * Check if a given object implements the ApplicationTenent interface.
+ * Check if a given object implements the Tenent interface.
  */
-export function instanceOfApplicationTenent(value: object): boolean {
+export function instanceOfTenent(value: object): boolean {
     if (!('algorithm' in value)) return false;
     if (!('application_id' in value)) return false;
     if (!('client_id' in value)) return false;
@@ -110,11 +110,11 @@ export function instanceOfApplicationTenent(value: object): boolean {
     return true;
 }
 
-export function ApplicationTenentFromJSON(json: any): ApplicationTenent {
-    return ApplicationTenentFromJSONTyped(json, false);
+export function TenentFromJSON(json: any): Tenent {
+    return TenentFromJSONTyped(json, false);
 }
 
-export function ApplicationTenentFromJSONTyped(json: any, ignoreDiscriminator: boolean): ApplicationTenent {
+export function TenentFromJSONTyped(json: any, ignoreDiscriminator: boolean): Tenent {
     if (json == null) {
         return json;
     }
@@ -135,7 +135,7 @@ export function ApplicationTenentFromJSONTyped(json: any, ignoreDiscriminator: b
     };
 }
 
-export function ApplicationTenentToJSON(value?: ApplicationTenent | null): any {
+export function TenentToJSON(value?: Tenent | null): any {
     if (value == null) {
         return value;
     }

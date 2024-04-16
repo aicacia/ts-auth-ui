@@ -79,7 +79,7 @@ export class TokenApi extends runtime.BaseAPI implements TokenApiInterface {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Tenent-Id"] = await this.configuration.apiKey("Tenent-Id"); // ApplicationTenentId authentication
+            headerParameters["Tenent-Id"] = await this.configuration.apiKey("Tenent-Id"); // TenentId authentication
         }
 
         const response = await this.request({

@@ -62,7 +62,7 @@ export class WellKnownApi extends runtime.BaseAPI implements WellKnownApiInterfa
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Tenent-Id"] = await this.configuration.apiKey("Tenent-Id"); // ApplicationTenentId authentication
+            headerParameters["Tenent-Id"] = await this.configuration.apiKey("Tenent-Id"); // TenentId authentication
         }
 
         const response = await this.request({

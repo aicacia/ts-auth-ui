@@ -3,6 +3,7 @@ import { localstorageWritable } from 'svelte-localstorage-writable';
 import { isOnline } from './online';
 import {
 	authConfiguration,
+	currentUserApi,
 	getAuthToken,
 	registerApi,
 	setAuthToken,
@@ -74,7 +75,7 @@ export async function signUp(
 
 async function signInWithToken(token: Token) {
 	setAuthToken(token);
-	const user = await userApi.currentUser();
+	const user = await currentUserApi.currentUser();
 	userWritable.set(user);
 	tokenWritable.set(token);
 	userEmitter.emit('user', user);
@@ -97,7 +98,7 @@ export async function tryGetCurrentUser() {
 				const token = get(tokenWritable);
 				if (token) {
 					setAuthToken(token);
-					user = await userApi.currentUser();
+					user = await currentUserApi.currentUser();
 					userWritable.set(user);
 					userEmitter.emit('user', user);
 				} else {

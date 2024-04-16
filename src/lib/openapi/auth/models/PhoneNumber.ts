@@ -21,6 +21,12 @@ import { mapValues } from '../runtime';
 export interface PhoneNumber {
     /**
      * 
+     * @type {number}
+     * @memberof PhoneNumber
+     */
+    application_id: number;
+    /**
+     * 
      * @type {boolean}
      * @memberof PhoneNumber
      */
@@ -55,6 +61,7 @@ export interface PhoneNumber {
  * Check if a given object implements the PhoneNumber interface.
  */
 export function instanceOfPhoneNumber(value: object): boolean {
+    if (!('application_id' in value)) return false;
     if (!('confirmed' in value)) return false;
     if (!('created_at' in value)) return false;
     if (!('id' in value)) return false;
@@ -73,6 +80,7 @@ export function PhoneNumberFromJSONTyped(json: any, ignoreDiscriminator: boolean
     }
     return {
         
+        'application_id': json['application_id'],
         'confirmed': json['confirmed'],
         'created_at': (new Date(json['created_at'])),
         'id': json['id'],
@@ -87,6 +95,7 @@ export function PhoneNumberToJSON(value?: PhoneNumber | null): any {
     }
     return {
         
+        'application_id': value['application_id'],
         'confirmed': value['confirmed'],
         'created_at': ((value['created_at']).toISOString()),
         'id': value['id'],

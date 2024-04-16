@@ -30,24 +30,6 @@ export interface UpdateApplication {
      * @type {string}
      * @memberof UpdateApplication
      */
-    public_url: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof UpdateApplication
-     */
-    signup_enabled?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof UpdateApplication
-     */
-    signup_password?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof UpdateApplication
-     */
     uri?: string;
 }
 
@@ -55,7 +37,6 @@ export interface UpdateApplication {
  * Check if a given object implements the UpdateApplication interface.
  */
 export function instanceOfUpdateApplication(value: object): boolean {
-    if (!('public_url' in value)) return false;
     return true;
 }
 
@@ -70,9 +51,6 @@ export function UpdateApplicationFromJSONTyped(json: any, ignoreDiscriminator: b
     return {
         
         'description': json['description'] == null ? undefined : json['description'],
-        'public_url': json['public_url'],
-        'signup_enabled': json['signup_enabled'] == null ? undefined : json['signup_enabled'],
-        'signup_password': json['signup_password'] == null ? undefined : json['signup_password'],
         'uri': json['uri'] == null ? undefined : json['uri'],
     };
 }
@@ -84,9 +62,6 @@ export function UpdateApplicationToJSON(value?: UpdateApplication | null): any {
     return {
         
         'description': value['description'],
-        'public_url': value['public_url'],
-        'signup_enabled': value['signup_enabled'],
-        'signup_password': value['signup_password'],
         'uri': value['uri'],
     };
 }

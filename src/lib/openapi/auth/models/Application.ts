@@ -39,24 +39,6 @@ export interface Application {
     id: number;
     /**
      * 
-     * @type {string}
-     * @memberof Application
-     */
-    public_url?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Application
-     */
-    signup_enabled: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Application
-     */
-    signup_password: boolean;
-    /**
-     * 
      * @type {Date}
      * @memberof Application
      */
@@ -76,8 +58,6 @@ export function instanceOfApplication(value: object): boolean {
     if (!('created_at' in value)) return false;
     if (!('description' in value)) return false;
     if (!('id' in value)) return false;
-    if (!('signup_enabled' in value)) return false;
-    if (!('signup_password' in value)) return false;
     if (!('updated_at' in value)) return false;
     if (!('uri' in value)) return false;
     return true;
@@ -96,9 +76,6 @@ export function ApplicationFromJSONTyped(json: any, ignoreDiscriminator: boolean
         'created_at': (new Date(json['created_at'])),
         'description': json['description'],
         'id': json['id'],
-        'public_url': json['public_url'] == null ? undefined : json['public_url'],
-        'signup_enabled': json['signup_enabled'],
-        'signup_password': json['signup_password'],
         'updated_at': (new Date(json['updated_at'])),
         'uri': json['uri'],
     };
@@ -113,9 +90,6 @@ export function ApplicationToJSON(value?: Application | null): any {
         'created_at': ((value['created_at']).toISOString()),
         'description': value['description'],
         'id': value['id'],
-        'public_url': value['public_url'],
-        'signup_enabled': value['signup_enabled'],
-        'signup_password': value['signup_password'],
         'updated_at': ((value['updated_at']).toISOString()),
         'uri': value['uri'],
     };

@@ -34,6 +34,12 @@ import {
 export interface User {
     /**
      * 
+     * @type {number}
+     * @memberof User
+     */
+    application_id: number;
+    /**
+     * 
      * @type {Date}
      * @memberof User
      */
@@ -86,6 +92,7 @@ export interface User {
  * Check if a given object implements the User interface.
  */
 export function instanceOfUser(value: object): boolean {
+    if (!('application_id' in value)) return false;
     if (!('created_at' in value)) return false;
     if (!('emails' in value)) return false;
     if (!('id' in value)) return false;
@@ -105,6 +112,7 @@ export function UserFromJSONTyped(json: any, ignoreDiscriminator: boolean): User
     }
     return {
         
+        'application_id': json['application_id'],
         'created_at': (new Date(json['created_at'])),
         'email': json['email'] == null ? undefined : EmailFromJSON(json['email']),
         'emails': ((json['emails'] as Array<any>).map(EmailFromJSON)),
@@ -122,6 +130,7 @@ export function UserToJSON(value?: User | null): any {
     }
     return {
         
+        'application_id': value['application_id'],
         'created_at': ((value['created_at']).toISOString()),
         'email': EmailToJSON(value['email']),
         'emails': ((value['emails'] as Array<any>).map(EmailToJSON)),

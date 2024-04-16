@@ -16,37 +16,37 @@ import { mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface CreateApplicationPermission
+ * @interface CreatePermission
  */
-export interface CreateApplicationPermission {
+export interface CreatePermission {
     /**
      * 
      * @type {string}
-     * @memberof CreateApplicationPermission
+     * @memberof CreatePermission
      */
     description: string;
     /**
      * 
      * @type {string}
-     * @memberof CreateApplicationPermission
+     * @memberof CreatePermission
      */
     uri: string;
 }
 
 /**
- * Check if a given object implements the CreateApplicationPermission interface.
+ * Check if a given object implements the CreatePermission interface.
  */
-export function instanceOfCreateApplicationPermission(value: object): boolean {
+export function instanceOfCreatePermission(value: object): boolean {
     if (!('description' in value)) return false;
     if (!('uri' in value)) return false;
     return true;
 }
 
-export function CreateApplicationPermissionFromJSON(json: any): CreateApplicationPermission {
-    return CreateApplicationPermissionFromJSONTyped(json, false);
+export function CreatePermissionFromJSON(json: any): CreatePermission {
+    return CreatePermissionFromJSONTyped(json, false);
 }
 
-export function CreateApplicationPermissionFromJSONTyped(json: any, ignoreDiscriminator: boolean): CreateApplicationPermission {
+export function CreatePermissionFromJSONTyped(json: any, ignoreDiscriminator: boolean): CreatePermission {
     if (json == null) {
         return json;
     }
@@ -57,7 +57,7 @@ export function CreateApplicationPermissionFromJSONTyped(json: any, ignoreDiscri
     };
 }
 
-export function CreateApplicationPermissionToJSON(value?: CreateApplicationPermission | null): any {
+export function CreatePermissionToJSON(value?: CreatePermission | null): any {
     if (value == null) {
         return value;
     }
